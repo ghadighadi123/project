@@ -8,8 +8,8 @@ import { useCallback} from "react";
 const FAQ = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
-  const handleFormSubmit = useCallback ((values) => { 
-    const {firstName, lastName, city, zipcode, email, contact, address, age} = values ;
+  const handleFormSubmit1 = useCallback ((values) => { 
+    const {companyName, agentFullName, agentNumber, city, email, address, totalCost, arrivalDate, payingInvoiceDate} = values ;
     
     const options = {
       method:'POST',
@@ -18,10 +18,10 @@ const FAQ = () => {
       },
 
       body: JSON.stringify({
-        firstName, lastName, city, zipcode, email, contact, address, age
+        companyName, agentFullName, agentNumber, city, email, address, totalCost, arrivalDate, payingInvoiceDate
     })
   } 
-  fetch('https://tgrp-38a89-default-rtdb.firebaseio.com/UserData.json',options)
+  fetch('https://tgrp-38a89-default-rtdb.firebaseio.com/sales.json',options)
   },[]);
 
 
@@ -30,7 +30,7 @@ const FAQ = () => {
       <Header title="CREATE USER" subtitle="Create a New User Profile" />
 
       <Formik
-        onSubmit={handleFormSubmit}
+        onSubmit={handleFormSubmit1}
         initialValues={initialValues}
         validationSchema={checkoutSchema}
       >
@@ -55,41 +55,41 @@ const FAQ = () => {
                 fullWidth
                 variant="filled"
                 type="text"
-                label="First Name"
+                label="Company Name"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.firstName}
-                name="firstName"
-                error={!!touched.firstName && !!errors.firstName}
-                helperText={touched.firstName && errors.firstName}
+                value={values.companyName}
+                name="companyName"
+                error={!!touched.companyName && !!errors.companyName}
+                helperText={touched.companyName && errors.companyName}
                 sx={{ gridColumn: "span 2" }}
               />
               <TextField
                 fullWidth
                 variant="filled"
                 type="text"
-                label="Last Name"
+                label="Agent Full Name"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.lastName}
-                name="lastName"
-                error={!!touched.lastName && !!errors.lastName}
-                helperText={touched.lastName && errors.lastName}
+                value={values.agentFullName}
+                name="agentFullName"
+                error={!!touched.agentFullName && !!errors.agentFullName}
+                helperText={touched.agentFullName && errors.agentFullName}
                 sx={{ gridColumn: "span 2" }}/>
                 
                 <TextField
                 fullWidth
                 variant="filled"
                 type="text"
-                label="Age"
+                label=" Sales Agent Number"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.age}
-                name="age"
-                error={!!touched.age && !!errors.age}
-                helperText={touched.age && errors.age}
+                value={values.agentNumber}
+                name="agentNumber"
+                error={!!touched.agentNumber && !!errors.agentNumber}
+                helperText={touched.agentNumber && errors.agentNumber}
                 sx={{ gridColumn: "span 2" }}
-              />   
+              />
               <TextField
                 fullWidth
                 variant="filled"
@@ -107,19 +107,6 @@ const FAQ = () => {
                 fullWidth
                 variant="filled"
                 type="text"
-                label="Zip code"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.zipcode}
-                name="zipcode"
-                error={!!touched.zipcode && !!errors.zipcode}
-                helperText={touched.zipcode && errors.zipcode}
-                sx={{ gridColumn: "span 4" }}
-              />
-              <TextField
-                fullWidth
-                variant="filled"
-                type="text"
                 label="Email"
                 onBlur={handleBlur}
                 onChange={handleChange}
@@ -127,23 +114,9 @@ const FAQ = () => {
                 name="email"
                 error={!!touched.email && !!errors.email}
                 helperText={touched.email && errors.email}
-                sx={{ gridColumn: "span 4" }}
+                sx={{ gridColumn: "span 4" }}    
+              />
                
-              />
-              <TextField
-                fullWidth
-                variant="filled"
-                type="text"
-                label="Contact Number"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.contact}
-                name="contact"
-                error={!!touched.contact && !!errors.contact}
-                helperText={touched.contact && errors.contact}
-                sx={{ gridColumn: "span 4" }}
-              />
-              
               <TextField
                 fullWidth
                 variant="filled"
@@ -155,13 +128,52 @@ const FAQ = () => {
                 name="address"
                 error={!!touched.address && !!errors.address}
                 helperText={touched.address && errors.address}
-                sx={{ gridColumn: "span 4" }}
+                sx={{ gridColumn: "span 1" }}
               />
+              <TextField
+                fullWidth
+                variant="filled"
+                type="number"
+                label="Products Delivered Total Cost"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.totalCost}
+                name="totalCost"
+                error={!!touched.totalCost && !!errors.totalCost}
+                helperText={touched.totalCost && errors.totalCost}
+                sx={{ gridColumn: "span 1" }}
+              />
+             <TextField
+                fullWidth
+                variant="filled"
+                type="Text"
+                label="Shipping Arrival Date (dd/mm/yyyy)"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.arrivalDate}
+                name="arrivalDate"
+                error={!!touched.arrivalDate && !!errors.arrivalDate}
+                helperText={touched.arrivalDate && errors.arrivalDate}
+                sx={{ gridColumn: "span 1"}}
+                />
+                <TextField
+                fullWidth
+                variant="filled"
+                type="Text"
+                label="Paying Invoice Date (dd/mm/yyyy)"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.payingInvoiceDate}
+                name="payingInvoiceDate"
+                error={!!touched.payingInvoiceDate && !!errors.payingInvoiceDate}
+                helperText={touched.payingInvoiceDate && errors.payingInvoiceDate}
+                sx={{ gridColumn: "span 1.5"}}
+                />
               
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
               <Button type="submit" color="secondary" variant="contained">
-                Create New User
+                Add transaction
               </Button>
             </Box>
           </form>
@@ -172,30 +184,31 @@ const FAQ = () => {
 };
 
 const phoneRegExp = /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
-const ageRegExp = /^(1[8-9]|[2-9][0-9]|100)$/;
-const zipCodeRegExp = /^\d{5}(?:-\d{4})?$/;
+const dateRegExp = /^\d{2}\/\d{2}\/\d{4}$/;
+
+
 
 const checkoutSchema = yup.object().shape({
-  firstName: yup.string().required("required"),
-  lastName: yup.string().required("required"),
+  companyName: yup.string().required("required"),
+  agentfullName: yup.string().required("required"),
   city:yup.string().required("required"),
-  zipcode:yup.string().matches(zipCodeRegExp,"invalid format").required("required"),
   email: yup.string().email("invalid email").required("required"),
-  contact: yup.string().matches(phoneRegExp, "Phone number is not valid").required("required"),
+  agentNumber: yup.string().matches(phoneRegExp, "Phone number is not valid").required("required"),
   address: yup.string().required("required"),
-  age: yup.string().matches(ageRegExp,"invalid age").required("required"),
-
+  totalCost:yup.string().required("required"),
+  arrivalDate:yup.string().matches(dateRegExp,"wrong date format !").required("required"),
+  payingInvoiceDate:yup.string().matches(dateRegExp,"wrong date format !").required("required"),
 });
 const initialValues = {
-  firstName: "",
-  lastName: "",
+  companyName: "",
+  agentFullName: "",
   city:"",
-  zipcode:"",
   email: "",
   contact: "",
   address: "",
-  age: "",
-  
+  totalCost:"",
+  arrivalDate:"",
+  payingInvoiceDate:"",
 };
 
 export default FAQ;
