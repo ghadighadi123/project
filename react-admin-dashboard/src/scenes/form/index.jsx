@@ -24,16 +24,26 @@ const Form = () => {
       values;
     actions.setSubmitting(false);
     actions.resetForm();
-    // set(ref(db, "data/contact/" + email), {
-    //   firstName,
-    //   lastName,
-    //   city,
-    //   zipcode,
-    //   email,
-    //   contact,
-    //   address,
-    //   age,
-    // });
+    const id = `${
+      firstName[0] +
+      lastName[0] +
+      city[0] +
+      zipcode[0] +
+      email[0] +
+      contact[0] +
+      address[0] +
+      age[0]
+    }`;
+    set(ref(db, `data/contact/${id}`), {
+      firstName,
+      lastName,
+      city,
+      zipcode,
+      email,
+      contact,
+      address,
+      age,
+    });
   }, []);
 
   return (

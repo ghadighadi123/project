@@ -33,17 +33,28 @@ const FAQ = () => {
     } = values;
     actions.setSubmitting(false);
     actions.resetForm();
-    // set(ref(db, "data/transaction/" + email), {
-    //   companyName,
-    //   agentFullName,
-    //   agentNumber,
-    //   city,
-    //   email,
-    //   address,
-    //   totalCost,
-    //   arrivalDate,
-    //   payingInvoiceDate,
-    // });
+    const id = `${
+      companyName[0] +
+      agentFullName[0] +
+      agentNumber[0] +
+      city[0] +
+      email[0] +
+      address[0] +
+      totalCost[0] +
+      arrivalDate[0] +
+      payingInvoiceDate[0]
+    }`;
+    set(ref(db, `data/transaction/${id}`), {
+      companyName,
+      agentFullName,
+      agentNumber,
+      city,
+      email,
+      address,
+      totalCost,
+      arrivalDate,
+      payingInvoiceDate,
+    });
   }, []);
 
   return (
