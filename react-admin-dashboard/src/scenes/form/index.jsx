@@ -3,27 +3,40 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
-import { useCallback} from "react";
-
+import { useCallback } from "react";
+import { db } from "../../config";
+import { set, ref } from "firebase/database";
 const Form = () => {
+  const initialValues = {
+    firstName: "",
+    lastName: "",
+    city: "",
+    zipcode: "",
+    email: "",
+    contact: "",
+    address: "",
+    age: "",
+  };
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
-  const handleFormSubmit = useCallback ((values) => { 
-    const {firstName, lastName, city, zipcode, email, contact, address, age} = values ;
-    
-    const options = {
-      method:'POST',
-      headers:{
-        'Content-type':'aplication/json'
-      },
-
-      body: JSON.stringify({
-        firstName, lastName, city, zipcode, email, contact, address, age
-    })
-  } 
-  fetch('https://tgrp-38a89-default-rtdb.firebaseio.com/UserData.json',options)
-  },[]);
-
+  const handleFormSubmit = useCallback((values, actions) => {
+    console.log(values);
+    console.log(actions);
+    const { firstName, lastName, city, zipcode, email, contact, address, age } =
+      values;
+    actions.setSubmitting(false);
+    actions.resetForm();
+    // set(ref(db, "data/form"), {
+    //   firstName,
+    //   lastName,
+    //   city,
+    //   zipcode,
+    //   email,
+    //   contact,
+    //   address,
+    //   age,
+    // });
+  }, []);
 
   return (
     <Box m="20px">
@@ -75,9 +88,10 @@ const Form = () => {
                 name="lastName"
                 error={!!touched.lastName && !!errors.lastName}
                 helperText={touched.lastName && errors.lastName}
-                sx={{ gridColumn: "span 2" }}/>
-                
-                <TextField
+                sx={{ gridColumn: "span 2" }}
+              />
+
+              <TextField
                 fullWidth
                 variant="filled"
                 type="text"
@@ -89,7 +103,7 @@ const Form = () => {
                 error={!!touched.age && !!errors.age}
                 helperText={touched.age && errors.age}
                 sx={{ gridColumn: "span 2" }}
-              />   
+              />
               <TextField
                 fullWidth
                 variant="filled"
@@ -128,7 +142,6 @@ const Form = () => {
                 error={!!touched.email && !!errors.email}
                 helperText={touched.email && errors.email}
                 sx={{ gridColumn: "span 4" }}
-               
               />
               <TextField
                 fullWidth
@@ -143,7 +156,7 @@ const Form = () => {
                 helperText={touched.contact && errors.contact}
                 sx={{ gridColumn: "span 4" }}
               />
-              
+
               <TextField
                 fullWidth
                 variant="filled"
@@ -157,7 +170,6 @@ const Form = () => {
                 helperText={touched.address && errors.address}
                 sx={{ gridColumn: "span 4" }}
               />
-              
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
               <Button type="submit" color="secondary" variant="contained">
@@ -171,31 +183,26 @@ const Form = () => {
   );
 };
 
-const phoneRegExp = /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
+const phoneRegExp =
+  /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
 const ageRegExp = /^(1[8-9]|[2-9][0-9]|100)$/;
 const zipCodeRegExp = /^\d{5}(?:-\d{4})?$/;
 
 const checkoutSchema = yup.object().shape({
   firstName: yup.string().required("required"),
   lastName: yup.string().required("required"),
-  city:yup.string().required("required"),
-  zipcode:yup.string().matches(zipCodeRegExp,"invalid format").required("required"),
+  city: yup.string().required("required"),
+  zipcode: yup
+    .string()
+    .matches(zipCodeRegExp, "invalid format")
+    .required("required"),
   email: yup.string().email("invalid email").required("required"),
-  contact: yup.string().matches(phoneRegExp, "Phone number is not valid").required("required"),
+  contact: yup
+    .string()
+    .matches(phoneRegExp, "Phone number is not valid")
+    .required("required"),
   address: yup.string().required("required"),
-  age: yup.string().matches(ageRegExp,"invalid age").required("required"),
-
+  age: yup.string().matches(ageRegExp, "invalid age").required("required"),
 });
-const initialValues = {
-  firstName: "",
-  lastName: "",
-  city:"",
-  zipcode:"",
-  email: "",
-  contact: "",
-  address: "",
-  age: "",
-  
-};
 
 export default Form;
