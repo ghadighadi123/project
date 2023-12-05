@@ -19,13 +19,24 @@ import Operations from "./Operations";
 import { onValue, ref } from "firebase/database";
 import { db } from "./config";
 function App() {
-  useEffect(() => {
-    onValue(ref(db, "data/contact"), (value) => {
-      const data = value.val();
-      console.log(Object.values(data));
-    });
-    // console.log("Hello");
-  }, []);
+  // useEffect(() => {
+  //   fetch(
+  //     "https://lu-project-53a80-default-rtdb.firebaseio.com/data/contact.json"
+  //   )
+  //     .then((response) => {
+  //       if (!response.ok) {
+  //         throw new Error(
+  //           `Network response was not ok, status: ${response.status}`
+  //         );
+  //       }
+  //       return response.json();
+  //     })
+  //     .then((data) => {
+  //       // Set the retrieved data to state
+  //       console.log(data);
+  //     })
+  //     .catch((error) => console.log(error));
+  // });
   const [theme, colorMode] = useMode();
   const [isSidebar, setIsSidebar] = useState(true);
 

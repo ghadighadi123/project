@@ -16,7 +16,7 @@ import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
-
+import BadgeIcon from "@mui/icons-material/Badge";
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -43,7 +43,7 @@ const Sidebar = () => {
   const styling = {
     height: "100vh",
     position: "relative",
-    top: "25px",
+    top: "15px",
   };
 
   return (
@@ -130,7 +130,6 @@ const Sidebar = () => {
                 selected={selected}
                 setSelected={setSelected}
               />
-
               <Typography
                 variant="h6"
                 color={colors.grey[300]}
@@ -159,7 +158,6 @@ const Sidebar = () => {
                 selected={selected}
                 setSelected={setSelected}
               />
-
               <Typography
                 variant="h6"
                 color={colors.grey[300]}
@@ -175,20 +173,26 @@ const Sidebar = () => {
                 setSelected={setSelected}
               />
               <Item
-                title="Calendar"
-                to="/calendar"
-                icon={<CalendarTodayOutlinedIcon />}
-                selected={selected}
-                setSelected={setSelected}
-              />
-              <Item
                 title="Sales Agent Form"
                 to="/faq"
                 icon={<AttachMoneyIcon />}
                 selected={selected}
                 setSelected={setSelected}
               />
-
+              <Item
+                title="Members form"
+                to="/members"
+                icon={<BadgeIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />
+              <Item
+                title="Calendar"
+                to="/calendar"
+                icon={<CalendarTodayOutlinedIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />
               <Typography
                 variant="h6"
                 color={colors.grey[300]}
