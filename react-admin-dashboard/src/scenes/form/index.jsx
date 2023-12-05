@@ -20,13 +20,11 @@ const Form = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
   const handleFormSubmit = useCallback((values, actions) => {
-    console.log(values);
-    console.log(actions);
     const { firstName, lastName, city, zipcode, email, contact, address, age } =
       values;
     actions.setSubmitting(false);
     actions.resetForm();
-    // set(ref(db, "data/form"), {
+    // set(ref(db, "data/contact/" + email), {
     //   firstName,
     //   lastName,
     //   city,

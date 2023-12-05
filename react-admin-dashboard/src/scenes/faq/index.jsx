@@ -4,23 +4,22 @@ import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
 import { useCallback } from "react";
-
+import { db } from "../../config";
+import { set, ref } from "firebase/database";
 const FAQ = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const initialValues = {
     companyName: "",
     agentFullName: "",
+    agentNumber: "",
     city: "",
     email: "",
-    contact: "",
     address: "",
     totalCost: "",
     arrivalDate: "",
     payingInvoiceDate: "",
   };
-  const handleFormSubmit1 = useCallback((values) => {
-    console.log("hello");
-    // console.log(actions);
+  const handleFormSubmit = useCallback((values, actions) => {
     const {
       companyName,
       agentFullName,
@@ -32,25 +31,19 @@ const FAQ = () => {
       arrivalDate,
       payingInvoiceDate,
     } = values;
-    // const options = {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-type": "aplication/json",
-    //   },
-
-    //   body: JSON.stringify({
-    //     companyName,
-    //     agentFullName,
-    //     agentNumber,
-    //     city,
-    //     email,
-    //     address,
-    //     totalCost,
-    //     arrivalDate,
-    //     payingInvoiceDate,
-    //   }),
-    // };
-    // fetch("https://tgrp-38a89-default-rtdb.firebaseio.com/sales.json", options);
+    actions.setSubmitting(false);
+    actions.resetForm();
+    // set(ref(db, "data/transaction/" + email), {
+    //   companyName,
+    //   agentFullName,
+    //   agentNumber,
+    //   city,
+    //   email,
+    //   address,
+    //   totalCost,
+    //   arrivalDate,
+    //   payingInvoiceDate,
+    // });
   }, []);
 
   return (
@@ -58,7 +51,7 @@ const FAQ = () => {
       <Header title="CREATE USER" subtitle="Create a New User Profile" />
 
       <Formik
-        onSubmit={handleFormSubmit1}
+        onSubmit={handleFormSubmit}
         initialValues={initialValues}
         validationSchema={checkoutSchema}
       >
@@ -113,10 +106,10 @@ const FAQ = () => {
                 label=" Sales Agent Number"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.contact}
-                name="contact"
-                error={!!touched.contact && !!errors.contact}
-                helperText={touched.contact && errors.contact}
+                value={values.agentNumber}
+                name="agentNumber"
+                error={!!touched.agentNumber && !!errors.agentNumber}
+                helperText={touched.agentNumber && errors.agentNumber}
                 sx={{ gridColumn: "span 2" }}
               />
               <TextField
@@ -222,13 +215,13 @@ const costRegExp = /^\d+$/;
 
 const checkoutSchema = yup.object().shape({
   companyName: yup.string().required("required"),
-  agentfullName: yup.string().required("required"),
-  city: yup.string().required("required"),
-  email: yup.string().email("invalid email").required("required"),
-  contact: yup
+  agentFullName: yup.string().required("required"),
+  agentNumber: yup
     .string()
     .matches(phoneRegExp, "Phone number is not valid")
     .required("required"),
+  city: yup.string().required("required"),
+  email: yup.string().email("invalid email").required("required"),
   address: yup.string().required("required"),
   totalCost: yup.string().matches(costRegExp, "Not valid").required("required"),
   arrivalDate: yup
