@@ -6,6 +6,7 @@ import Header from "../../components/Header";
 import { useCallback } from "react";
 import { db } from "../../config";
 import { set, ref } from "firebase/database";
+import { uid } from "uid";
 const FAQ = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const initialValues = {
@@ -33,17 +34,7 @@ const FAQ = () => {
     } = values;
     actions.setSubmitting(false);
     actions.resetForm();
-    const id = `${
-      companyName[0] +
-      agentFullName[0] +
-      agentNumber[0] +
-      city[0] +
-      email[0] +
-      address[0] +
-      totalCost[0] +
-      arrivalDate[0] +
-      payingInvoiceDate[0]
-    }`;
+    const id = uid();
     set(ref(db, `data/transaction/${id}`), {
       companyName,
       agentFullName,

@@ -6,6 +6,7 @@ import Header from "../../components/Header";
 import { useCallback } from "react";
 import { db } from "../../config";
 import { set, ref } from "firebase/database";
+import { uid } from "uid";
 const Form = () => {
   const initialValues = {
     firstName: "",
@@ -24,16 +25,7 @@ const Form = () => {
       values;
     actions.setSubmitting(false);
     actions.resetForm();
-    const id = `${
-      firstName[0] +
-      lastName[0] +
-      city[0] +
-      zipcode[0] +
-      email[0] +
-      contact[0] +
-      address[0] +
-      age[0]
-    }`;
+    const id = uid();
     set(ref(db, `data/contact/${id}`), {
       firstName,
       lastName,

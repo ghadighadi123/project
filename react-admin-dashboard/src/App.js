@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import Topbar from "./scenes/global/Topbar";
 import Sidebar from "./scenes/global/Sidebar";
@@ -16,8 +16,16 @@ import { CssBaseline, ThemeProvider } from "@mui/material";
 import { ColorModeContext, useMode } from "./theme";
 import Calendar from "./scenes/calendar/calendar";
 import Operations from "./Operations";
-
+import { onValue, ref } from "firebase/database";
+import { db } from "./config";
 function App() {
+  useEffect(() => {
+    onValue(ref(db, "data/contact"), (value) => {
+      const data = value.val();
+      console.log(Object.values(data));
+    });
+    // console.log("Hello");
+  }, []);
   const [theme, colorMode] = useMode();
   const [isSidebar, setIsSidebar] = useState(true);
 
