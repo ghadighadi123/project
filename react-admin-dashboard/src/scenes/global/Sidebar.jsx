@@ -152,7 +152,7 @@ const Sidebar = () => {
                 setSelected={setSelected}
               />
               <Item
-                title="Invoices Balances"
+                title="Invoices Data"
                 to="/invoices"
                 icon={<ReceiptOutlinedIcon />}
                 selected={selected}
@@ -166,14 +166,14 @@ const Sidebar = () => {
                 Pages
               </Typography>
               <Item
-                title="Contact Form"
+                title="Contacts Form"
                 to="/form"
                 icon={<PersonOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
               />
               <Item
-                title="Sales Agent Form"
+                title="Invoices Form"
                 to="/faq"
                 icon={<AttachMoneyIcon />}
                 selected={selected}

@@ -50,7 +50,7 @@ const FAQ = () => {
 
   return (
     <Box m="20px">
-      <Header title="CREATE USER" subtitle="Create a New User Profile" />
+      <Header title="CREATE INVOICE" subtitle="Create a New Invoice" />
 
       <Formik
         onSubmit={handleFormSubmit}
