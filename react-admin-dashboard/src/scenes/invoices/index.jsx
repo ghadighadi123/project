@@ -8,7 +8,11 @@ const Invoices = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const columns = [
-    { field: "id", headerName: "ID" },
+    { 
+      field: "id",
+      headerName: "ID",
+      flex:1, 
+    },
     {
       field: "company name",
       headerName: "Company Name",
@@ -34,7 +38,7 @@ const Invoices = () => {
     {
       field: "cost",
       headerName: "Cost",
-      flex: 1,
+      flex: 0.5,
       renderCell: (params) => (
         <Typography color={colors.greenAccent[500]}>
           ${params.row.cost}
@@ -42,8 +46,13 @@ const Invoices = () => {
       ),
     },
     {
-      field: "date",
-      headerName: "Date",
+      field: "arrivalDate",
+      headerName: "Shipping Arrival Date",
+      flex: 1,
+    },
+    {
+      field: "payingInvoiceDate",
+      headerName: "Paying Invoice Date",
       flex: 1,
     },
   ];

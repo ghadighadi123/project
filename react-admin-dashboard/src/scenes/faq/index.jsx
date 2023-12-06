@@ -20,7 +20,7 @@ const FAQ = () => {
     arrivalDate: "",
     payingInvoiceDate: "",
   };
-  const handleFormSubmit = useCallback((values, actions) => {
+  const handleFormSubmit1 = useCallback((values, actions) => {
     const {
       companyName,
       agentFullName,
@@ -53,7 +53,7 @@ const FAQ = () => {
       <Header title="CREATE INVOICE" subtitle="Create a New Invoice" />
 
       <Formik
-        onSubmit={handleFormSubmit}
+        onSubmit={handleFormSubmit1}
         initialValues={initialValues}
         validationSchema={checkoutSchema}
       >
