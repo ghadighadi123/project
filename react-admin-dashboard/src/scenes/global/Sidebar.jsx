@@ -17,6 +17,7 @@ import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import BadgeIcon from "@mui/icons-material/Badge";
+import PaymentsIcon from "@mui/icons-material/Payments";
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -137,6 +138,13 @@ const Sidebar = () => {
               >
                 Data
               </Typography>
+              <Item
+                title="Team Paylip"
+                to="/teampaylip"
+                icon={<PaymentsIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />
               <Item
                 title="Manage Team"
                 to="/team"

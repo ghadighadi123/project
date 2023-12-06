@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { Routes, Route } from "react-router-dom";
+import { useState } from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Topbar from "./scenes/global/Topbar";
 import Sidebar from "./scenes/global/Sidebar";
 import Dashboard from "./scenes/dashboard";
@@ -15,30 +15,19 @@ import Geography from "./scenes/geography";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { ColorModeContext, useMode } from "./theme";
 import Calendar from "./scenes/calendar/calendar";
-import Operations from "./Operations";
-import { onValue, ref } from "firebase/database";
-import { db } from "./config";
+import Members from "./scenes/members";
+import Teampaylip from "./scenes/teampaylip/Teampaylip";
+import Login from "./scenes/login/login";
+
 function App() {
-  // useEffect(() => {
-  //   fetch(
-  //     "https://lu-project-53a80-default-rtdb.firebaseio.com/data/contact.json"
-  //   )
-  //     .then((response) => {
-  //       if (!response.ok) {
-  //         throw new Error(
-  //           `Network response was not ok, status: ${response.status}`
-  //         );
-  //       }
-  //       return response.json();
-  //     })
-  //     .then((data) => {
-  //       // Set the retrieved data to state
-  //       console.log(data);
-  //     })
-  //     .catch((error) => console.log(error));
-  // });
   const [theme, colorMode] = useMode();
   const [isSidebar, setIsSidebar] = useState(true);
+
+  const currentUser = true;
+
+  const RequireAuth = ({ children }) => {
+    return currentUser ? children : <Navigate to="/login" />;
+  };
 
   return (
     <ColorModeContext.Provider value={colorMode}>
@@ -49,18 +38,111 @@ function App() {
           <main className="content">
             <Topbar setIsSidebar={setIsSidebar} />
             <Routes>
-              <Route path="/" element={<Dashboard />} />
-              <Route path="/team" element={<Team />} />
-              <Route path="/contacts" element={<Contacts />} />
-              <Route path="/invoices" element={<Invoices />} />
-              <Route path="/form" element={<Form />} />
-              <Route path="/bar" element={<Bar />} />
-              <Route path="/pie" element={<Pie />} />
-              <Route path="/line" element={<Line />} />
-              <Route path="/faq" element={<FAQ />} />
-              <Route path="/calendar" element={<Calendar />} />
-              <Route path="/geography" element={<Geography />} />
-              <Route path="/kifak" element={<Operations />} />
+              <Route path="/login" element={<Login />} />
+              <Route
+                path="/"
+                element={
+                  <RequireAuth>
+                    <Dashboard />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/team"
+                element={
+                  <RequireAuth>
+                    <Team />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/teampaylip"
+                element={
+                  <RequireAuth>
+                    <Teampaylip />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/contacts"
+                element={
+                  <RequireAuth>
+                    <Contacts />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/invoices"
+                element={
+                  <RequireAuth>
+                    <Invoices />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/form"
+                element={
+                  <RequireAuth>
+                    <Form />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/bar"
+                element={
+                  <RequireAuth>
+                    <Bar />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/pie"
+                element={
+                  <RequireAuth>
+                    <Pie />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/line"
+                element={
+                  <RequireAuth>
+                    <Line />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/faq"
+                element={
+                  <RequireAuth>
+                    <FAQ />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/Members"
+                element={
+                  <RequireAuth>
+                    <Members />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/calendar"
+                element={
+                  <RequireAuth>
+                    <Calendar />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/geography"
+                element={
+                  <RequireAuth>
+                    <Geography />
+                  </RequireAuth>
+                }
+              />
             </Routes>
           </main>
         </div>
