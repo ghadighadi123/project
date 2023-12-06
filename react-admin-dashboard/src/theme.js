@@ -5,7 +5,9 @@ import { createTheme } from "@mui/material/styles";
 export const tokens = (mode) => ({
   ...(mode === "dark"
     ? {
+        // no changes
         grey: {
+          // original
           100: "#e0e0e0",
           200: "#c2c2c2",
           300: "#a3a3a3",
@@ -15,50 +17,154 @@ export const tokens = (mode) => ({
           700: "#3d3d3d",
           800: "#292929",
           900: "#141414",
+          // changes
+          // 100: "#4d0000", // Adjusted color
+          // 200: "#990000", // Adjusted color
+          // 300: "#e60000", // Adjusted color
+          // 400: "#cc0000", // Adjusted color
+          // 500: "#ff0000", // Adjusted color
+          // 600: "#ff3333", // Adjusted color
+          // 700: "#ff6666", // Adjusted color
+          // 800: "#ff9999", // Adjusted color
+          // 900: "#ffcccc", // Adjusted color
+          // changes 1
+          // 100: "#ff6666", // Brighter red
+          // 200: "#ff8080", // Brighter red
+          // 300: "#ff9999", // Brighter red
+          // 400: "#ffb3b3", // Brighter red
+          // 500: "#ffcccc", // Brighter red
+          // 600: "#ffd1d1", // Brighter red
+          // 700: "#ffd6d6", // Brighter red
+          // 800: "#ffdbdb", // Brighter red
+          // 900: "#ffe0e0", // Brighter red
         },
         primary: {
+          // original
+          // 100: "#d0d1d5",
+          // 200: "#a1a4ab",
+          // 300: "#727681",
+          // 400: "#1F2A40",
+          // 500: "#141b2d",
+          // 600: "#101624",
+          // 700: "#0c101b",
+          // 800: "#080b12",
+          // 900: "#040509",
+          // changes
           100: "#d0d1d5",
           200: "#a1a4ab",
           300: "#727681",
-          400: "#1F2A40",
-          500: "#141b2d",
-          600: "#101624",
-          700: "#0c101b",
-          800: "#080b12",
-          900: "#040509",
+          400: "#4d4d4d", // Adjusted color
+          500: "#333333", // Adjusted color
+          600: "#292929", // Adjusted color
+          700: "#1f1f1f", // Adjusted color
+          800: "#141414", // Adjusted color
+          900: "#0a0a0a", // Adjusted color
         },
         greenAccent: {
-          100: "#dbf5ee",
-          200: "#b7ebde",
-          300: "#94e2cd",
-          400: "#70d8bd",
-          500: "#4cceac",
-          600: "#3da58a",
-          700: "#2e7c67",
-          800: "#1e5245",
-          900: "#0f2922",
+          // original
+          // 100: "#dbf5ee",
+          // 200: "#b7ebde",
+          // 300: "#94e2cd",
+          // 400: "#70d8bd",
+          // 500: "#4cceac",
+          // 600: "#3da58a",
+          // 700: "#2e7c67",
+          // 800: "#1e5245",
+          // 900: "#0f2922",
+          // changes
+          // 100: "#1a1a1a",
+          // 200: "#1c1c1c",
+          // 300: "#1f1f1f",
+          // 400: "#222222",
+          // 500: "#252525",
+          // 600: "#282828",
+          // 700: "#2c2c2c",
+          // 800: "#303030",
+          // 900: "#333333",
+          // changes 1
+          100: "#f0f0f0", // Brighter gray
+          200: "#e0e0e0", // Brighter gray
+          300: "#d1d1d1", // Brighter gray
+          400: "#c1c1c1", // Brighter gray
+          500: "#b2b2b2", // Brighter gray
+          600: "#a2a2a2", // Brighter gray
+          700: "#939393", // Brighter gray
+          800: "#838383", // Brighter gray
+          900: "#747474", // Brighter gray
         },
         redAccent: {
-          100: "#f8dcdb",
-          200: "#f1b9b7",
-          300: "#e99592",
-          400: "#e2726e",
-          500: "#db4f4a",
-          600: "#af3f3b",
-          700: "#832f2c",
-          800: "#58201e",
-          900: "#2c100f",
+          // original
+          // 100: "#f8dcdb",
+          // 200: "#f1b9b7",
+          // 300: "#e99592",
+          // 400: "#e2726e",
+          // 500: "#db4f4a",
+          // 600: "#af3f3b",
+          // 700: "#832f2c",
+          // 800: "#58201e",
+          // 900: "#2c100f",
+          // changes
+          // 100: "yellow",
+          // 200: "yellow",
+          // 300: "yellow",
+          // 400: "yellow",
+          // 500: "yellow",
+          // 600: "yellow",
+          // 700: "yellow",
+          // 800: "yellow",
+          // 900: "yellow",
+          // changes 1
+          100: "#b0b1b5", // Darker gray
+          200: "#81848b", // Darker gray
+          300: "#545662", // Darker gray
+          400: "#3a3a3a", // Darker gray
+          500: "#1f1f1f", // Darker gray
+          600: "#151515", // Darker gray
+          700: "#0b0b0b", // Darker gray
+          800: "#000000", // Darker gray
+          900: "#000000", // Darker gray
         },
         blueAccent: {
-          100: "#e1e2fe",
-          200: "#c3c6fd",
-          300: "#a4a9fc",
-          400: "#868dfb",
-          500: "#6870fa",
-          600: "#535ac8",
-          700: "#3e4396",
-          800: "#2a2d64",
-          900: "#151632",
+          // original
+          // 100: "#e1e2fe",
+          // 200: "#c3c6fd",
+          // 300: "#a4a9fc",
+          // 400: "#868dfb",
+          // 500: "#6870fa",
+          // 600: "#535ac8",
+          // 700: "#3e4396",
+          // 800: "#2a2d64",
+          // 900: "#151632",
+          // changes 1
+          // 100: "#4d0000", // Adjusted color
+          // 200: "#990000", // Adjusted color
+          // 300: "#e60000", // Adjusted color
+          // 400: "#cc0000", // Adjusted color
+          // 500: "#ff0000", // Adjusted color
+          // 600: "#ff3333", // Adjusted color
+          // 700: "#ff6666", // Adjusted color
+          // 800: "#ff9999", // Adjusted color
+          // 900: "#ffcccc", // Adjusted color
+          // changes 2
+          // 100: "#330000", // Darker red
+          // 200: "#660000", // Darker red
+          // 300: "#990000", // Darker red
+          // 400: "#800000", // Darker red
+          // 500: "#cc0000", // Darker red
+          // 600: "#bf0000", // Darker red
+          // 700: "#b20000", // Darker red
+          // 800: "#a50000", // Darker red
+          // 900: "#990000", // Darker red
+          // changes 3
+          100: "#d2b48c", // Light brown
+          200: "#c2a172", // Light brown
+          300: "#b2925a", // Light brown
+          400: "#a28442", // Medium brown
+          500: "#916f30", // Medium brown
+          600: "#7e5d20", // Medium brown
+          700: "#6b4c10", // Dark brown
+          800: "#593c00", // Dark brown
+          900: "#472b00", // Dark brown
         },
       }
     : {
@@ -130,18 +236,32 @@ export const themeSettings = (mode) => {
         ? {
             // palette values for dark mode
             primary: {
+              // original
               main: colors.primary[500],
+              // changes
+              // main: colors.primary[100],
             },
             secondary: {
+              // original
               main: colors.greenAccent[500],
+              // changes
+              // main: colors.greenAccent[900],
             },
             neutral: {
+              // original
               dark: colors.grey[700],
+              // dark: colors.grey[900],
+              // original
               main: colors.grey[500],
+              // main: colors.grey[100],
+              // original
               light: colors.grey[100],
             },
             background: {
-              default: colors.primary[500],
+              // original
+              // default: colors.primary[500],
+              // changes
+              default: colors.primary[600],
             },
           }
         : {

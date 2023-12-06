@@ -3,31 +3,54 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
-import { useCallback} from "react";
-
+import { useCallback } from "react";
+import { db } from "../../config";
+import { set, ref } from "firebase/database";
+import { uid } from "uid";
 const FAQ = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
-
-  const handleFormSubmit1 = useCallback ((values) => { 
-    const {companyName, agentFullName, agentNumber, city, email, address, totalCost, arrivalDate, payingInvoiceDate} = values ;
-    
-    const options = {
-      method:'POST',
-      headers:{
-        'Content-type':'aplication/json'
-      },
-
-      body: JSON.stringify({
-        companyName, agentFullName, agentNumber, city, email, address, totalCost, arrivalDate, payingInvoiceDate
-    })
-  } 
-  fetch('https://tgrp-38a89-default-rtdb.firebaseio.com/sales.json',options)
-  },[]);
-
+  const initialValues = {
+    companyName: "",
+    agentFullName: "",
+    agentNumber: "",
+    city: "",
+    email: "",
+    address: "",
+    totalCost: "",
+    arrivalDate: "",
+    payingInvoiceDate: "",
+  };
+  const handleFormSubmit1 = useCallback((values, actions) => {
+    const {
+      companyName,
+      agentFullName,
+      agentNumber,
+      city,
+      email,
+      address,
+      totalCost,
+      arrivalDate,
+      payingInvoiceDate,
+    } = values;
+    actions.setSubmitting(false);
+    actions.resetForm();
+    const id = uid();
+    set(ref(db, `data/transaction/${id}`), {
+      companyName,
+      agentFullName,
+      agentNumber,
+      city,
+      email,
+      address,
+      totalCost,
+      arrivalDate,
+      payingInvoiceDate,
+    });
+  }, []);
 
   return (
     <Box m="20px">
-      <Header title="CREATE USER" subtitle="Create a New User Profile" />
+      <Header title="CREATE INVOICE" subtitle="Create a New Invoice" />
 
       <Formik
         onSubmit={handleFormSubmit1}
@@ -75,9 +98,10 @@ const FAQ = () => {
                 name="agentFullName"
                 error={!!touched.agentFullName && !!errors.agentFullName}
                 helperText={touched.agentFullName && errors.agentFullName}
-                sx={{ gridColumn: "span 2" }}/>
-                
-                <TextField
+                sx={{ gridColumn: "span 2" }}
+              />
+
+              <TextField
                 fullWidth
                 variant="filled"
                 type="text"
@@ -114,9 +138,9 @@ const FAQ = () => {
                 name="email"
                 error={!!touched.email && !!errors.email}
                 helperText={touched.email && errors.email}
-                sx={{ gridColumn: "span 4" }}    
+                sx={{ gridColumn: "span 4" }}
               />
-               
+
               <TextField
                 fullWidth
                 variant="filled"
@@ -133,7 +157,7 @@ const FAQ = () => {
               <TextField
                 fullWidth
                 variant="filled"
-                type="number"
+                type="text"
                 label="Products Delivered Total Cost"
                 onBlur={handleBlur}
                 onChange={handleChange}
@@ -143,7 +167,7 @@ const FAQ = () => {
                 helperText={touched.totalCost && errors.totalCost}
                 sx={{ gridColumn: "span 1" }}
               />
-             <TextField
+              <TextField
                 fullWidth
                 variant="filled"
                 type="Text"
@@ -154,9 +178,9 @@ const FAQ = () => {
                 name="arrivalDate"
                 error={!!touched.arrivalDate && !!errors.arrivalDate}
                 helperText={touched.arrivalDate && errors.arrivalDate}
-                sx={{ gridColumn: "span 1"}}
-                />
-                <TextField
+                sx={{ gridColumn: "span 1" }}
+              />
+              <TextField
                 fullWidth
                 variant="filled"
                 type="Text"
@@ -165,11 +189,14 @@ const FAQ = () => {
                 onChange={handleChange}
                 value={values.payingInvoiceDate}
                 name="payingInvoiceDate"
-                error={!!touched.payingInvoiceDate && !!errors.payingInvoiceDate}
-                helperText={touched.payingInvoiceDate && errors.payingInvoiceDate}
-                sx={{ gridColumn: "span 1.5"}}
-                />
-              
+                error={
+                  !!touched.payingInvoiceDate && !!errors.payingInvoiceDate
+                }
+                helperText={
+                  touched.payingInvoiceDate && errors.payingInvoiceDate
+                }
+                sx={{ gridColumn: "span 1.5" }}
+              />
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
               <Button type="submit" color="secondary" variant="contained">
@@ -183,32 +210,30 @@ const FAQ = () => {
   );
 };
 
-const phoneRegExp = /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
+const phoneRegExp =
+  /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
 const dateRegExp = /^\d{2}\/\d{2}\/\d{4}$/;
-
-
+const costRegExp = /^\d+$/;
 
 const checkoutSchema = yup.object().shape({
   companyName: yup.string().required("required"),
-  agentfullName: yup.string().required("required"),
-  city:yup.string().required("required"),
+  agentFullName: yup.string().required("required"),
+  agentNumber: yup
+    .string()
+    .matches(phoneRegExp, "Phone number is not valid")
+    .required("required"),
+  city: yup.string().required("required"),
   email: yup.string().email("invalid email").required("required"),
-  agentNumber: yup.string().matches(phoneRegExp, "Phone number is not valid").required("required"),
   address: yup.string().required("required"),
-  totalCost:yup.string().required("required"),
-  arrivalDate:yup.string().matches(dateRegExp,"wrong date format !").required("required"),
-  payingInvoiceDate:yup.string().matches(dateRegExp,"wrong date format !").required("required"),
+  totalCost: yup.string().matches(costRegExp, "Not valid").required("required"),
+  arrivalDate: yup
+    .string()
+    .matches(dateRegExp, "wrong date format !")
+    .required("required"),
+  payingInvoiceDate: yup
+    .string()
+    .matches(dateRegExp, "wrong date format !")
+    .required("required"),
 });
-const initialValues = {
-  companyName: "",
-  agentFullName: "",
-  city:"",
-  email: "",
-  contact: "",
-  address: "",
-  totalCost:"",
-  arrivalDate:"",
-  payingInvoiceDate:"",
-};
 
 export default FAQ;

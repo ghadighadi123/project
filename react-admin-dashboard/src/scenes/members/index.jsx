@@ -4,43 +4,49 @@ import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
 import { useCallback } from "react";
-import { db } from "../../config";
-import { set, ref } from "firebase/database";
-import { uid } from "uid";
-const Form = () => {
-  const initialValues = {
-    firstName: "",
-    lastName: "",
-    city: "",
-    zipcode: "",
-    email: "",
-    contact: "",
-    address: "",
-    age: "",
-  };
+
+const Members = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
-  const handleFormSubmit = useCallback((values, actions) => {
+  const handleFormSubmit = useCallback((values) => {
+    console.log("Submitting form with values:", values);
+
     const { firstName, lastName, city, zipcode, email, contact, address, age } =
       values;
-    actions.setSubmitting(false);
-    actions.resetForm();
-    const id = uid();
-    set(ref(db, `data/contact/${id}`), {
-      firstName,
-      lastName,
-      city,
-      zipcode,
-      email,
-      contact,
-      address,
-      age,
-    });
+
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({
+        firstName,
+        lastName,
+        city,
+        zipcode,
+        email,
+        contact,
+        address,
+        age,
+      }),
+    };
+
+    fetch(
+      "https://ghadiproject-default-rtdb.firebaseio.com/Data/userData.json",
+      options
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Response from Firebase:", data);
+      })
+      .catch((error) => {
+        console.error("Error submitting form:", error);
+      });
   }, []);
 
   return (
     <Box m="20px">
-      <Header title="ADD CONTACT" subtitle="Add a New Contact Profile" />
+      <Header title="ADD MEMBER" subtitle="Add a New Team Member Profile" />
 
       <Formik
         onSubmit={handleFormSubmit}
@@ -68,26 +74,26 @@ const Form = () => {
                 fullWidth
                 variant="filled"
                 type="text"
-                label="First Name"
+                label=" Name"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.firstName}
-                name="firstName"
-                error={!!touched.firstName && !!errors.firstName}
-                helperText={touched.firstName && errors.firstName}
+                value={values.Name}
+                name="name"
+                error={!!touched.Name && !!errors.Name}
+                helperText={touched.Name && errors.Name}
                 sx={{ gridColumn: "span 2" }}
               />
               <TextField
                 fullWidth
                 variant="filled"
                 type="text"
-                label="Last Name"
+                label="Start Date"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.lastName}
-                name="lastName"
-                error={!!touched.lastName && !!errors.lastName}
-                helperText={touched.lastName && errors.lastName}
+                value={values.startdate}
+                name="startdate"
+                error={!!touched.startdate && !!errors.startdate}
+                helperText={touched.startdate && errors.startdate}
                 sx={{ gridColumn: "span 2" }}
               />
 
@@ -108,28 +114,16 @@ const Form = () => {
                 fullWidth
                 variant="filled"
                 type="text"
-                label="City"
+                label="Phone Number"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.city}
-                name="city"
-                error={!!touched.city && !!errors.city}
-                helperText={touched.city && errors.city}
+                value={values.Phone}
+                name="Phone"
+                error={!!touched.Phone && !!errors.Phone}
+                helperText={touched.Phone && errors.Phone}
                 sx={{ gridColumn: "span 2" }}
               />
-              <TextField
-                fullWidth
-                variant="filled"
-                type="text"
-                label="Zip code"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.zipcode}
-                name="zipcode"
-                error={!!touched.zipcode && !!errors.zipcode}
-                helperText={touched.zipcode && errors.zipcode}
-                sx={{ gridColumn: "span 4" }}
-              />
+
               <TextField
                 fullWidth
                 variant="filled"
@@ -141,39 +135,38 @@ const Form = () => {
                 name="email"
                 error={!!touched.email && !!errors.email}
                 helperText={touched.email && errors.email}
-                sx={{ gridColumn: "span 4" }}
+                sx={{ gridColumn: "span 2" }}
               />
               <TextField
                 fullWidth
                 variant="filled"
                 type="text"
-                label="Contact Number"
+                label="Gender"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.contact}
-                name="contact"
-                error={!!touched.contact && !!errors.contact}
-                helperText={touched.contact && errors.contact}
-                sx={{ gridColumn: "span 4" }}
+                value={values.gender}
+                name="gender"
+                error={!!touched.gender && !!errors.gender}
+                helperText={touched.gender && errors.gender}
+                sx={{ gridColumn: "span 2" }}
               />
-
               <TextField
                 fullWidth
                 variant="filled"
                 type="text"
-                label="Address"
+                label="Position"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.address}
-                name="address"
-                error={!!touched.address && !!errors.address}
-                helperText={touched.address && errors.address}
+                value={values.position}
+                name="position"
+                error={!!touched.position && !!errors.position}
+                helperText={touched.position && errors.position}
                 sx={{ gridColumn: "span 4" }}
               />
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
               <Button type="submit" color="secondary" variant="contained">
-                Create New Contact
+                Add new Member
               </Button>
             </Box>
           </form>
@@ -186,23 +179,31 @@ const Form = () => {
 const phoneRegExp =
   /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
 const ageRegExp = /^(1[8-9]|[2-9][0-9]|100)$/;
-const zipCodeRegExp = /^\d{5}(?:-\d{4})?$/;
+const dateRegExp = /^(0[1-9]|[1-2][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
 
 const checkoutSchema = yup.object().shape({
-  firstName: yup.string().required("required"),
-  lastName: yup.string().required("required"),
-  city: yup.string().required("required"),
-  zipcode: yup
+  name: yup.string().required("required"),
+  startdate: yup
     .string()
-    .matches(zipCodeRegExp, "invalid format")
+    .matches(dateRegExp, "wrong date format !")
     .required("required"),
+  gender: yup.string().required("required"),
   email: yup.string().email("invalid email").required("required"),
-  contact: yup
+  Phone: yup
     .string()
     .matches(phoneRegExp, "Phone number is not valid")
     .required("required"),
-  address: yup.string().required("required"),
   age: yup.string().matches(ageRegExp, "invalid age").required("required"),
+  position: yup.string().required("required"),
 });
+const initialValues = {
+  name: "",
+  startdate: "",
+  age: "",
+  Phone: "",
+  email: "",
+  gender: "",
+  position: "",
+};
 
-export default Form;
+export default Members;
