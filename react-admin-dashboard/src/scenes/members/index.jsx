@@ -3,53 +3,49 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
+import {MenuItem } from '@mui/material';
+import axios from "axios";
+import { response } from "express";
 
 const Members = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
-  const handleFormSubmit = useCallback((values) => {
-    console.log("Submitting form with values:", values);
-
-    const { firstName, lastName, city, zipcode, email, contact, address, age } =
-      values;
-
-    const options = {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify({
-        firstName,
-        lastName,
-        city,
-        zipcode,
-        email,
-        contact,
-        address,
-        age,
-      }),
-    };
-
-    fetch(
-      "https://ghadiproject-default-rtdb.firebaseio.com/Data/userData.json",
-      options
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Response from Firebase:", data);
+  const [Values, setValues] = useState({
+    fullName: "",
+    startdate: "",
+    age: "",
+    phone: "",
+    email: "",
+    gender: "",
+    department: "",
+    accesslevel: "",
+  });
+ 
+  const handleFormSubmit1 = useCallback (()=>{
+    axios.post("http://localhost:8801/employees", Values)
+    .then(
+      response => {console.log(response)
+      setValues({
+        fullName: "",
+        startdate: "",
+        age: "",
+        phone: "",
+        email: "",
+        gender: "",
+        department: "",
+        accesslevel: "",})
       })
-      .catch((error) => {
-        console.error("Error submitting form:", error);
-      });
-  }, []);
+      .catch(err => console.log(err));
 
+  },[Values])
+  
   return (
     <Box m="20px">
       <Header title="ADD MEMBER" subtitle="Add a New Team Member Profile" />
 
       <Formik
-        onSubmit={handleFormSubmit}
+        onSubmit={handleFormSubmit1}
         initialValues={initialValues}
         validationSchema={checkoutSchema}
       >
@@ -74,20 +70,20 @@ const Members = () => {
                 fullWidth
                 variant="filled"
                 type="text"
-                label=" Name"
+                label="Full Name"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.Name}
-                name="name"
-                error={!!touched.Name && !!errors.Name}
-                helperText={touched.Name && errors.Name}
+                value={values.fullName}
+                name="fullName"
+                error={!!touched.fullName && !!errors.fullName}
+                helperText={touched.fullName && errors.fullName}
                 sx={{ gridColumn: "span 2" }}
               />
               <TextField
                 fullWidth
                 variant="filled"
                 type="text"
-                label="Start Date"
+                label="Start Date (dd/mm/yyyy)"
                 onBlur={handleBlur}
                 onChange={handleChange}
                 value={values.startdate}
@@ -117,10 +113,10 @@ const Members = () => {
                 label="Phone Number"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.Phone}
-                name="Phone"
-                error={!!touched.Phone && !!errors.Phone}
-                helperText={touched.Phone && errors.Phone}
+                value={values.phone}
+                name="phone"
+                error={!!touched.phone && !!errors.phone}
+                helperText={touched.phone && errors.phone}
                 sx={{ gridColumn: "span 2" }}
               />
 
@@ -138,31 +134,92 @@ const Members = () => {
                 sx={{ gridColumn: "span 2" }}
               />
               <TextField
-                fullWidth
-                variant="filled"
-                type="text"
-                label="Gender"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.gender}
-                name="gender"
-                error={!!touched.gender && !!errors.gender}
-                helperText={touched.gender && errors.gender}
-                sx={{ gridColumn: "span 2" }}
-              />
+              fullWidth
+              variant="filled"
+              label="Gender"
+              select
+              onBlur={handleBlur}
+              onChange={handleChange}
+              value={values.gender}
+              name="gender"
+              error={!!touched.gender && !!errors.gender}
+              helperText={touched.gender && errors.gender}
+              sx={{ gridColumn: "span 2" }}
+              SelectProps={{
+                MenuProps: {
+                  style: { maxHeight: '200px', fontSize: 'small' } // Adjust as needed
+                }
+              }}
+              >
+              <MenuItem value="" disabled>Select Department</MenuItem>
+              <MenuItem value="Male">Male</MenuItem>
+              <MenuItem value="Female">Female</MenuItem>
+            </TextField>
               <TextField
-                fullWidth
-                variant="filled"
-                type="text"
-                label="Position"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.position}
-                name="position"
-                error={!!touched.position && !!errors.position}
-                helperText={touched.position && errors.position}
-                sx={{ gridColumn: "span 4" }}
-              />
+              fullWidth
+              variant="filled"
+              label="Department"
+              select
+              onBlur={handleBlur}
+              onChange={handleChange}
+              value={values.department}
+              name="department"
+              error={!!touched.department && !!errors.department}
+              helperText={touched.department && errors.department}
+              sx={{ gridColumn: "span 2" }}
+              SelectProps={{
+                MenuProps: {
+                  style: { maxHeight: '300px', fontSize: 'small' } // Adjust as needed
+                }
+              }}
+              >
+              <MenuItem value="" disabled>Select Department</MenuItem>
+              <MenuItem value="HR Department">HR Department</MenuItem>
+              <MenuItem value="Software Development Department">Software Development Department</MenuItem>
+              <MenuItem value="Marketing Department">Marketing Department</MenuItem>
+              <MenuItem value="Sales Department">Sales Department</MenuItem>
+              <MenuItem value="Customer Service/Support Department">Customer Service/Support Department</MenuItem>
+              <MenuItem value="Operations/Production Department">Operations/Production Department</MenuItem>
+              <MenuItem value="Research and Development (R&D) Department">Research and Development (R&D) Department</MenuItem>
+              <MenuItem value="Legal Department">Legal Department</MenuItem>
+              <MenuItem value="Administration Department">Administration Department</MenuItem>
+              <MenuItem value="Supply Chain/Logistics Department">Supply Chain/Logistics Department</MenuItem>
+              <MenuItem value="Quality Assurance/Control Department">Quality Assurance/Control Department</MenuItem>
+              <MenuItem value="Project Management Department">Project Management Department</MenuItem>
+              <MenuItem value="Public Relations (PR) Department">Public Relations (PR) Department</MenuItem>
+              <MenuItem value="Information Technology (IT) Department">Information Technology (IT) Department</MenuItem>
+              <MenuItem value="Training and Development Department">Training and Development Department</MenuItem>
+              <MenuItem value="Facilities Management Department">Facilities Management Department</MenuItem>
+              <MenuItem value="Health and Safety Department">Health and Safety Department</MenuItem>
+              <MenuItem value="Corporate Communications Department">Corporate Communications Department</MenuItem>
+              <MenuItem value="Environmental, Social, and Governance (ESG) Department">Environmental, Social, and Governance (ESG) Department</MenuItem>
+              <MenuItem value="IT Security/Cybersecurity Department">IT Security/Cybersecurity Department</MenuItem>
+              <MenuItem value="Finance Department">Finance Department</MenuItem>
+            </TextField>
+            
+            <TextField
+              fullWidth
+              variant="filled"
+              label="Access Level"
+              select
+              onBlur={handleBlur}
+              onChange={handleChange}
+              value={values.accesslevel}
+              name="accesslevel"
+              error={!!touched.accesslevel && !!errors.accesslevel}
+              helperText={touched.accesslevel && errors.accesslevel}
+              sx={{ gridColumn: "span 2" }}
+              SelectProps={{
+                MenuProps: {
+                  style: { maxHeight: '200px', fontSize: 'small' } // Adjust as needed
+                }
+              }}
+              >
+              <MenuItem value="" disabled>Select Access Level</MenuItem>
+              <MenuItem value="admin">admin</MenuItem>
+              <MenuItem value="manager">manager</MenuItem>
+              <MenuItem value="employee">employee</MenuItem>
+            </TextField>
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
               <Button type="submit" color="secondary" variant="contained">
@@ -179,31 +236,33 @@ const Members = () => {
 const phoneRegExp =
   /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
 const ageRegExp = /^(1[8-9]|[2-9][0-9]|100)$/;
-const dateRegExp = /^(0[1-9]|[1-2][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
+const dateRegExp = /^(0[1-9]|[1-2][0-9]|3[01])\/(0[1-9]|1[0-2])\/(202[1-9]|20[3-9][0-9]|2100)$/;
 
 const checkoutSchema = yup.object().shape({
-  name: yup.string().required("required"),
-  startdate: yup
-    .string()
-    .matches(dateRegExp, "wrong date format !")
-    .required("required"),
+  fullName: yup.string().required("required"),
+  // startdate: yup
+  //   .string()
+  //   .matches(dateRegExp, "wrong date format !")
+  //   .required("required"),
   gender: yup.string().required("required"),
   email: yup.string().email("invalid email").required("required"),
-  Phone: yup
+  phone: yup
     .string()
     .matches(phoneRegExp, "Phone number is not valid")
     .required("required"),
   age: yup.string().matches(ageRegExp, "invalid age").required("required"),
-  position: yup.string().required("required"),
+  department:yup.string().required("required"),
+  accesslevel:yup.string().required("required"),
 });
 const initialValues = {
-  name: "",
+  fullName: "",
   startdate: "",
   age: "",
-  Phone: "",
+  phone: "",
   email: "",
   gender: "",
-  position: "",
+  department: "",
+  accesslevel: "",
 };
 
 export default Members;
