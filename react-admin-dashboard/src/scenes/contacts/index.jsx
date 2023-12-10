@@ -4,49 +4,84 @@ import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import { useTheme } from "@mui/material";
 import React, { useState, useEffect } from 'react';
+import { ref, onValue } from 'firebase/database';
+import { db } from "../../config";
+import { off } from 'firebase/database';
+
+
 
 const Contacts = () => {
 
-  const [userData, setUserData] = useState(null);
+  // const [userData, setUserData] = useState(null);
+
+  // useEffect(() => {
+  //   // Fetch data when the component mounts
+  //   fetch('https://tgrp-38a89-default-rtdb.firebaseio.com/UserData.json')
+  //     .then(response => {
+  //       if (!response.ok) {
+  //         throw new Error(`Network response was not ok, status: ${response.status}`);
+  //       }
+  //       return response.json();
+  //     })
+  //     .then(data => {
+  //       // Set the retrieved data to state
+  //       setUserData(data);
+  //     })
+  //     .catch(error => {
+  //       console.error('Fetch error:', error);
+  //     });
+  // }, []); // Empty dependency array means this effect runs once when the component mounts
+
+  // const rows = userData
+  //   ? Object.keys(userData).map((id) => ({ id, ...userData[id] }))
+  //   : [];
+
+  const [contacts, setContacts] = useState([]);
 
   useEffect(() => {
-    // Fetch data when the component mounts
-    fetch('https://tgrp-38a89-default-rtdb.firebaseio.com/UserData.json')
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`Network response was not ok, status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then(data => {
-        // Set the retrieved data to state
-        setUserData(data);
-      })
-      .catch(error => {
-        console.error('Fetch error:', error);
-      });
-  }, []); // Empty dependency array means this effect runs once when the component mounts
+    // Get a reference to the 'data/contact/' path
+    const contactRef = ref(db, 'data/contact/');
 
-  const rows = userData
-    ? Object.keys(userData).map((id) => ({ id, ...userData[id] }))
-    : [];
+    // Use 'onValue' to listen for changes in the data
+    onValue(contactRef, (snapshot) => {
+      const contactData = snapshot.val();
+      if (contactData) {
+        // Convert the object of objects into an array
+        const contactArray = Object.entries(contactData).map(([id, data]) => ({
+          id,
+          ...data,
+        }));
+        setContacts(contactArray);
+      }
+    });
+
+    // Cleanup the listener when the component unmounts
+    return () => {
+      off(contactRef);
+    };
+  }, []); // Empty dependency array to run the effect only once
+
+ const rows = contacts
+    ? Object.keys(contacts).map((id) => ({ id, ...contacts[id] }))
+    : []; 
+
 
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
   const columns = [
-    { field: "id", headerName: "Identifier", flex: 0.5 },
+    { field: "id", headerName: "Identifier", flex: 1 },
     
     {
       field: "firstName",
       headerName: "First Name",
-      flex: 1,
+      flex: 0.75,
       cellClassName: "name-column--cell",
     },
     {
       field: "lastName",
       headerName: "Last Name",
-      flex: 1,
+      flex: 0.75,
       cellClassName: "name-column--cell",
     },
     {
@@ -55,31 +90,37 @@ const Contacts = () => {
       type: "number",
       headerAlign: "left",
       align: "left",
+      flex:0.3,
     },
     {
       field: "contact",
-      headerName: "Phone Number",
-      flex: 1,
+      headerName: "Phone",
+      flex: 0.5,
     },
     {
       field: "email",
       headerName: "Email",
-      flex: 1,
+      flex: 1.25,
     },
     {
       field: "address",
       headerName: "Address",
-      flex: 1,
+      flex: 0.75,
     },
     {
       field: "city",
       headerName: "City",
-      flex: 1,
+      flex: 0.75,
     },
     {
       field: "zipcode",
       headerName: "Zip Code",
-      flex: 1,
+      flex: 0.5,
+    },
+    {
+      field: "description",
+      headerName: "brief description",
+      flex: 1.5,
     },
   ];
 

@@ -7,7 +7,7 @@ import { tokens } from "../../theme";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
 import ContactsOutlinedIcon from "@mui/icons-material/ContactsOutlined";
-import ReceiptOutlinedIcon from "@mui/icons-material/ReceiptOutlined";
+// import ReceiptOutlinedIcon from "@mui/icons-material/ReceiptOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
 import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
@@ -61,10 +61,10 @@ const Sidebar = () => {
             padding: "5px 35px 5px 20px !important",
           },
           "& .pro-inner-item:hover": {
-            color: "#868dfb !important",
+            color: "#292929 !important",
           },
           "& .pro-menu-item.active": {
-            color: "#6870fa !important",
+            color: "#292929 !important",
           },
         }}
       >
@@ -86,8 +86,8 @@ const Sidebar = () => {
                   alignItems="center"
                   ml="15px"
                 >
-                  <Typography variant="h3" color={colors.grey[100]}>
-                    ADMINIS
+                  <Typography variant="h1" color={colors.grey[100]}>
+                    HRs
                   </Typography>
                   <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
                     <MenuOutlinedIcon />
@@ -99,13 +99,13 @@ const Sidebar = () => {
             {!isCollapsed && (
               <Box mb="25px">
                 <Box display="flex" justifyContent="center" alignItems="center">
-                  <img
+                  {/* <img
                     alt="profile-user"
                     width="100px"
                     height="100px"
                     src={`../../assets/user.png`}
                     style={{ cursor: "pointer", borderRadius: "50%" }}
-                  />
+                  /> */}
                 </Box>
                 <Box textAlign="center">
                   <Typography
@@ -114,10 +114,10 @@ const Sidebar = () => {
                     fontWeight="bold"
                     sx={{ m: "10px 0 0 0" }}
                   >
-                    Ed Roh
+                    GTR
                   </Typography>
                   <Typography variant="h5" color={colors.greenAccent[500]}>
-                    VP Fancy Admin
+                    HRs SOFTWARE
                   </Typography>
                 </Box>
               </Box>
@@ -139,13 +139,6 @@ const Sidebar = () => {
                 Data
               </Typography>
               <Item
-                title="Team Paylip"
-                to="/teampaylip"
-                icon={<PaymentsIcon />}
-                selected={selected}
-                setSelected={setSelected}
-              />
-              <Item
                 title="Manage Team"
                 to="/team"
                 icon={<PeopleOutlinedIcon />}
@@ -160,9 +153,9 @@ const Sidebar = () => {
                 setSelected={setSelected}
               />
               <Item
-                title="Invoices Data"
+                title="Team PayLip"
                 to="/invoices"
-                icon={<ReceiptOutlinedIcon />}
+                icon={<PaymentsIcon />}
                 selected={selected}
                 setSelected={setSelected}
               />
@@ -181,14 +174,14 @@ const Sidebar = () => {
                 setSelected={setSelected}
               />
               <Item
-                title="Invoices Form"
+                title="Members Data"
                 to="/faq"
                 icon={<AttachMoneyIcon />}
                 selected={selected}
                 setSelected={setSelected}
               />
               <Item
-                title="Members form"
+                title="Add Member"
                 to="/members"
                 icon={<BadgeIcon />}
                 selected={selected}
