@@ -35,18 +35,19 @@ const Contacts = () => {
   const colors = tokens(theme.palette.mode);
 
   const columns = [
-    { field: "id", headerName: "Identifier", flex: 0.5 },
+    { field: "id", headerName: "Identifier", flex: 1 },
+
     
     {
       field: "firstName",
       headerName: "First Name",
-      flex: 1,
+      flex: 0.75,
       cellClassName: "name-column--cell",
     },
     {
       field: "lastName",
       headerName: "Last Name",
-      flex: 1,
+      flex: 0.75,
       cellClassName: "name-column--cell",
     },
     {
@@ -55,31 +56,37 @@ const Contacts = () => {
       type: "number",
       headerAlign: "left",
       align: "left",
+      flex:0.3,
     },
     {
       field: "contact",
-      headerName: "Phone Number",
-      flex: 1,
+      headerName: "Phone",
+      flex: 0.5,
     },
     {
       field: "email",
       headerName: "Email",
-      flex: 1,
+      flex: 1.25,
     },
     {
       field: "address",
       headerName: "Address",
-      flex: 1,
+      flex: 0.75,
     },
     {
       field: "city",
       headerName: "City",
-      flex: 1,
+      flex: 0.75,
     },
     {
       field: "zipcode",
       headerName: "Zip Code",
-      flex: 1,
+      flex: 0.5,
+    },
+    {
+      field: "description",
+      headerName: "brief description",
+      flex: 1.5,
     },
   ];
 
