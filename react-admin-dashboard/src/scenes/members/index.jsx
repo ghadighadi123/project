@@ -3,23 +3,29 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
-import { useCallback, useState } from "react";
-import { DateField } from "@mui/x-date-pickers/DateField";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { useCallback, useRef } from "react";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import dayjs from "dayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import "./style.css";
+import dayjs from "dayjs";
 const Members = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
+  const today = new Date();
+  const minDate = `${today.getFullYear()}-${
+    today.getMonth() + 1
+  }-${today.getDate()}`;
+  const startDate = useRef(dayjs(minDate));
+
   const handleFormSubmit = useCallback((values, actions) => {
-    const { name, city, zipcode, email, contact, address, age, startdate } =
-      values;
-    // comment
-    // comment 1
-    // const test = startdate.split("").reverse().join("");
-    // console.log(test);
+    const { name, city, zipcode, email, contact, address, age } = values;
+    const newDate = `${startDate.current.year()}-${
+      startDate.current.month() + 1
+    }-${startDate.current.date()}`;
+    if (Date.parse(newDate) <= Date.parse(today)) return;
     actions.setSubmitting(false);
     actions.resetForm();
+    startDate.current = dayjs(minDate);
     // const options = {
     //   method: "POST",
     //   headers: {
@@ -89,20 +95,21 @@ const Members = () => {
                 helperText={touched.name && errors.name}
                 sx={{ gridColumn: "span 2" }}
               />
-              <TextField
-                fullWidth
-                variant="filled"
-                type="text"
-                label="Start Date DD-MM-YYYY"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.startdate}
-                name="startdate"
-                error={!!touched.startdate && !!errors.startdate}
-                helperText={touched.startdate && errors.startdate}
-                sx={{ gridColumn: "span 2" }}
-              />
-
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DatePicker
+                  className="style"
+                  sx={{ gridColumn: "span 2" }}
+                  minDate={dayjs(minDate)}
+                  label="Start Date"
+                  value={startDate.current}
+                  onChange={(newDate) => {
+                    const change = `${newDate.year()}-${
+                      newDate.month() + 1
+                    }-${newDate.date()}`;
+                    startDate.current = dayjs(change);
+                  }}
+                />
+              </LocalizationProvider>
               <TextField
                 fullWidth
                 variant="filled"
@@ -185,10 +192,9 @@ const Members = () => {
 const phoneRegExp =
   /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
 const ageRegExp = /^(1[8-9]|[2-9][0-9]|100)$/;
-// const dateRegExp =
+
 const checkoutSchema = yup.object().shape({
   name: yup.string().required("required"),
-  startdate: yup.date().required("required"),
   gender: yup.string().required("required"),
   email: yup.string().email("invalid email").required("required"),
   Phone: yup
@@ -205,7 +211,6 @@ const initialValues = {
   email: "",
   gender: "",
   position: "",
-  startdate: "",
 };
 
 export default Members;

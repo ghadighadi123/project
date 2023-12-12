@@ -17,6 +17,7 @@ export const tokens = (mode) => ({
           700: "#3d3d3d",
           800: "#292929",
           900: "#141414",
+
           // changes
           // 100: "#4d0000", // Adjusted color
           // 200: "#990000", // Adjusted color
@@ -100,18 +101,16 @@ export const tokens = (mode) => ({
           // 700: "#0b0b0b", // Darker gray
           // 800: "#004080", // Lighter dark blue for dark mode
           // 900: "#004080", // Lighter dark blue for dark mode
-          
+
           100: "#f0ebf5",
-    200: "#d8d2e9",
-    300: "#c0b9de",
-    400: "#a8a1d3",
-    500: "#9088c8",
-    600: "#796fae",
-    700: "#615695",
-    800: "#494d7a",
-    900: "#31345f",
-
-
+          200: "#d8d2e9",
+          300: "#c0b9de",
+          400: "#a8a1d3",
+          500: "#9088c8",
+          600: "#796fae",
+          700: "#615695",
+          800: "#494d7a",
+          900: "#31345f",
         },
         redAccent: {
           // original
@@ -153,8 +152,6 @@ export const tokens = (mode) => ({
           700: "#002137",
           800: "#001825",
           900: "#000d13",
-
-
         },
         blueAccent: {
           // original
@@ -197,18 +194,17 @@ export const tokens = (mode) => ({
           // 700: "#6b4c10", // Dark brown
           // 800: "#593c00", // Dark brown
           // 900: "#472b00", // Dark brown
-            //change 4
-            100: "#f5f5f5", // Lighter gray
-            200: "#e0e0e0", // Light gray
-            300: "#cccccc", // Light gray
-            400: "#b3b3b3", // Medium light gray
-            500: "#999999", // Medium gray
-            600: "#808080", // Medium gray
-            700: "#666666", // Medium dark gray
-            800: "#4d4d4d", // Dark gray
-            900: "#333333", // Darker gray
-          
-          },
+          //change 4
+          100: "#f5f5f5", // Lighter gray
+          200: "#e0e0e0", // Light gray
+          300: "#cccccc", // Light gray
+          400: "#b3b3b3", // Medium light gray
+          500: "#999999", // Medium gray
+          600: "#808080", // Medium gray
+          700: "#666666", // Medium dark gray
+          800: "#4d4d4d", // Dark gray
+          900: "#333333", // Darker gray
+        },
       }
     : {
         grey: {
