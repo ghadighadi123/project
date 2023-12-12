@@ -56,7 +56,7 @@ function App() {
                 }
               />
               <Route
-                path="/teampaylip"
+                path="/invoices"
                 element={
                   <RequireAuth>
                     <Teampaylip />

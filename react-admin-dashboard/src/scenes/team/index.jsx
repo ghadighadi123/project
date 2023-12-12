@@ -1,34 +1,65 @@
 import { Box, Typography, useTheme } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
-import { mockDataTeam } from "../../data/mockData";
 import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
 import LockOpenOutlinedIcon from "@mui/icons-material/LockOpenOutlined";
 import SecurityOutlinedIcon from "@mui/icons-material/SecurityOutlined";
 import Header from "../../components/Header";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios'
 
 const Team = () => {
+
+  const [Member, setMembers] = useState([]);
+
+  useEffect(() => {
+
+      const fetchemployees = async () =>{
+        try{
+            const res = await axios.get("http://localhost:8801/employees")
+            setMembers(res.data)
+            console.log(res)
+        }catch(err){
+            console.log(err)
+        }
+      }
+    fetchemployees()
+  }, []); 
+
+
+
+ const rows = Member
+    ? Object.keys(Member).map((id) => ({ id, ...Member[id] }))
+    : []; 
+
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const columns = [
-    { field: "id", headerName: "ID" },
+    { 
+      field: "employee_id", 
+      headerName: "employee_id",
+      flex:0.8, 
+    },
     {
-      field: "name",
-      headerName: "Name",
-      flex: 1,
+      field: "fullName",
+      headerName: "Fullname",
+      flex: 0.75,
       cellClassName: "name-column--cell",
+    },
+    {
+      field: "gender",
+      headerName: "Gender",
+      flex: 0.5,
     },
     {
       field: "age",
       headerName: "Age",
-      type: "number",
-      headerAlign: "left",
-      align: "left",
+      flex: 0.4,
     },
     {
       field: "phone",
-      headerName: "Phone Number",
-      flex: 1,
+      headerName: "Phone",
+      flex: 0.5,
     },
     {
       field: "email",
@@ -36,10 +67,20 @@ const Team = () => {
       flex: 1,
     },
     {
+      field: "department",
+      headerName: "Department",
+      flex: 0.7,
+    },
+    {
+      field: "startdate",
+      headerName: "Start Date",
+      flex: 0.6,
+    },
+    {
       field: "accessLevel",
       headerName: "Access Level",
       flex: 1,
-      renderCell: ({ row: { access } }) => {
+      renderCell: ({ row: { accesslevel  } }) => {
         return (
           <Box
             width="60%"
@@ -48,19 +89,19 @@ const Team = () => {
             display="flex"
             justifyContent="center"
             backgroundColor={
-              access === "admin"
+              accesslevel === "admin"
                 ? colors.greenAccent[600]
-                : access === "manager"
+                : accesslevel === "manager"
                 ? colors.greenAccent[700]
                 : colors.greenAccent[700]
             }
             borderRadius="4px"
           >
-            {access === "admin" && <AdminPanelSettingsOutlinedIcon />}
-            {access === "manager" && <SecurityOutlinedIcon />}
-            {access === "user" && <LockOpenOutlinedIcon />}
+            {accesslevel === "admin" && <AdminPanelSettingsOutlinedIcon />}
+            {accesslevel === "manager" && <SecurityOutlinedIcon />}
+            {accesslevel === "employee" && <LockOpenOutlinedIcon />}
             <Typography color={colors.grey[100]} sx={{ ml: "5px" }}>
-              {access}
+            {accesslevel}
             </Typography>
           </Box>
         );
@@ -100,7 +141,7 @@ const Team = () => {
           },
         }}
       >
-        <DataGrid checkboxSelection rows={mockDataTeam} columns={columns} />
+        <DataGrid checkboxSelection rows={rows} columns={columns} />
       </Box>
     </Box>
   );
