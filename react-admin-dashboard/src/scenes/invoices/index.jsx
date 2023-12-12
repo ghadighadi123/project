@@ -1,10 +1,14 @@
-import { Box, Typography, useTheme } from "@mui/material";
+import { Box, Typography, useTheme, Button } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import { mockDataInvoices } from "../../data/mockData";
 import Header from "../../components/Header";
+import { useState } from "react";
 
 const Invoices = () => {
+
+  const [Invoice, setInvoice] = useState([]);
+
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const columns = [
@@ -14,34 +18,34 @@ const Invoices = () => {
       flex:1, 
     },
     {
-      field: "company name",
+      field: "companyName",
       headerName: "Company Name",
       flex: 1,
       cellClassName: "name-column--cell", 
     },
     {
-      field: "name",
+      field: "agentFullName",
       headerName: "Name",
       flex: 1,
       cellClassName: "name-column--cell",
     },
     {
-      field: "phone",
+      field: "agentNumber",
       headerName: "Phone Number",
-      flex: 1,
+      flex: 0.7,
     },
     {
       field: "email",
       headerName: "Email",
-      flex: 1,
+      flex: 1.3,
     },
     {
-      field: "cost",
+      field: "totalCost",
       headerName: "Cost",
       flex: 0.5,
       renderCell: (params) => (
         <Typography color={colors.greenAccent[500]}>
-          ${params.row.cost}
+          ${params.row.totalCost}
         </Typography>
       ),
     },
@@ -89,7 +93,7 @@ const Invoices = () => {
           },
         }}
       >
-        <DataGrid checkboxSelection rows={mockDataInvoices} columns={columns} />
+         <DataGrid checkboxSelection rows={rows} columns={columns}  />
       </Box>
     </Box>
   );
