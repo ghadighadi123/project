@@ -94,19 +94,6 @@ const Sidebar = () => {
             </MenuItem>
             {!isCollapsed && (
               <Box mb="25px">
-                <Box display="flex" justifyContent="center" alignItems="center">
-<<<<<<< HEAD
-                  {/* <img
-                    alt="profile-user"
-                    width="100px"
-                    height="100px"
-                    src={`../../assets/user.png`}
-                    style={{ cursor: "pointer", borderRadius: "50%" }}
-                  /> */}
-=======
-    
->>>>>>> 4cc90944d855f9787f80195b11503f9b1ab99436
-                </Box>
                 <Box textAlign="center">
                   <Typography
                     variant="h2"

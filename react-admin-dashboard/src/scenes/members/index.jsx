@@ -3,45 +3,49 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
-import { useCallback } from "react";
-
+import { useCallback, useState } from "react";
+import { DateField } from "@mui/x-date-pickers/DateField";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs from "dayjs";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 const Members = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
-
-  const handleFormSubmit = useCallback((values) => {
-    console.log("Submitting form with values:", values);
-
-    const { firstName, lastName, city, zipcode, email, contact, address, age } =
+  const handleFormSubmit = useCallback((values, actions) => {
+    const { name, city, zipcode, email, contact, address, age, startdate } =
       values;
+    // const test = startdate.split("").reverse().join("");
+    // console.log(test);
+    actions.setSubmitting(false);
+    actions.resetForm();
+    // const options = {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-type": "application/json",
+    //   },
+    //   body: JSON.stringify({
+    //     name,
+    //     city,
+    //     zipcode,
+    //     email,
+    //     contact,
+    //     address,
+    //     age,
+    //     date,
+    //   }),
+    // };
 
-    const options = {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify({
-        firstName,
-        lastName,
-        city,
-        zipcode,
-        email,
-        contact,
-        address,
-        age,
-      }),
-    };
-
-    fetch(
-      "https://ghadiproject-default-rtdb.firebaseio.com/Data/userData.json",
-      options
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Response from Firebase:", data);
-      })
-      .catch((error) => {
-        console.error("Error submitting form:", error);
-      });
+    // fetch(
+    //   "https://ghadiproject-default-rtdb.firebaseio.com/Data/userData.json",
+    //   options
+    // )
+    //   .then((response) => response.json())
+    //   .then((data) => {
+    //     console.log("Response from Firebase:", data);
+    //   })
+    //   .catch((error) => {
+    //     console.error("Error submitting form:", error);
+    //   });
   }, []);
 
   return (
@@ -77,17 +81,17 @@ const Members = () => {
                 label=" Name"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.Name}
+                value={values.name}
                 name="name"
-                error={!!touched.Name && !!errors.Name}
-                helperText={touched.Name && errors.Name}
+                error={!!touched.name && !!errors.name}
+                helperText={touched.name && errors.name}
                 sx={{ gridColumn: "span 2" }}
               />
               <TextField
                 fullWidth
                 variant="filled"
                 type="text"
-                label="Start Date"
+                label="Start Date DD-MM-YYYY"
                 onBlur={handleBlur}
                 onChange={handleChange}
                 value={values.startdate}
@@ -179,14 +183,10 @@ const Members = () => {
 const phoneRegExp =
   /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
 const ageRegExp = /^(1[8-9]|[2-9][0-9]|100)$/;
-const dateRegExp = /^(0[1-9]|[1-2][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
-
+// const dateRegExp =
 const checkoutSchema = yup.object().shape({
   name: yup.string().required("required"),
-  startdate: yup
-    .string()
-    .matches(dateRegExp, "wrong date format !")
-    .required("required"),
+  startdate: yup.date().required("required"),
   gender: yup.string().required("required"),
   email: yup.string().email("invalid email").required("required"),
   Phone: yup
@@ -198,12 +198,12 @@ const checkoutSchema = yup.object().shape({
 });
 const initialValues = {
   name: "",
-  startdate: "",
   age: "",
   Phone: "",
   email: "",
   gender: "",
   position: "",
+  startdate: "",
 };
 
 export default Members;

@@ -6,22 +6,21 @@ import Header from "../../components/Header";
 import { useState } from "react";
 
 const Invoices = () => {
-
   const [Invoice, setInvoice] = useState([]);
 
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const columns = [
-    { 
+    {
       field: "id",
       headerName: "ID",
-      flex:1, 
+      flex: 1,
     },
     {
       field: "companyName",
       headerName: "Company Name",
       flex: 1,
-      cellClassName: "name-column--cell", 
+      cellClassName: "name-column--cell",
     },
     {
       field: "agentFullName",
@@ -93,7 +92,7 @@ const Invoices = () => {
           },
         }}
       >
-         <DataGrid checkboxSelection rows={rows} columns={columns}  />
+        {/* <DataGrid checkboxSelection rows={rows} columns={columns} /> */}
       </Box>
     </Box>
   );
