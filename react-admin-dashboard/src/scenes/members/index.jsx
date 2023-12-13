@@ -22,7 +22,7 @@ const Members = () => {
     const newDate = `${startDate.current.year()}-${
       startDate.current.month() + 1
     }-${startDate.current.date()}`;
-    if (Date.parse(newDate) <= Date.parse(today)) return;
+    if (Date.parse(newDate) < Date.parse(minDate)) return;
     actions.setSubmitting(false);
     actions.resetForm();
     startDate.current = dayjs(minDate);
