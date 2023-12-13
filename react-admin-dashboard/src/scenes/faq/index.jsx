@@ -3,237 +3,241 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
-import { useCallback } from "react";
-import { db } from "../../config";
-import { set, ref } from "firebase/database";
-import { uid } from "uid";
+import axios from "axios";
+import {MenuItem } from '@mui/material';
+
 const FAQ = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
-  const initialValues = {
-    companyName: "",
-    agentFullName: "",
-    agentNumber: "",
-    city: "",
-    email: "",
-    address: "",
-    totalCost: "",
-    arrivalDate: "",
-    payingInvoiceDate: "",
+  const handleFormSubmit1 = (values, actions) => { 
+    const parsedValues = {
+      ...values,
+      attendance: values.attendance === 'true',
+    };   
+    console.log("kifak lyom")
+    axios.post("http://localhost:8800/attendance",parsedValues)
+      .then((response) => {
+        console.log("Response:", response);
+  
+        if (response.data) {
+          console.log("Data:", response.data);
+
+        } else {
+          console.error("Empty or invalid JSON response");
+        }
+      })
+      .catch((err) => console.error("Error:", err));
+      console.log("hi")
+      actions.setSubmitting(false);
+          actions.resetForm();
   };
-  const handleFormSubmit1 = useCallback((values, actions) => {
-    const {
-      companyName,
-      agentFullName,
-      agentNumber,
-      city,
-      email,
-      address,
-      totalCost,
-      arrivalDate,
-      payingInvoiceDate,
-    } = values;
-    actions.setSubmitting(false);
-    actions.resetForm();
-    const id = uid();
-    set(ref(db, `data/transaction/${id}`), {
-      companyName,
-      agentFullName,
-      agentNumber,
-      city,
-      email,
-      address,
-      totalCost,
-      arrivalDate,
-      payingInvoiceDate,
-    });
-  }, []);
 
-  return (
-    <Box m="20px">
-      <Header title="CREATE INVOICE" subtitle="Create a New Invoice" />
 
-      <Formik
-        onSubmit={handleFormSubmit1}
-        initialValues={initialValues}
-        validationSchema={checkoutSchema}
-      >
-        {({
-          values,
-          errors,
-          touched,
-          handleBlur,
-          handleChange,
-          handleSubmit,
-        }) => (
-          <form onSubmit={handleSubmit}>
-            <Box
-              display="grid"
-              gap="30px"
-              gridTemplateColumns="repeat(4, minmax(0, 1fr))"
-              sx={{
-                "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
+return (
+  <Box m="20px">
+    <Header title="Members Data Form" subtitle="Add Members Data"/>
+
+    <Formik
+      onSubmit={handleFormSubmit1}
+      initialValues={initialValues}
+      validationSchema={checkoutSchema}
+    >
+      {({
+        values,
+        errors,
+        touched,
+        handleBlur,
+        handleChange,
+        handleSubmit,
+      }) => (
+        <form onSubmit={handleSubmit}>
+          <Box
+            display="grid"
+            gap="30px"
+            gridTemplateColumns="repeat(4, minmax(0, 1fr))"
+            sx={{
+              "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
+            }}
+          >
+            <TextField
+              fullWidth
+              variant="filled"
+              type="text"
+              label="Employee ID"
+              onBlur={handleBlur}
+              onChange={handleChange}
+              value={values.employee_id}
+              name="employee_id"
+              error={!!touched.employee_id && !!errors.employee_id}
+              helperText={touched.employee_id && errors.employee_id}
+              sx={{ gridColumn: "span 2" }}
+            />
+            
+            <TextField
+              fullWidth
+              variant="filled"
+              select
+              label="Attendance"
+              onBlur={handleBlur}
+              onChange={handleChange}
+              value={values.attendance}
+              name="attendance"
+              error={!!touched.attendance && !!errors.attendance}
+              helperText={touched.attendance && errors.attendance}
+              sx={{ gridColumn: "span 2" }}
+              SelectProps={{
+                MenuProps: {
+                  style: { maxHeight: '200px', fontSize: 'small' }
+                }
               }}
             >
-              <TextField
-                fullWidth
-                variant="filled"
-                type="text"
-                label="Company Name"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.companyName}
-                name="companyName"
-                error={!!touched.companyName && !!errors.companyName}
-                helperText={touched.companyName && errors.companyName}
-                sx={{ gridColumn: "span 2" }}
-              />
-              <TextField
-                fullWidth
-                variant="filled"
-                type="text"
-                label="Agent Full Name"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.agentFullName}
-                name="agentFullName"
-                error={!!touched.agentFullName && !!errors.agentFullName}
-                helperText={touched.agentFullName && errors.agentFullName}
-                sx={{ gridColumn: "span 2" }}
-              />
+              <MenuItem disabled >Select Attendance</MenuItem>
+              <MenuItem value="true">Present</MenuItem>
+              <MenuItem value="false">Absent</MenuItem>
+            </TextField>
 
-              <TextField
-                fullWidth
-                variant="filled"
-                type="text"
-                label=" Sales Agent Number"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.agentNumber}
-                name="agentNumber"
-                error={!!touched.agentNumber && !!errors.agentNumber}
-                helperText={touched.agentNumber && errors.agentNumber}
-                sx={{ gridColumn: "span 2" }}
-              />
-              <TextField
-                fullWidth
-                variant="filled"
-                type="text"
-                label="City"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.city}
-                name="city"
-                error={!!touched.city && !!errors.city}
-                helperText={touched.city && errors.city}
-                sx={{ gridColumn: "span 2" }}
-              />
-              <TextField
-                fullWidth
-                variant="filled"
-                type="text"
-                label="Email"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.email}
-                name="email"
-                error={!!touched.email && !!errors.email}
-                helperText={touched.email && errors.email}
-                sx={{ gridColumn: "span 4" }}
-              />
 
-              <TextField
-                fullWidth
-                variant="filled"
-                type="text"
-                label="Address"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.address}
-                name="address"
-                error={!!touched.address && !!errors.address}
-                helperText={touched.address && errors.address}
-                sx={{ gridColumn: "span 1" }}
-              />
-              <TextField
-                fullWidth
-                variant="filled"
-                type="text"
-                label="Products Delivered Total Cost"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.totalCost}
-                name="totalCost"
-                error={!!touched.totalCost && !!errors.totalCost}
-                helperText={touched.totalCost && errors.totalCost}
-                sx={{ gridColumn: "span 1" }}
-              />
-              <TextField
-                fullWidth
-                variant="filled"
-                type="Text"
-                label="Shipping Arrival Date (dd/mm/yyyy)"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.arrivalDate}
-                name="arrivalDate"
-                error={!!touched.arrivalDate && !!errors.arrivalDate}
-                helperText={touched.arrivalDate && errors.arrivalDate}
-                sx={{ gridColumn: "span 1" }}
-              />
-              <TextField
-                fullWidth
-                variant="filled"
-                type="Text"
-                label="Paying Invoice Date (dd/mm/yyyy)"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.payingInvoiceDate}
-                name="payingInvoiceDate"
-                error={
-                  !!touched.payingInvoiceDate && !!errors.payingInvoiceDate
-                }
-                helperText={
-                  touched.payingInvoiceDate && errors.payingInvoiceDate
-                }
-                sx={{ gridColumn: "span 1.5" }}
-              />
-            </Box>
-            <Box display="flex" justifyContent="end" mt="20px">
-              <Button type="submit" color="secondary" variant="contained">
-                Add transaction
-              </Button>
-            </Box>
-          </form>
-        )}
-      </Formik>
-    </Box>
-  );
+            <TextField
+              fullWidth
+              variant="filled"
+              select
+              label="Reason for Absence"
+              onBlur={handleBlur}
+              onChange={handleChange}
+              value={values.reason_for_absence}
+              name="reason_for_absence"
+              error={!!touched.reason_for_absence && !!errors.reason_for_absence}
+              helperText={touched.reason_for_absence && errors.reason_for_absence}
+              sx={{ gridColumn: "span 2" }}
+              SelectProps={{
+              MenuProps: {
+                style: { maxHeight: '200px', fontSize: 'small' } // Adjust as needed
+              }
+            }}
+            >
+            <MenuItem value="selectReason" disabled>Select Reason for Absence</MenuItem>
+            <MenuItem value="NoReason">No Valid Reason</MenuItem>
+            <MenuItem value="Medical">Medical</MenuItem>
+            <MenuItem value="OffDay">OFF Day</MenuItem>
+            </TextField>
+
+            <TextField
+              fullWidth
+              variant="filled"
+              type="text"
+              label="Date"
+              onBlur={handleBlur}
+              onChange={handleChange}
+              value={values.dates}
+              name="dates"
+              error={!!touched.dates && !!errors.dates}
+              helperText={touched.dates && errors.dates}
+              sx={{ gridColumn: "span 2" }}
+            />
+            <TextField
+              fullWidth
+              variant="filled"
+              type="text"
+              label="IN Time"
+              onBlur={handleBlur}
+              onChange={handleChange}
+              value={values.arrival_time}
+              name="arrival_time"
+              error={!!touched.arrival_time && !!errors.arrival_time}
+              helperText={touched.arrival_time && errors.arrival_time}
+              sx={{ gridColumn: "span 2" }}
+            />
+            <TextField
+              fullWidth
+              variant="filled"
+              type="text"
+              label="OUT Time"
+              onBlur={handleBlur}
+              onChange={handleChange}
+              value={values.exit_time}
+              name="exit_time"
+              error={!!touched.exit_time && !!errors.exit_time}
+              helperText={touched.exit_time && errors.exit_time}
+              sx={{ gridColumn: "span 2" }}
+            />
+            <TextField
+              fullWidth
+              variant="filled"
+              type="text"
+              label="Shift Start Time"
+              onBlur={handleBlur}
+              onChange={handleChange}
+              value={values.shiftstarttime}
+              name="shiftstarttime"
+              error={!!touched.shiftstarttime && !!errors.shiftstarttime}
+              helperText={touched.shiftstarttime && errors.shiftstarttime}
+              sx={{ gridColumn: "span 2" }}
+            />
+
+            <TextField
+              fullWidth
+              variant="filled"
+              type="text"
+              label="Shift end Time"
+              onBlur={handleBlur}
+              onChange={handleChange}
+              value={values.shiftendtime}
+              name="shiftendtime"
+              error={!!touched.shiftendtime && !!errors.shiftendtime}
+              helperText={touched.shiftendtime && errors.shiftendtime}
+              sx={{ gridColumn: "span 2" }}
+            />
+             <TextField
+              fullWidth
+              variant="filled"
+              type="Notes"
+              label="Brief Description"
+              onBlur={handleBlur}
+              onChange={handleChange}
+              value={values.notes}
+              name="notes"
+              error={!!touched.notes && !!errors.notes}
+              helperText={touched.notes && errors.notes}
+              sx={{ gridColumn: "span 4" }}
+            />
+          </Box>
+          <Box display="flex" justifyContent="end" mt="20px">
+            <Button type="submit" color="secondary" variant="contained">
+            Add Member Data
+            </Button>
+          </Box>
+        </form>
+      )}
+    </Formik>
+  </Box>
+);
 };
 
-const phoneRegExp =
-  /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
-const dateRegExp = /^\d{2}\/\d{2}\/\d{4}$/;
-const costRegExp = /^\d+$/;
+const dateRegExp = /^(202[1-9]|20[3-9][0-9]|2100)-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[01])$/;
 
 const checkoutSchema = yup.object().shape({
-  companyName: yup.string().required("required"),
-  agentFullName: yup.string().required("required"),
-  agentNumber: yup
-    .string()
-    .matches(phoneRegExp, "Phone number is not valid")
-    .required("required"),
-  city: yup.string().required("required"),
-  email: yup.string().email("invalid email").required("required"),
-  address: yup.string().required("required"),
-  totalCost: yup.string().matches(costRegExp, "Not valid").required("required"),
-  arrivalDate: yup
-    .string()
-    .matches(dateRegExp, "wrong date format !")
-    .required("required"),
-  payingInvoiceDate: yup
-    .string()
-    .matches(dateRegExp, "wrong date format !")
-    .required("required"),
+  employee_id: yup.string().required("required"),
+  dates: yup.string().matches(dateRegExp, "wrong date format !").required("required"),
+  attendance: yup.boolean().required("required"),
+  arrival_time: yup.string().required("required"),
+  exit_time: yup.string().required("required"),
+  shiftstarttime: yup.string().required("required"),
+  shiftendtime: yup.string().required("required"),
+  reason_for_absence: yup.string().required("required"),
+  notes: yup.string().required("required"),
 });
+
+
+
+const initialValues = {
+  employee_id: "",
+  dates: "",
+  attendance: "",
+  arrival_time: "",
+  exit_time: "",
+  shiftstarttime: "",
+  shiftendtime: "",
+  reason_for_absence: "",
+  notes:"",
+};
 
 export default FAQ;
