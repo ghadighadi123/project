@@ -78,7 +78,29 @@ app.post("/attendance", (req, res) => {
   });
 });
 
+app.post("/attendence_data_for_1_user", (req, res) => {
+  const q =
+    "SELECT FROM attendance(`employee_id`, `dates`, `attendance`, `exit_time`, `arrival_time`, `shiftstarttime`, `shiftendtime`, `reason_for_absence`, `notes`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
+  const values = [
+    req.body.employee_id,
+    req.body.dates,
+    req.body.attendance,
+    req.body.exit_time,
+    req.body.arrival_time,
+    req.body.shiftstarttime,
+    req.body.shiftendtime,
+    req.body.reason_for_absence,
+    req.body.notes,
+  ];
+
+  db.query(q, values, (err, data) => {
+    if (err)  res.json(returnerr);
+    // my calculations goes here
+    // use data here
+    return res.json({ 'success': true, 'total_hours': calculateTotalHoursWorked(data) });
+  });
+});
 
 
 app.listen(8800, ()=>{
