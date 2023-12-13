@@ -3,83 +3,81 @@ import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import { useTheme } from "@mui/material";
-import React, { useState, useEffect } from 'react';
+import React, {useState,  useEffect } from 'react';
+import axios from 'axios'
 
-const Contacts = () => {
+const Membersinfo = () => {
 
-  const [userData, setUserData] = useState(null);
+  const [Memberinfo, setMembersinfo] = useState([]);
 
   useEffect(() => {
-    // Fetch data when the component mounts
-    fetch('https://tgrp-38a89-default-rtdb.firebaseio.com/UserData.json')
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`Network response was not ok, status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then(data => {
-        // Set the retrieved data to state
-        setUserData(data);
-      })
-      .catch(error => {
-        console.error('Fetch error:', error);
-      });
-  }, []); // Empty dependency array means this effect runs once when the component mounts
 
-  const rows = userData
-    ? Object.keys(userData).map((id) => ({ id, ...userData[id] }))
-    : [];
+    const fetchemployees = async () =>{
+      try{
+          const res = await axios.get("http://localhost:8800/attendance")
+          setMembersinfo(res.data)
+          console.log(res)
+      }catch(err){
+          console.log(err)
+      }
+    }
+  fetchemployees()
+}, []);
+
+const rows = Memberinfo
+    ? Object.keys(Memberinfo).map((id) => ({ id, ...Memberinfo[id] }))
+    : []; 
 
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
   const columns = [
-    { field: "id", headerName: "Identifier", flex: 0.5 },
-    
     {
-      field: "firstName",
-      headerName: "First Name",
+      field: "employee_id",
+      headerName: "Employee ID",
       flex: 1,
       cellClassName: "name-column--cell",
     },
     {
-      field: "lastName",
-      headerName: "Last Name",
+      field: "attendance",
+      headerName: "Attendance",
       flex: 1,
       cellClassName: "name-column--cell",
     },
     {
-      field: "age",
-      headerName: "Age",
-      type: "number",
-      headerAlign: "left",
-      align: "left",
+      field: "reason_for_absence",
+      headerName: "Reason for Absence ",
+      flex: 1.3,
     },
     {
-      field: "contact",
-      headerName: "Phone Number",
+      field: "dates",
+      headerName: "Date",
+      flex: 1.3,
+    },
+    {
+      field: "arrival_time",
+      headerName: "IN Time",
+      flex: 0.7,
+    },
+    {
+      field: "exit_time",
+      headerName: "OUT Time",
+      flex: 0.8,
+    },
+    {
+      field: "shiftstarttime",
+      headerName: "Shift Start Time",
       flex: 1,
     },
     {
-      field: "email",
-      headerName: "Email",
+      field: "shiftendtime",
+      headerName: "Shift end Time",
       flex: 1,
     },
     {
-      field: "address",
-      headerName: "Address",
-      flex: 1,
-    },
-    {
-      field: "city",
-      headerName: "City",
-      flex: 1,
-    },
-    {
-      field: "zipcode",
-      headerName: "Zip Code",
-      flex: 1,
+      field: "notes",
+      headerName: "Notes",
+      flex: 1.5,
     },
   ];
 
@@ -131,4 +129,4 @@ const Contacts = () => {
   );
 };
 
-export default Contacts;
+export default Membersinfo;
