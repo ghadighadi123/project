@@ -16,7 +16,7 @@ const Team = () => {
 
       const fetchemployees = async () =>{
         try{
-            const res = await axios.get("http://localhost:8801/employees")
+            const res = await axios.get("http://localhost:8800/employees")
             setMembers(res.data)
             console.log(res)
         }catch(err){
@@ -24,7 +24,7 @@ const Team = () => {
         }
       }
     fetchemployees()
-  }, []); 
+  }, []);
 
 
 
