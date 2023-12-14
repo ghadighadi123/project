@@ -3,18 +3,15 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
-<<<<<<< HEAD
 import { useCallback, useRef } from "react";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import "./style.css";
 import dayjs from "dayjs";
-=======
-import {MenuItem } from '@mui/material';
+import { MenuItem } from "@mui/material";
 import axios from "axios";
 
->>>>>>> 939f1873107542bbfd016fac7f71e682c3877328
 const Members = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const today = new Date();
@@ -23,7 +20,6 @@ const Members = () => {
   }-${today.getDate()}`;
   const startDate = useRef(dayjs(minDate));
 
-<<<<<<< HEAD
   const handleFormSubmit = useCallback((values, actions) => {
     const { name, city, zipcode, email, contact, address, age } = values;
     const newDate = `${startDate.current.year()}-${
@@ -63,33 +59,30 @@ const Members = () => {
     //   });
   }, []);
 
-=======
-  const handleFormSubmit1 = (values, actions) => {    
-    console.log("kifak lyom")
-    axios.post("http://localhost:8800/employees",values)
+  const handleFormSubmit1 = (values, actions) => {
+    console.log("kifak lyom");
+    axios
+      .post("http://localhost:8800/employees", values)
       .then((response) => {
         console.log("Response:", response);
-  
+
         if (response.data) {
           console.log("Data:", response.data);
-
         } else {
           console.error("Empty or invalid JSON response");
         }
       })
       .catch((err) => console.error("Error:", err));
-      console.log("hi")
-      actions.setSubmitting(false);
-          actions.resetForm();
+    console.log("hi");
+    actions.setSubmitting(false);
+    actions.resetForm();
   };
-  
- 
->>>>>>> 939f1873107542bbfd016fac7f71e682c3877328
+
   return (
     <Box m="20px">
       <Header title="ADD MEMBER" subtitle="Add a New Team Member Profile" />
 
-    <Formik
+      <Formik
         onSubmit={handleFormSubmit1}
         initialValues={initialValues}
         validationSchema={checkoutSchema}
@@ -118,7 +111,6 @@ const Members = () => {
                 label="Full Name"
                 onBlur={handleBlur}
                 onChange={handleChange}
-<<<<<<< HEAD
                 value={values.name}
                 name="name"
                 error={!!touched.name && !!errors.name}
@@ -140,13 +132,11 @@ const Members = () => {
                   }}
                 />
               </LocalizationProvider>
-=======
-                value={values.fullName}
-                name="fullName"
-                error={!!touched.fullName && !!errors.fullName}
-                helperText={touched.fullName && errors.fullName}
-                sx={{ gridColumn: "span 2" }} 
-              />
+              {/* value={values.fullName}
+              name="fullName" error={!!touched.fullName && !!errors.fullName}
+              helperText={touched.fullName && errors.fullName}
+              sx={{ gridColumn: "span 2" }}
+              /> */}
               <TextField
                 fullWidth
                 variant="filled"
@@ -160,8 +150,6 @@ const Members = () => {
                 helperText={touched.startdate && errors.startdate}
                 sx={{ gridColumn: "span 2" }}
               />
-
->>>>>>> 939f1873107542bbfd016fac7f71e682c3877328
               <TextField
                 fullWidth
                 variant="filled"
@@ -175,7 +163,6 @@ const Members = () => {
                 helperText={touched.age && errors.age}
                 sx={{ gridColumn: "span 2" }}
               />
-
               <TextField
                 fullWidth
                 variant="filled"
@@ -202,95 +189,134 @@ const Members = () => {
                 helperText={touched.email && errors.email}
                 sx={{ gridColumn: "span 2" }}
               />
-
-             <TextField
-              fullWidth
-              variant="filled"
-              label="Gender"
-              select
-              onBlur={handleBlur}
-              onChange={handleChange}
-              value={values.gender}
-              name="gender"
-              error={!!touched.gender && !!errors.gender}
-              helperText={touched.gender && errors.gender}
-              sx={{ gridColumn: "span 2" }}
-              SelectProps={{
-                MenuProps: {
-                  style: { maxHeight: '200px', fontSize: 'small' } // Adjust as needed
-                }
-              }}
-               >
-              <MenuItem value="" disabled>Select gender</MenuItem>
-              <MenuItem value="Male">Male</MenuItem>
-              <MenuItem value="Female">Female</MenuItem>
-            </TextField>
-            
               <TextField
-              fullWidth
-              variant="filled"
-              label="Department"
-              select
-              onBlur={handleBlur}
-              onChange={handleChange}
-              value={values.department}
-              name="department"
-              error={!!touched.department && !!errors.department}
-              helperText={touched.department && errors.department}
-              sx={{ gridColumn: "span 2" }}
-              SelectProps={{
-                MenuProps: {
-                  style: { maxHeight: '300px', fontSize: 'small' } // Adjust as needed
-                }
-              }}
+                fullWidth
+                variant="filled"
+                label="Gender"
+                select
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.gender}
+                name="gender"
+                error={!!touched.gender && !!errors.gender}
+                helperText={touched.gender && errors.gender}
+                sx={{ gridColumn: "span 2" }}
+                SelectProps={{
+                  MenuProps: {
+                    style: { maxHeight: "200px", fontSize: "small" }, // Adjust as needed
+                  },
+                }}
               >
-              <MenuItem value="" disabled>Select Department</MenuItem>
-              <MenuItem value="HR Department">HR Department</MenuItem>
-              <MenuItem value="Software Development Department">Software Development Department</MenuItem>
-              <MenuItem value="Marketing Department">Marketing Department</MenuItem>
-              <MenuItem value="Sales Department">Sales Department</MenuItem>
-              <MenuItem value="Customer Service/Support Department">Customer Service/Support Department</MenuItem>
-              <MenuItem value="Operations/Production Department">Operations/Production Department</MenuItem>
-              <MenuItem value="Research and Development (R&D) Department">Research and Development (R&D) Department</MenuItem>
-              <MenuItem value="Legal Department">Legal Department</MenuItem>
-              <MenuItem value="Administration Department">Administration Department</MenuItem>
-              <MenuItem value="Supply Chain/Logistics Department">Supply Chain/Logistics Department</MenuItem>
-              <MenuItem value="Quality Assurance/Control Department">Quality Assurance/Control Department</MenuItem>
-              <MenuItem value="Project Management Department">Project Management Department</MenuItem>
-              <MenuItem value="Public Relations (PR) Department">Public Relations (PR) Department</MenuItem>
-              <MenuItem value="Information Technology (IT) Department">Information Technology (IT) Department</MenuItem>
-              <MenuItem value="Training and Development Department">Training and Development Department</MenuItem>
-              <MenuItem value="Facilities Management Department">Facilities Management Department</MenuItem>
-              <MenuItem value="Health and Safety Department">Health and Safety Department</MenuItem>
-              <MenuItem value="Corporate Communications Department">Corporate Communications Department</MenuItem>
-              <MenuItem value="Environmental, Social, and Governance (ESG) Department">Environmental, Social, and Governance (ESG) Department</MenuItem>
-              <MenuItem value="IT Security/Cybersecurity Department">IT Security/Cybersecurity Department</MenuItem>
-              <MenuItem value="Finance Department">Finance Department</MenuItem>
-            </TextField>
-
-            <TextField
-              fullWidth
-              variant="filled"
-              label="Access Level"
-              select
-              onBlur={handleBlur}
-              onChange={handleChange}
-              value={values.accesslevel}
-              name="accesslevel"
-              error={!!touched.accesslevel && !!errors.accesslevel}
-              helperText={touched.accesslevel && errors.accesslevel}
-              sx={{ gridColumn: "span 2" }}
-              SelectProps={{
-                MenuProps: {
-                  style: { maxHeight: '200px', fontSize: 'small' } // Adjust as needed
-                }
-              }}
+                <MenuItem value="" disabled>
+                  Select gender
+                </MenuItem>
+                <MenuItem value="Male">Male</MenuItem>
+                <MenuItem value="Female">Female</MenuItem>
+              </TextField>
+              <TextField
+                fullWidth
+                variant="filled"
+                label="Department"
+                select
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.department}
+                name="department"
+                error={!!touched.department && !!errors.department}
+                helperText={touched.department && errors.department}
+                sx={{ gridColumn: "span 2" }}
+                SelectProps={{
+                  MenuProps: {
+                    style: { maxHeight: "300px", fontSize: "small" }, // Adjust as needed
+                  },
+                }}
               >
-              <MenuItem value="" disabled>Select Access Level</MenuItem>
-              <MenuItem value="admin">admin</MenuItem>
-              <MenuItem value="manager">manager</MenuItem>
-              <MenuItem value="employee">employee</MenuItem>
-            </TextField> 
+                <MenuItem value="" disabled>
+                  Select Department
+                </MenuItem>
+                <MenuItem value="HR Department">HR Department</MenuItem>
+                <MenuItem value="Software Development Department">
+                  Software Development Department
+                </MenuItem>
+                <MenuItem value="Marketing Department">
+                  Marketing Department
+                </MenuItem>
+                <MenuItem value="Sales Department">Sales Department</MenuItem>
+                <MenuItem value="Customer Service/Support Department">
+                  Customer Service/Support Department
+                </MenuItem>
+                <MenuItem value="Operations/Production Department">
+                  Operations/Production Department
+                </MenuItem>
+                <MenuItem value="Research and Development (R&D) Department">
+                  Research and Development (R&D) Department
+                </MenuItem>
+                <MenuItem value="Legal Department">Legal Department</MenuItem>
+                <MenuItem value="Administration Department">
+                  Administration Department
+                </MenuItem>
+                <MenuItem value="Supply Chain/Logistics Department">
+                  Supply Chain/Logistics Department
+                </MenuItem>
+                <MenuItem value="Quality Assurance/Control Department">
+                  Quality Assurance/Control Department
+                </MenuItem>
+                <MenuItem value="Project Management Department">
+                  Project Management Department
+                </MenuItem>
+                <MenuItem value="Public Relations (PR) Department">
+                  Public Relations (PR) Department
+                </MenuItem>
+                <MenuItem value="Information Technology (IT) Department">
+                  Information Technology (IT) Department
+                </MenuItem>
+                <MenuItem value="Training and Development Department">
+                  Training and Development Department
+                </MenuItem>
+                <MenuItem value="Facilities Management Department">
+                  Facilities Management Department
+                </MenuItem>
+                <MenuItem value="Health and Safety Department">
+                  Health and Safety Department
+                </MenuItem>
+                <MenuItem value="Corporate Communications Department">
+                  Corporate Communications Department
+                </MenuItem>
+                <MenuItem value="Environmental, Social, and Governance (ESG) Department">
+                  Environmental, Social, and Governance (ESG) Department
+                </MenuItem>
+                <MenuItem value="IT Security/Cybersecurity Department">
+                  IT Security/Cybersecurity Department
+                </MenuItem>
+                <MenuItem value="Finance Department">
+                  Finance Department
+                </MenuItem>
+              </TextField>
+              <TextField
+                fullWidth
+                variant="filled"
+                label="Access Level"
+                select
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.accesslevel}
+                name="accesslevel"
+                error={!!touched.accesslevel && !!errors.accesslevel}
+                helperText={touched.accesslevel && errors.accesslevel}
+                sx={{ gridColumn: "span 2" }}
+                SelectProps={{
+                  MenuProps: {
+                    style: { maxHeight: "200px", fontSize: "small" }, // Adjust as needed
+                  },
+                }}
+              >
+                <MenuItem value="" disabled>
+                  Select Access Level
+                </MenuItem>
+                <MenuItem value="admin">admin</MenuItem>
+                <MenuItem value="manager">manager</MenuItem>
+                <MenuItem value="employee">employee</MenuItem>
+              </TextField>
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
               <Button type="submit" color="secondary" variant="contained">
@@ -307,45 +333,36 @@ const Members = () => {
 const phoneRegExp =
   /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
 const ageRegExp = /^(1[8-9]|[2-9][0-9]|100)$/;
-<<<<<<< HEAD
-
-const checkoutSchema = yup.object().shape({
-  name: yup.string().required("required"),
-  gender: yup.string().required("required"),
-  email: yup.string().email("invalid email").required("required"),
-  Phone: yup
-    .string()
-    .matches(phoneRegExp, "Phone number is not valid")
-    .required("required"),
-=======
-const dateRegExp = /^(202[1-9]|20[3-9][0-9]|2100)-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[01])$/;
-
+const dateRegExp =
+  /^(202[1-9]|20[3-9][0-9]|2100)-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[01])$/;
 
 const checkoutSchema = yup.object().shape({
   fullName: yup.string().required("required"),
-  startdate: yup.string().matches(dateRegExp, "wrong date format !").required("required"),
->>>>>>> 939f1873107542bbfd016fac7f71e682c3877328
+  startdate: yup
+    .string()
+    .matches(dateRegExp, "wrong date format !")
+    .required("required"),
   age: yup.string().matches(ageRegExp, "invalid age").required("required"),
   email: yup.string().email("invalid email").required("required"),
-  phone: yup.string().matches(phoneRegExp, "Phone number is not valid").required("required"),
+  phone: yup
+    .string()
+    .matches(phoneRegExp, "Phone number is not valid")
+    .required("required"),
   gender: yup.string().required("required"),
-  department:yup.string().required("required"),
+  department: yup.string().required("required"),
   accesslevel: yup.string().required("required"),
 });
 
 const initialValues = {
-<<<<<<< HEAD
   name: "",
-=======
   fullName: "",
   startdate: "",
->>>>>>> 939f1873107542bbfd016fac7f71e682c3877328
   age: "",
   phone: "",
   email: "",
   gender: "",
   department: "",
-  accesslevel:"",
+  accesslevel: "",
 };
 
 export default Members;

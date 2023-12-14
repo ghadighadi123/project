@@ -27,7 +27,6 @@ app.get("/employees", (req, res) => {
 });
 
 app.post("/employees", (req, res) => {
-<<<<<<< HEAD
   const q =
     "INSERT INTO employees(`fullName`,`startdate`,`age`,`phone`,email`,`gender`,`department`,`accesslevel`) VALUES (?)";
   const values = [
@@ -49,34 +48,34 @@ app.post("/employees", (req, res) => {
 app.listen(8801, () => {
   console.log("Connected to backend !");
 });
-=======
-    const q =
-      "INSERT INTO employees(`fullName`, `startdate`, `age`, `phone`, `email`, `gender`, `department`, `accesslevel`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-  
-    const values = [
-      req.body.fullName,
-      req.body.startdate,
-      req.body.age,
-      req.body.phone,
-      req.body.email,
-      req.body.gender,
-      req.body.department,
-      req.body.accesslevel,
-    ];
-  
-    db.query(q, values, (err, data) => {
-      if (err) return res.json(err);
-      return res.json("Data inserted successfully!");
-    });
-});
 
-app.get("/attendance",(req, res) =>{
-  const q = "SELECT * FROM attendance"
-  db.query(q, (err, data)=>{
-      if (err) return res.json(err)
-      return res.json(data)
-  })
-})
+const q =
+  "INSERT INTO employees(`fullName`, `startdate`, `age`, `phone`, `email`, `gender`, `department`, `accesslevel`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+const values = [
+  req.body.fullName,
+  req.body.startdate,
+  req.body.age,
+  req.body.phone,
+  req.body.email,
+  req.body.gender,
+  req.body.department,
+  req.body.accesslevel,
+];
+
+db.query(q, values, (err, data) => {
+  if (err) return res.json(err);
+  return res.json("Data inserted successfully!");
+});
+// });
+
+app.get("/attendance", (req, res) => {
+  const q = "SELECT * FROM attendance";
+  db.query(q, (err, data) => {
+    if (err) return res.json(err);
+    return res.json(data);
+  });
+});
 
 app.post("/attendance", (req, res) => {
   const q =
@@ -117,15 +116,16 @@ app.post("/attendence_data_for_1_user", (req, res) => {
   ];
 
   db.query(q, values, (err, data) => {
-    if (err)  res.json(returnerr);
+    if (err) res.json(returnerr);
     // my calculations goes here
     // use data here
-    return res.json({ 'success': true, 'total_hours': calculateTotalHoursWorked(data) });
+    return res.json({
+      success: true,
+      total_hours: calculateTotalHoursWorked(data),
+    });
   });
 });
 
-
-app.listen(8800, ()=>{
-    console.log("Connected to backend !")
-})
->>>>>>> 939f1873107542bbfd016fac7f71e682c3877328
+app.listen(8800, () => {
+  console.log("Connected to backend !");
+});
