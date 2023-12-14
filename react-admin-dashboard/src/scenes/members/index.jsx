@@ -3,61 +3,11 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
-import { useCallback, useRef } from "react";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import "./style.css";
-import dayjs from "dayjs";
 import { MenuItem } from "@mui/material";
 import axios from "axios";
 
 const Members = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
-  const today = new Date();
-  const minDate = `${today.getFullYear()}-${
-    today.getMonth() + 1
-  }-${today.getDate()}`;
-  const startDate = useRef(dayjs(minDate));
-
-  const handleFormSubmit = useCallback((values, actions) => {
-    const { name, city, zipcode, email, contact, address, age } = values;
-    const newDate = `${startDate.current.year()}-${
-      startDate.current.month() + 1
-    }-${startDate.current.date()}`;
-    if (Date.parse(newDate) < Date.parse(minDate)) return;
-    actions.setSubmitting(false);
-    actions.resetForm();
-    startDate.current = dayjs(minDate);
-    // const options = {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-type": "application/json",
-    //   },
-    //   body: JSON.stringify({
-    //     name,
-    //     city,
-    //     zipcode,
-    //     email,
-    //     contact,
-    //     address,
-    //     age,
-    //     date,
-    //   }),
-    // };
-
-    // fetch(
-    //   "https://ghadiproject-default-rtdb.firebaseio.com/Data/userData.json",
-    //   options
-    // )
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     console.log("Response from Firebase:", data);
-    //   })
-    //   .catch((error) => {
-    //     console.error("Error submitting form:", error);
-    //   });
-  }, []);
 
   const handleFormSubmit1 = (values, actions) => {
     console.log("kifak lyom");
@@ -111,32 +61,12 @@ const Members = () => {
                 label="Full Name"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.name}
-                name="name"
-                error={!!touched.name && !!errors.name}
-                helperText={touched.name && errors.name}
+                value={values.fullName}
+                name="fullName"
+                error={!!touched.fullName && !!errors.fullName}
+                helperText={touched.fullName && errors.fullName}
                 sx={{ gridColumn: "span 2" }}
               />
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DatePicker
-                  className="style"
-                  sx={{ gridColumn: "span 2" }}
-                  minDate={dayjs(minDate)}
-                  label="Start Date"
-                  value={startDate.current}
-                  onChange={(newDate) => {
-                    const change = `${newDate.year()}-${
-                      newDate.month() + 1
-                    }-${newDate.date()}`;
-                    startDate.current = dayjs(change);
-                  }}
-                />
-              </LocalizationProvider>
-              {/* value={values.fullName}
-              name="fullName" error={!!touched.fullName && !!errors.fullName}
-              helperText={touched.fullName && errors.fullName}
-              sx={{ gridColumn: "span 2" }}
-              /> */}
               <TextField
                 fullWidth
                 variant="filled"
@@ -150,6 +80,7 @@ const Members = () => {
                 helperText={touched.startdate && errors.startdate}
                 sx={{ gridColumn: "span 2" }}
               />
+
               <TextField
                 fullWidth
                 variant="filled"
@@ -163,6 +94,7 @@ const Members = () => {
                 helperText={touched.age && errors.age}
                 sx={{ gridColumn: "span 2" }}
               />
+
               <TextField
                 fullWidth
                 variant="filled"
@@ -189,6 +121,7 @@ const Members = () => {
                 helperText={touched.email && errors.email}
                 sx={{ gridColumn: "span 2" }}
               />
+
               <TextField
                 fullWidth
                 variant="filled"
@@ -213,6 +146,7 @@ const Members = () => {
                 <MenuItem value="Male">Male</MenuItem>
                 <MenuItem value="Female">Female</MenuItem>
               </TextField>
+
               <TextField
                 fullWidth
                 variant="filled"
@@ -292,6 +226,7 @@ const Members = () => {
                   Finance Department
                 </MenuItem>
               </TextField>
+
               <TextField
                 fullWidth
                 variant="filled"
@@ -354,7 +289,6 @@ const checkoutSchema = yup.object().shape({
 });
 
 const initialValues = {
-  name: "",
   fullName: "",
   startdate: "",
   age: "",
