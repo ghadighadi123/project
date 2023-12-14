@@ -5,7 +5,7 @@ import Sidebar from "./scenes/global/Sidebar";
 import Dashboard from "./scenes/dashboard";
 import Team from "./scenes/team";
 import Invoices from "./scenes/invoices";
-import Contacts from "./scenes/contacts";
+import Membersinfo from "./scenes/membersinfo";
 import Bar from "./scenes/bar";
 import Form from "./scenes/form";
 import Line from "./scenes/line";
@@ -56,7 +56,7 @@ function App() {
                 }
               />
               <Route
-                path="/teampaylip"
+                path="/invoices"
                 element={
                   <RequireAuth>
                     <Teampaylip />
@@ -64,10 +64,10 @@ function App() {
                 }
               />
               <Route
-                path="/contacts"
+                path="/membersinfo"
                 element={
                   <RequireAuth>
-                    <Contacts />
+                    <Membersinfo />
                   </RequireAuth>
                 }
               />

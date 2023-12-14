@@ -150,7 +150,7 @@
 //       netSalary,
 //     };
 //   }
-  
+
 function calculateHourDifference(startTimestamp, endTimestamp) {
     const start = new Date(startTimestamp.replace(" ", "T"));
     const end = new Date(endTimestamp.replace(" ", "T"));
@@ -174,7 +174,6 @@ function calculateHourDifference(startTimestamp, endTimestamp) {
 
   //   return totalHoursWorked;
   // }
-
 
   function calculateTotalLatenessHours(attendanceData, employeeId) {
     let totalLatenessHours = 0;
@@ -367,29 +366,21 @@ function calculateHourDifference(startTimestamp, endTimestamp) {
     return baseSalary;
   }
 
-
   const latenessRate = 6;
   const absentDayRate = 40;
-  function calculateDeductions(attendanceData, employeeID) {
+
+  function calculateDeductions(attendanceData) {
     let totalLatenessDeduction = 0;
     let totalAbsentDeduction = 0;
-
+    totalLatenessDeduction += calculateTotalLatenessHours(attendanceData) * latenessRate;
     attendanceData.forEach((attendance) => {
       const {
-        attendance: hasAttendance,
         reason_for_absence,
         employee_id,
       } = attendance;
-      if (employee_id === employeeID) {
-        if (hasAttendance) {
-          // Deduct based on lateness hours
-          totalLatenessDeduction +=
-            calculateTotalLatenessHours(attendanceData, employeeID) *
-            latenessRate;
-        } else if (reason_for_absence === "NoReason") {
-          // Deduct for days with attendance and absence reason is "NoReason"
-          totalAbsentDeduction += absentDayRate;
-        }
+      if (reason_for_absence === "NoReason") {
+        // Deduct for days with attendance and absence reason is "NoReason"
+        totalAbsentDeduction += absentDayRate;
       }
     });
     const total = totalLatenessDeduction + totalAbsentDeduction;
