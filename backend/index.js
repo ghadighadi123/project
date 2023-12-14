@@ -99,10 +99,13 @@ app.post("/attendance", (req, res) => {
   });
 });
 
-app.post("/attendence_data_for_1_user", (req, res) => {
-  const q =
-    "SELECT FROM attendance(`employee_id`, `dates`, `attendance`, `exit_time`, `arrival_time`, `shiftstarttime`, `shiftendtime`, `reason_for_absence`, `notes`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+app.get("/attendance",(req, res) =>{
+  const q = "SELECT employee_id, arrival_time, exit_time FROM attendance;"
+  db.query(q, (err, data)=>{
+      if (err) return res.json(err)
+      //i should write a functio that takes in parameters the value data fetched using query.db the return of the function 
 
+<<<<<<< HEAD
   const values = [
     req.body.employee_id,
     req.body.dates,
@@ -125,6 +128,11 @@ app.post("/attendence_data_for_1_user", (req, res) => {
     });
   });
 });
+=======
+      return res.json(calculateTotalHoursWorked(data))
+  })
+})
+>>>>>>> b136ec28bd259bf99fa313e563833ef49b3f16ae
 
 app.listen(8800, () => {
   console.log("Connected to backend !");
