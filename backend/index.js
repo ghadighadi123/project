@@ -78,7 +78,15 @@ app.post("/attendance", (req, res) => {
   });
 });
 
+app.get("/attendance",(req, res) =>{
+  const q = "SELECT employee_id, arrival_time, exit_time FROM attendance;"
+  db.query(q, (err, data)=>{
+      if (err) return res.json(err)
+      //i should write a functio that takes in parameters the value data fetched using query.db the return of the function 
 
+      return res.json(calculateTotalHoursWorked(data))
+  })
+})
 
 
 app.listen(8800, ()=>{

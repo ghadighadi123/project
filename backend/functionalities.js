@@ -6,38 +6,38 @@
 //     return diffInMilliseconds / (1000 * 60 * 60); // Convert milliseconds to hours
 // }
   
-//   // Function to calculate total hours worked for a given month
-//   function calculateTotalHoursWorked(attendanceData) {
-//     let totalHoursWorked = 0;
+  // Function to calculate total hours worked for a given month
+  // function calculateTotalHoursWorked(attendanceData) {
+  //   let totalHoursWorked = 0;
   
-//     attendanceData.forEach((attendance) => {
-//       const { arrival_time, exit_time } = attendance;
+  //   attendanceData.forEach((attendance) => {
+  //     const { arrival_time, exit_time } = attendance;
   
-//       if (arrival_time && exit_time) {
-//         totalHoursWorked += calculateHourDifference(arrival_time, exit_time);
-//       }
-//     });
+  //     if (arrival_time && exit_time) {
+  //       totalHoursWorked += calculateHourDifference(arrival_time, exit_time);
+  //     }
+  //   });
   
-//     return totalHoursWorked;
-//   }
+  //   return totalHoursWorked;
+  // }
   
-//   // Function to calculate total lateness hours for a given month
-//   function calculateTotalLatenessHours(attendanceData) {
-//     let totalLatenessHours = 0;
+  // Function to calculate total lateness hours for a given month
+  function calculateTotalLatenessHours(attendanceData) {
+    let totalLatenessHours = 0;
   
-//     attendanceData.forEach((attendance) => {
-//       const { shiftstarttime, shiftendtime, arrival_time, exit_time } = attendance;
+    attendanceData.forEach((attendance) => {
+      const { shiftstarttime, shiftendtime, arrival_time, exit_time } = attendance;
   
-//       if (shiftstarttime && shiftendtime && arrival_time && exit_time) {
-//         const shiftDuration = calculateHourDifference(shiftstarttime, shiftendtime);
-//         const workedHours = calculateHourDifference(arrival_time, exit_time);
-//         const latenessHours = Math.max(0, workedHours - shiftDuration);
-//         totalLatenessHours += latenessHours;
-//       }
-//     });
+      if (shiftstarttime && shiftendtime && arrival_time && exit_time) {
+        const shiftDuration = calculateHourDifference(shiftstarttime, shiftendtime);
+        const workedHours = calculateHourDifference(arrival_time, exit_time);
+        const latenessHours = Math.max(0, workedHours - shiftDuration);
+        totalLatenessHours += latenessHours;
+      }
+    });
   
-//     return totalLatenessHours;
-//   }
+    return totalLatenessHours;
+  }
 
 
 //   function calculateBaseSalary(employeeData, totalHoursWorked) {
@@ -159,21 +159,21 @@ function calculateHourDifference(startTimestamp, endTimestamp) {
   }
 
 
-  function calculateTotalHoursWorked(attendanceData, employeeId) {
-    let totalHoursWorked = 0;
+  // function calculateTotalHoursWorked(attendanceData, employeeId) {
+  //   let totalHoursWorked = 0;
 
-    attendanceData.forEach((attendance) => {
-      const { employee_id, arrival_time, exit_time } = attendance;
-      if (employee_id === employeeId && arrival_time && exit_time) {
-        totalHoursWorked += calculateHourDifference(
-          arrival_time,
-          exit_time
-        );
-      }
-    });
+  //   attendanceData.forEach((attendance) => {
+  //     const { employee_id, arrival_time, exit_time } = attendance;
+  //     if (employee_id === employeeId && arrival_time && exit_time) {
+  //       totalHoursWorked += calculateHourDifference(
+  //         arrival_time,
+  //         exit_time
+  //       );
+  //     }
+  //   });
 
-    return totalHoursWorked;
-  }
+  //   return totalHoursWorked;
+  // }
 
 
   function calculateTotalLatenessHours(attendanceData, employeeId) {
@@ -211,79 +211,79 @@ function calculateHourDifference(startTimestamp, endTimestamp) {
   }
 
 
-  const employeeData = [
-    {
-      employee_id: 123,
-      phone: "123-456-7890",
-      fullName: "John Doe",
-      age: 25,
-      gender: "Male",
-      department: "Software_Development",
-      accesslevel: "member",
-      email: "john.doe@example.com",
-      startdate: "2022-12-31T22:00:00.000Z",
-    },
-    {
-      employee_id: 124,
-      phone: "412-522-2356",
-      fullName: "Ralph Merhi",
-      age: 21,
-      gender: "Male",
-      department: "Marketing",
-      accesslevel: "Admin",
-      email: "ralph@example.com",
-      startdate: "2022-12-31T22:00:00.000Z",
-    },
-    {
-      employee_id: 125,
-      phone: "234-802-2144",
-      fullName: "Ghadi Abou deleh",
-      age: 20,
-      gender: "Male",
-      department: "HR",
-      accesslevel: "Manager",
-      email: "ghadi@example.com",
-      startdate: "2022-12-31T22:00:00.000Z",
-    },
-  ];
-  const attendanceData = [
-    {
-      employee_id: 123,
-      arrival_time: "2023-12-15 10:00:00",
-      exit_time: "2023-12-15 12:00:00",
-      shiftstarttime: "2023-12-15 08:00:00",
-      shiftendtime: "2023-12-15 17:00:00",
-      attendance: true,
-      reason_for_absence: "",
-    },
-    {
-      employee_id: 123,
-      arrival_time: "",
-      exit_time: "",
-      shiftstarttime: "2023-12-16 08:00:00",
-      shiftendtime: "2023-12-16 17:00:00",
-      attendance: false,
-      reason_for_absence: "OffDay",
-    },
-    {
-      employee_id: 124,
-      arrival_time: "",
-      exit_time: "",
-      shiftstarttime: "2023-12-15 08:00:00",
-      shiftendtime: "2023-12-15 17:00:00",
-      attendance: false,
-      reason_for_absence: "NoReason",
-    },
-    {
-      employee_id: 125,
-      arrival_time: "2023-12-15 10:00:00",
-      exit_time: "2023-12-15 12:00:00",
-      shiftstarttime: "2023-12-15 08:00:00",
-      shiftendtime: "2023-12-15 17:00:00",
-      attendance: true,
-      reason_for_absence: "",
-    },
-  ];
+  // const employeeData = [
+  //   {
+  //     employee_id: 123,
+  //     phone: "123-456-7890",
+  //     fullName: "John Doe",
+  //     age: 25,
+  //     gender: "Male",
+  //     department: "Software_Development",
+  //     accesslevel: "member",
+  //     email: "john.doe@example.com",
+  //     startdate: "2022-12-31T22:00:00.000Z",
+  //   },
+  //   {
+  //     employee_id: 124,
+  //     phone: "412-522-2356",
+  //     fullName: "Ralph Merhi",
+  //     age: 21,
+  //     gender: "Male",
+  //     department: "Marketing",
+  //     accesslevel: "Admin",
+  //     email: "ralph@example.com",
+  //     startdate: "2022-12-31T22:00:00.000Z",
+  //   },
+  //   {
+  //     employee_id: 125,
+  //     phone: "234-802-2144",
+  //     fullName: "Ghadi Abou deleh",
+  //     age: 20,
+  //     gender: "Male",
+  //     department: "HR",
+  //     accesslevel: "Manager",
+  //     email: "ghadi@example.com",
+  //     startdate: "2022-12-31T22:00:00.000Z",
+  //   },
+  // ];
+  // const attendanceData = [
+  //   {
+  //     employee_id: 123,
+  //     arrival_time: "2023-12-15 10:00:00",
+  //     exit_time: "2023-12-15 12:00:00",
+  //     shiftstarttime: "2023-12-15 08:00:00",
+  //     shiftendtime: "2023-12-15 17:00:00",
+  //     attendance: true,
+  //     reason_for_absence: "",
+  //   },
+  //   {
+  //     employee_id: 123,
+  //     arrival_time: "",
+  //     exit_time: "",
+  //     shiftstarttime: "2023-12-16 08:00:00",
+  //     shiftendtime: "2023-12-16 17:00:00",
+  //     attendance: false,
+  //     reason_for_absence: "OffDay",
+  //   },
+  //   {
+  //     employee_id: 124,
+  //     arrival_time: "",
+  //     exit_time: "",
+  //     shiftstarttime: "2023-12-15 08:00:00",
+  //     shiftendtime: "2023-12-15 17:00:00",
+  //     attendance: false,
+  //     reason_for_absence: "NoReason",
+  //   },
+  //   {
+  //     employee_id: 125,
+  //     arrival_time: "2023-12-15 10:00:00",
+  //     exit_time: "2023-12-15 12:00:00",
+  //     shiftstarttime: "2023-12-15 08:00:00",
+  //     shiftendtime: "2023-12-15 17:00:00",
+  //     attendance: true,
+  //     reason_for_absence: "",
+  //   },
+  // ];
 
 
   function calculateBaseSalary(employeeData, totalHoursWorked) {
@@ -490,6 +490,99 @@ function calculateHourDifference(startTimestamp, endTimestamp) {
     };
   }
   
+  function calculateTotalHoursWorked(attendanceData) {
+    let totalHoursByEmployee = [];
+  
+    attendanceData.forEach((attendance) => {
+      const { employee_id, arrival_time, exit_time } = attendance;
+  
+      if (arrival_time && exit_time) {
+        const hoursWorked = calculateHourDifference(arrival_time, exit_time);
+  
+        if (!totalHoursByEmployee[employee_id]) {
+          totalHoursByEmployee[employee_id] = 0;
+        }
+  
+        totalHoursByEmployee[employee_id] += hoursWorked;
+      }
+    });
+  
+    // Convert the result to an array of objects
+    const totalHoursList = Object.keys(totalHoursByEmployee).map((employeeId) => ({
+      employee_id: parseInt(employeeId, 10),
+      total_hours_worked: totalHoursByEmployee[employeeId],
+    }));
+  
+    return totalHoursList;
+  }
 
+  // Function to calculate total lateness hours for a given month
+function calculateTotalLatenessHours(attendanceData) {
+  // Initialize an empty array to store the total lateness hours by each employee
+  let totalLatenessByEmployee = [];
 
+  // Iterate through each entry in the attendanceData array
+  attendanceData.forEach((attendance) => {
+    // Destructure properties from the attendance object
+    const { employee_id, shiftstarttime, shiftendtime, arrival_time, exit_time } = attendance;
+
+    // Check if all necessary time values are present
+    if (shiftstarttime && shiftendtime && arrival_time && exit_time) {
+      // Calculate the shift duration using the calculateHourDifference function
+      const shiftDuration = calculateHourDifference(shiftstarttime, shiftendtime);
+
+      // Calculate the worked hours using the calculateHourDifference function
+      const workedHours = calculateHourDifference(arrival_time, exit_time);
+
+      // Calculate the lateness hours as the difference between worked hours and shift duration (max 0)
+      const latenessHours = Math.max(0, workedHours - shiftDuration);
+
+      // If the employee_id is not present in the totalLatenessByEmployee array, initialize it to 0
+      if (!totalLatenessByEmployee[employee_id]) {
+        totalLatenessByEmployee[employee_id] = 0;
+      }
+
+      // Accumulate the lateness hours to the total for the corresponding employee_id
+      totalLatenessByEmployee[employee_id] += latenessHours;
+    }
+  });
+
+  // Convert the totalLatenessByEmployee array to an array of objects
+  const totalLatenessList = Object.keys(totalLatenessByEmployee).map((employeeId) => ({
+    // Convert the employeeId to an integer (assuming it was a string)
+    employee_id: parseInt(employeeId, 10),
+    // Create an object with employee_id and total_lateness_hours properties
+    total_lateness_hours: totalLatenessByEmployee[employeeId],
+  }));
+
+  // Return the final list of total lateness hours for each employee
+  return totalLatenessList;
+}
+
+function calculateTotalLatenessHours(attendanceData) {
+  let totalLatenessByEmployee = [];
+
+  attendanceData.forEach((attendance) => {
+    const { employee_id, shiftstarttime, shiftendtime, arrival_time, exit_time } = attendance;
+
+    if (shiftstarttime && shiftendtime && arrival_time && exit_time) {
+      const shiftDuration = calculateHourDifference(shiftstarttime, shiftendtime);
+      const workedHours = calculateHourDifference(arrival_time, exit_time);
+      const latenessHours = Math.max(0, workedHours - shiftDuration);
+
+      if (!totalLatenessByEmployee[employee_id]) {
+        totalLatenessByEmployee[employee_id] = 0;
+      }
+
+      totalLatenessByEmployee[employee_id] += latenessHours;
+    }
+  });
+
+  const totalLatenessList = Object.keys(totalLatenessByEmployee).map((employeeId) => ({
+    employee_id: parseInt(employeeId, 10),
+    total_lateness_hours: totalLatenessByEmployee[employeeId],
+  }));
+
+  return totalLatenessList;
+}
 
