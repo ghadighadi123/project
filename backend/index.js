@@ -1,13 +1,6 @@
-<<<<<<< HEAD
 import express from "express";
 import mysql from "mysql";
 import cors from "cors";
-=======
-import express from "express"
-import mysql from "mysql"
-import cors from "cors"
-
-
 
 function calculateHourDifference(startTimestamp, endTimestamp) {
   const start = new Date(startTimestamp);
@@ -34,10 +27,12 @@ function calculateTotalHoursWorked(attendanceData) {
   });
 
   // Convert the result to an array of objects
-  const totalHoursList = Object.keys(totalHoursByEmployee).map((employeeId) => ({
-    employee_id: parseInt(employeeId, 10),
-    total_hours_worked: totalHoursByEmployee[employeeId],
-  }));
+  const totalHoursList = Object.keys(totalHoursByEmployee).map(
+    (employeeId) => ({
+      employee_id: parseInt(employeeId, 10),
+      total_hours_worked: totalHoursByEmployee[employeeId],
+    })
+  );
 
   return totalHoursList;
 }
@@ -46,10 +41,19 @@ function calculateTotalLatenessHours(attendanceData) {
   let totalLatenessByEmployee = [];
 
   attendanceData.forEach((attendance) => {
-    const { employee_id, shiftstarttime, shiftendtime, arrival_time, exit_time } = attendance;
+    const {
+      employee_id,
+      shiftstarttime,
+      shiftendtime,
+      arrival_time,
+      exit_time,
+    } = attendance;
 
     if (shiftstarttime && shiftendtime && arrival_time && exit_time) {
-      const shiftDuration = calculateHourDifference(shiftstarttime, shiftendtime);
+      const shiftDuration = calculateHourDifference(
+        shiftstarttime,
+        shiftendtime
+      );
       const workedHours = calculateHourDifference(arrival_time, exit_time);
       const latenessHours = Math.max(0, shiftDuration - workedHours);
 
@@ -61,21 +65,23 @@ function calculateTotalLatenessHours(attendanceData) {
     }
   });
 
-  const totalLatenessList = Object.keys(totalLatenessByEmployee).map((employeeId) => ({
-    employee_id: parseInt(employeeId, 10),
-    total_lateness_hours: totalLatenessByEmployee[employeeId],
-  }));
+  const totalLatenessList = Object.keys(totalLatenessByEmployee).map(
+    (employeeId) => ({
+      employee_id: parseInt(employeeId, 10),
+      total_lateness_hours: totalLatenessByEmployee[employeeId],
+    })
+  );
 
   return totalLatenessList;
 }
 
-
- function calculateBaseSalary(employeeData) {
+function calculateBaseSalary(employeeData) {
   let totalBaseSalaryByEmployee = [];
   // 1:merge 2 tables
   // 2:employee_id, arrival_time, exit_time, department, accessLevel
   employeeData.forEach((employe) => {
-    const { department, accesslevel, exit_time, employee_id, arrival_time } = employe;
+    const { department, accesslevel, exit_time, employee_id, arrival_time } =
+      employe;
     console.log(employe);
     let baseSalaryRate;
 
@@ -152,7 +158,7 @@ function calculateTotalLatenessHours(attendanceData) {
         console.log("Error");
         break;
     }
-  
+
     if (arrival_time && exit_time) {
       if (!totalBaseSalaryByEmployee[employee_id]) {
         totalBaseSalaryByEmployee[employee_id] = 0;
@@ -170,7 +176,6 @@ function calculateTotalLatenessHours(attendanceData) {
     }
   });
 
-  
   const baseSalaryList = Object.keys(totalBaseSalaryByEmployee).map(
     (employeeId) => ({
       employee_id: parseInt(employeeId, 10),
@@ -179,9 +184,10 @@ function calculateTotalLatenessHours(attendanceData) {
   );
 
   return baseSalaryList;
-};
+}
 
-export function calculateBonus(employeeStartDate) {//mnerja3la
+function calculateBonus(employeeStartDate) {
+  //mnerja3la
   const currentDate = new Date();
   const currentYear = currentDate.getFullYear();
   const startDate = new Date(employeeStartDate);
@@ -196,7 +202,7 @@ export function calculateBonus(employeeStartDate) {//mnerja3la
   return bonus;
 }
 
-export function calculateMedicalAbsenceHandle(attendanceData) {
+function calculateMedicalAbsenceHandle(attendanceData) {
   let medicalAbsenceCountByEmployee = [];
   let medicalAbsenceDeductionByEmployee = [];
   const medicalAbsenceMultiplier = 15;
@@ -214,7 +220,7 @@ export function calculateMedicalAbsenceHandle(attendanceData) {
     }
     if (!hasAttendance && reason_for_absence === "Medical") {
       // Count days with attendance 0 and reason_for_absence is "Medical"
-      console.log("hello")
+      console.log("hello");
       medicalAbsenceCountByEmployee[employee_id]++;
     }
     console.log(medicalAbsenceCountByEmployee[employee_id]);
@@ -230,7 +236,7 @@ export function calculateMedicalAbsenceHandle(attendanceData) {
   return medicalAbsenceDeductionList;
 }
 
-export function calculateDeductions(attendanceData) {
+function calculateDeductions(attendanceData) {
   const latenessRate = 6;
   const absentDayRate = 40;
   let totalDeductionByEmployee = [];
@@ -343,7 +349,9 @@ function calculateEmployeePayroll(joinedData) {
     );
 
     const totalSalary =
-  (baseSalary.baseSalary)*bonus - totalDeduction.total_deduction + medicalAbsenceDeduction.total_medical_payment_handle;
+      baseSalary.baseSalary * bonus -
+      totalDeduction.total_deduction +
+      medicalAbsenceDeduction.total_medical_payment_handle;
     payRollByEmployee[employee_id] = {
       employee_id: employee_id,
       total_hours_worked: totalHours.total_hours_worked || 0,
@@ -355,20 +363,11 @@ function calculateEmployeePayroll(joinedData) {
       total_deduction: totalDeduction.total_deduction || 0,
       deduction_absence: deductionAbsence.deduction_absence || 0,
       deduction_lateness: deductionLateness.deduction_latenance || 0,
-      total_salary: totalSalary<0 ? 0:totalSalary,
-    
+      total_salary: totalSalary < 0 ? 0 : totalSalary,
     };
   });
   return payRollByEmployee;
 }
-
-
-
-
-
-
-const app = express()
->>>>>>> 83662d9f08a1ccb39e67703f7ef2e442088425a7
 
 const app = express();
 
@@ -445,107 +444,89 @@ app.post("/attendance", (req, res) => {
   });
 });
 
-<<<<<<< HEAD
-app.get("/attendance", (req, res) => {
-  const q = "SELECT employee_id, arrival_time, exit_time FROM attendance;";
+app.get("/totalhoursworked", (req, res) => {
+  const q = "SELECT employee_id, arrival_time, exit_time FROM attendance";
+
   db.query(q, (err, data) => {
     if (err) return res.json(err);
-    //i should write a functio that takes in parameters the value data fetched using query.db the return of the function
+    // console.log(data);
+    // Call the function to calculate total hours worked and return the result
+    const result = calculateTotalHoursWorked(data);
 
-    return res.json(calculateTotalHoursWorked(data));
+    return res.json(result);
+  });
+});
+
+app.get("/totalLatenessHours", (req, res) => {
+  const q =
+    "SELECT employee_id, shiftstarttime, shiftendtime, arrival_time, exit_time FROM attendance";
+
+  db.query(q, (err, data) => {
+    if (err) return res.json(err);
+    // console.log(data);
+    // Call the function to calculate total hours worked and return the result
+    const result = calculateTotalLatenessHours(data);
+
+    return res.json(result);
+  });
+});
+
+app.get("/baseSalary", (req, res) => {
+  const q =
+    "SELECT e.department, e.accesslevel, a.exit_time, a.employee_id, a.arrival_time FROM employees e JOIN attendance a ON e.employee_id = a.employee_id";
+
+  db.query(q, (err, data) => {
+    if (err) return res.json(err);
+    // console.log(data);
+    // Call the function to calculate total hours worked and return the result
+    const result = calculateBaseSalary(data);
+
+    return res.json(result);
+  });
+});
+
+app.get("/medicalhandle", (req, res) => {
+  const q =
+    "SELECT employee_id, attendance, reason_for_absence  FROM  attendance ";
+
+  db.query(q, (err, data) => {
+    if (err) return res.json(err);
+    // console.log(data);
+    // Call the function to calculate total hours worked and return the result
+    const result = calculateMedicalAbsenceHandle(data);
+
+    return res.json(result);
+  });
+});
+
+app.get("/calculateDeductions", (req, res) => {
+  const q =
+    "SELECT employee_id, reason_for_absence, arrival_time, exit_time, shiftstarttime, shiftendtime  FROM  attendance ";
+
+  db.query(q, (err, data) => {
+    if (err) return res.json(err);
+    // console.log(data);
+    // Call the function to calculate total hours worked and return the result
+    const result = calculateDeductions(data);
+
+    return res.json(result);
+  });
+});
+
+app.get("/payroll", (req, res) => {
+  const q =
+    "SELECT e.employee_id, e.accesslevel, e.department, e.startdate, a.dates, a.attendance, a.arrival_time, a.exit_time, a.shiftstarttime, a.shiftendtime, a.reason_for_absence FROM employees e JOIN attendance a ON e.employee_id = a.employee_id;";
+
+  db.query(q, (err, data) => {
+    if (err) return res.json(err);
+    // console.log(data);
+    // Call the function to calculate total hours worked and return the result
+    const result = calculateEmployeePayroll(data);
+
+    return res.json(result);
   });
 });
 
 app.listen(8800, () => {
   console.log("Connected to backend !");
 });
-=======
-app.get("/totalhoursworked", (req, res) => {
-  const q = "SELECT employee_id, arrival_time, exit_time FROM attendance";
-
-  db.query(q, (err, data) => {
-    
-      if (err) return res.json(err);
-      // console.log(data);
-      // Call the function to calculate total hours worked and return the result
-      const result = calculateTotalHoursWorked(data);
-
-      return res.json(result);
-  });
-});
-
-app.get("/totalLatenessHours", (req, res) => {
-  const q = "SELECT employee_id, shiftstarttime, shiftendtime, arrival_time, exit_time FROM attendance";
-
-  db.query(q, (err, data) => {
-    
-      if (err) return res.json(err);
-      // console.log(data);
-      // Call the function to calculate total hours worked and return the result
-      const result = calculateTotalLatenessHours(data);
-
-      return res.json(result);
-  });
-});
-
-app.get("/baseSalary", (req, res) => {
-  const q = "SELECT e.department, e.accesslevel, a.exit_time, a.employee_id, a.arrival_time FROM employees e JOIN attendance a ON e.employee_id = a.employee_id";
-
-  db.query(q, (err, data) => {
-    
-      if (err) return res.json(err);
-      // console.log(data);
-      // Call the function to calculate total hours worked and return the result
-      const result = calculateBaseSalary(data);
-
-      return res.json(result);
-  });
-});
-
-app.get("/medicalhandle", (req, res) => {
-  const q = "SELECT employee_id, attendance, reason_for_absence  FROM  attendance ";
-
-  db.query(q, (err, data) => {
-    
-      if (err) return res.json(err);
-      // console.log(data);
-      // Call the function to calculate total hours worked and return the result
-      const result = calculateMedicalAbsenceHandle(data);
-
-      return res.json(result);
-  });
-});
-
-app.get("/calculateDeductions", (req, res) => {
-  const q = "SELECT employee_id, reason_for_absence, arrival_time, exit_time, shiftstarttime, shiftendtime  FROM  attendance ";
-
-  db.query(q, (err, data) => {
-    
-      if (err) return res.json(err);
-      // console.log(data);
-      // Call the function to calculate total hours worked and return the result
-      const result = calculateDeductions(data);
-
-      return res.json(result);
-  });
-});
-
-app.get("/payroll", (req, res) => {
-  const q = "SELECT e.employee_id, e.accesslevel, e.department, e.startdate, a.dates, a.attendance, a.arrival_time, a.exit_time, a.shiftstarttime, a.shiftendtime, a.reason_for_absence FROM employees e JOIN attendance a ON e.employee_id = a.employee_id;";
-
-  db.query(q, (err, data) => {
-    
-      if (err) return res.json(err);
-      // console.log(data);
-      // Call the function to calculate total hours worked and return the result
-      const result = calculateEmployeePayroll(data);
-
-      return res.json(result);
-  });
-});
-
-
-app.listen(8800, ()=>{
-    console.log("Connected to backend !")
-})
->>>>>>> 83662d9f08a1ccb39e67703f7ef2e442088425a7
