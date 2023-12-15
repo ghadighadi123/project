@@ -1,9 +1,5 @@
 import { tokens } from "../theme";
 
-
-
-
-
 export const mockTransactions = [
   {
     txId: "01e4dsa",

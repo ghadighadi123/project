@@ -1,7 +1,5 @@
 import { useState } from "react";
 import "./login.scss";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../config";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
@@ -11,20 +9,19 @@ const Login = () => {
   const navigate = useNavigate();
 
   const handlelogin = (e) => {
-    e.preventDefault();
-
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user; // Corrected this line
-        console.log(user);
-        navigate("/");
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        setError(true); // Set error state to true
-        console.error(errorCode, errorMessage);
-      });
+    //   e.preventDefault();
+    //   signInWithEmailAndPassword(auth, email, password)
+    //     .then((userCredential) => {
+    //       const user = userCredential.user; // Corrected this line
+    //       console.log(user);
+    //       navigate("/");
+    //     })
+    //     .catch((error) => {
+    //       const errorCode = error.code;
+    //       const errorMessage = error.message;
+    //       setError(true); // Set error state to true
+    //       console.error(errorCode, errorMessage);
+    //     });
   };
 
   return (

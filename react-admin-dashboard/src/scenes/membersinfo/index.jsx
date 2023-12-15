@@ -3,30 +3,28 @@ import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import { useTheme } from "@mui/material";
-import React, {useState,  useEffect } from 'react';
-import axios from 'axios'
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 const Membersinfo = () => {
-
   const [Memberinfo, setMembersinfo] = useState([]);
 
   useEffect(() => {
-
-    const fetchemployees = async () =>{
-      try{
-          const res = await axios.get("http://localhost:8800/attendance")
-          setMembersinfo(res.data)
-          console.log(res)
-      }catch(err){
-          console.log(err)
+    const fetchemployees = async () => {
+      try {
+        const res = await axios.get("http://localhost:8800/attendance");
+        setMembersinfo(res.data);
+        console.log(res);
+      } catch (err) {
+        console.log(err);
       }
-    }
-  fetchemployees()
-}, []);
+    };
+    fetchemployees();
+  }, []);
 
-const rows = Memberinfo
+  const rows = Memberinfo
     ? Object.keys(Memberinfo).map((id) => ({ id, ...Memberinfo[id] }))
-    : []; 
+    : [];
 
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
