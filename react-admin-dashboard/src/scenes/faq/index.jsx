@@ -94,7 +94,6 @@ const FAQ = () => {
                 helperText={touched.employee_id && errors.employee_id}
                 sx={{ gridColumn: "span 2" }}
               />
-
               <TextField
                 fullWidth
                 variant="filled"
@@ -120,6 +119,7 @@ const FAQ = () => {
 
               <TextField
                 fullWidth
+                disabled={values.attendance === "true"}
                 variant="filled"
                 select
                 label="Reason for Absence"
@@ -161,7 +161,9 @@ const FAQ = () => {
                 helperText={touched.dates && errors.dates}
                 sx={{ gridColumn: "span 2" }}
               />
+
               <TextField
+                disabled={values.attendance === "false"}
                 fullWidth
                 variant="filled"
                 type="text"
@@ -175,6 +177,7 @@ const FAQ = () => {
                 sx={{ gridColumn: "span 2" }}
               />
               <TextField
+                disabled={values.attendance === "false"}
                 fullWidth
                 variant="filled"
                 type="text"
@@ -188,6 +191,7 @@ const FAQ = () => {
                 sx={{ gridColumn: "span 2" }}
               />
               <TextField
+                disabled={values.attendance === "false"}
                 fullWidth
                 variant="filled"
                 type="text"
@@ -200,8 +204,8 @@ const FAQ = () => {
                 helperText={touched.shiftstarttime && errors.shiftstarttime}
                 sx={{ gridColumn: "span 2" }}
               />
-
               <TextField
+                disabled={values.attendance === "false"}
                 fullWidth
                 variant="filled"
                 type="text"
@@ -243,7 +247,17 @@ const FAQ = () => {
 const dateRegExp =
   /^(202[1-9]|20[3-9][0-9]|2100)-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[01])$/;
 const time24hRegex = /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/;
-
+const initialValues = {
+  employee_id: "",
+  dates: `${todayDate}`,
+  attendance: "",
+  arrival_time: "",
+  exit_time: "",
+  shiftstarttime: "",
+  shiftendtime: "",
+  reason_for_absence: "",
+  notes: "",
+};
 const checkoutSchema = yup.object().shape({
   employee_id: yup.string().required("required"),
   dates: yup
@@ -270,17 +284,4 @@ const checkoutSchema = yup.object().shape({
   reason_for_absence: yup.string().required("required"),
   notes: yup.string().required("required"),
 });
-
-const initialValues = {
-  employee_id: "",
-  dates: `${todayDate}`,
-  attendance: "",
-  arrival_time: "",
-  exit_time: "",
-  shiftstarttime: "",
-  shiftendtime: "",
-  reason_for_absence: "",
-  notes: "",
-};
-
 export default FAQ;
