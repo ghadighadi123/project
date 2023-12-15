@@ -62,7 +62,64 @@ const FAQ = () => {
       <Formik
         onSubmit={handleFormSubmit1}
         initialValues={initialValues}
-        validationSchema={checkoutSchema}
+        validationSchema={() =>
+          yup.lazy((values) => {
+            if (
+              values.attendance === "true" ||
+              values.attendance === undefined
+            ) {
+              return yup.object().shape({
+                employee_id: yup.string().required("required"),
+                dates: yup
+                  .string()
+                  .matches(dateRegExp, "wrong date format !")
+                  .required("required"),
+                attendance: yup.boolean().required("required"),
+                arrival_time: yup
+                  .string()
+                  .matches(time24hRegex, "Time is invalid")
+                  .required("required"),
+                exit_time: yup
+                  .string()
+                  .matches(time24hRegex, "Time is not valid")
+                  .required("required"),
+                shiftstarttime: yup
+                  .string()
+                  .matches(time24hRegex, "Time is not valid")
+                  .required("required"),
+                shiftendtime: yup
+                  .string()
+                  .matches(time24hRegex, "Time is not valid")
+                  .required("required"),
+                reason_for_absence: yup.string(),
+                notes: yup.string().required("required"),
+              });
+            } else if (values.attendance === "false") {
+              return yup.object().shape({
+                employee_id: yup.string().required("required"),
+                dates: yup
+                  .string()
+                  .matches(dateRegExp, "wrong date format !")
+                  .required("required"),
+                attendance: yup.boolean().required("required"),
+                arrival_time: yup
+                  .string()
+                  .matches(time24hRegex, "Time is invalid"),
+                exit_time: yup
+                  .string()
+                  .matches(time24hRegex, "Time is not valid"),
+                shiftstarttime: yup
+                  .string()
+                  .matches(time24hRegex, "Time is not valid"),
+                shiftendtime: yup
+                  .string()
+                  .matches(time24hRegex, "Time is not valid"),
+                reason_for_absence: yup.string().required("required"),
+                notes: yup.string().required("required"),
+              });
+            }
+          })
+        }
       >
         {({
           values,
@@ -258,30 +315,4 @@ const initialValues = {
   reason_for_absence: "",
   notes: "",
 };
-const checkoutSchema = yup.object().shape({
-  employee_id: yup.string().required("required"),
-  dates: yup
-    .string()
-    .matches(dateRegExp, "wrong date format !")
-    .required("required"),
-  attendance: yup.boolean().required("required"),
-  arrival_time: yup
-    .string()
-    .matches(time24hRegex, "Time is invalid")
-    .required("required"),
-  exit_time: yup
-    .string()
-    .matches(time24hRegex, "Time is not valid")
-    .required("required"),
-  shiftstarttime: yup
-    .string()
-    .matches(time24hRegex, "Time is not valid")
-    .required("required"),
-  shiftendtime: yup
-    .string()
-    .matches(time24hRegex, "Time is not valid")
-    .required("required"),
-  reason_for_absence: yup.string().required("required"),
-  notes: yup.string().required("required"),
-});
 export default FAQ;
