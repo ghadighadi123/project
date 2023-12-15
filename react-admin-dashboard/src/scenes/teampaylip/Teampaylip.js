@@ -9,14 +9,15 @@ import axios from 'axios'
 
 const Teampaylip = () => {
 
-  const [Memberinfo, setMembersinfo] = useState([]);
+  const [paymentinfo, setPaymentinfo] = useState([]);
 
   useEffect(() => {
 
     const fetchemployees = async () =>{
       try{
-          const res = await axios.get("http://localhost:8800/attendance")
-          setMembersinfo(res.data)
+          const res = await axios.get("http://localhost:8800/payroll")
+          const filteredMembers = res.data.filter(member => member !== null);
+          setPaymentinfo(filteredMembers)
           console.log(res)
       }catch(err){
           console.log(err)
@@ -25,8 +26,8 @@ const Teampaylip = () => {
   fetchemployees()
 }, []);
 
-const rows = Memberinfo
-    ? Object.keys(Memberinfo).map((id) => ({ id, ...Memberinfo[id] }))
+const rows = paymentinfo
+    ? Object.keys(paymentinfo).map((id) => ({ id, ...paymentinfo[id] }))
     : []; 
 
   const theme = useTheme();
@@ -40,44 +41,49 @@ const rows = Memberinfo
       cellClassName: "name-column--cell",
     },
     {
-      field: "absence_date",
-      headerName: "Absence Date",
+      field: "total_hours_worked",
+      headerName: "Worked Hours",
       flex: 1,
       cellClassName: "name-column--cell",
     },
     {
-      field: "reason_for_absence",
-      headerName: "Reason for Absence ",
+      field: "total_lateness_hours",
+      headerName: "lateness time ",
       flex: 1.3,
     },
     {
-      field: "attendance_date",
-      headerName: "Attendance Date",
+      field: "base_salary",
+      headerName: "Base Salary",
       flex: 1.3,
     },
     {
-      field: "arrival_time",
-      headerName: "IN Time",
+      field: "bonus",
+      headerName: "Raise",
       flex: 0.7,
     },
     {
-      field: "exit_time",
-      headerName: "OUT Time",
+      field: "medical_absence_deduction",
+      headerName: "Medicale Absence Handle",
       flex: 0.8,
     },
     {
-      field: "shiftstarttime",
-      headerName: "Shift Start Time",
+      field: "total_deduction",
+      headerName: "Deduction",
       flex: 1,
     },
     {
-      field: "shiftendtime",
-      headerName: "Shift end Time",
+      field: "deduction_absence",
+      headerName: "Absence Deduction",
       flex: 1,
     },
     {
-      field: "notes",
-      headerName: "Notes",
+      field: "deduction_lateness",
+      headerName: "Lateness Deduction",
+      flex: 1.5,
+    },
+    {
+      field: "total_salary",
+      headerName: "Total Salary",
       flex: 1.5,
     },
   ];
