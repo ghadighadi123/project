@@ -10,6 +10,11 @@ import axios from 'axios'
 
 const Team = () => {
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toISOString().split('T')[0]; // Extracts only the date part
+  };
+
   const [Member, setMembers] = useState([]);
 
   useEffect(() => {
@@ -29,7 +34,10 @@ const Team = () => {
 
 
  const rows = Member
-    ? Object.keys(Member).map((id) => ({ id, ...Member[id] }))
+    ? Object.keys(Member).map((id) => ({ id, 
+      ...Member[id],
+      startdate: formatDate(Member[id].startdate),
+     }))
     : []; 
 
   const theme = useTheme();

@@ -176,7 +176,7 @@ function calculateTotalLatenessHours(attendanceData) {
   return baseSalaryList;
 };
 
-export function calculateBonus(employeeStartDate) {//mnerja3la
+function calculateBonus(employeeStartDate) {//mnerja3la
   const currentDate = new Date();
   const currentYear = currentDate.getFullYear();
   const startDate = new Date(employeeStartDate);
@@ -191,7 +191,7 @@ export function calculateBonus(employeeStartDate) {//mnerja3la
   return bonus;
 }
 
-export function calculateMedicalAbsenceHandle(attendanceData) {
+function calculateMedicalAbsenceHandle(attendanceData) {
   let medicalAbsenceCountByEmployee = [];
   let medicalAbsenceDeductionByEmployee = [];
   const medicalAbsenceMultiplier = 15;
@@ -225,7 +225,7 @@ export function calculateMedicalAbsenceHandle(attendanceData) {
   return medicalAbsenceDeductionList;
 }
 
-export function calculateDeductions(attendanceData) {
+function calculateDeductions(attendanceData) {
   const latenessRate = 6;
   const absentDayRate = 40;
   let totalDeductionByEmployee = [];
@@ -519,6 +519,36 @@ app.get("/payroll", (req, res) => {
       const result = calculateEmployeePayroll(data);
 
       return res.json(result);
+  });
+});
+
+app.post("/contacts", (req, res) => {
+  const q =
+    "INSERT INTO contactsdata(`firstName`, `lastName`, `city`, `zipcode`, `email`, `contact`, `address`, `age`, `description`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+  const values = [
+    req.body.firstName,
+    req.body.lastName,
+    req.body.city,
+    req.body.zipcode,
+    req.body.email,
+    req.body.contact,
+    req.body.address,
+    req.body.age,
+    req.body.description,
+  ];
+
+  db.query(q, values, (err, data) => {
+    if (err) return res.json(err);
+    return res.json("Data inserted successfully!");
+  });
+});
+app.get("/contacts", (req, res) => {
+  const q = "SELECT * FROM contactsdata";
+
+  db.query(q, (err, data) => {
+    if (err) return res.json(err);
+    return res.json(data);
   });
 });
 

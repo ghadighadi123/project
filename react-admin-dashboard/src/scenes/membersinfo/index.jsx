@@ -8,6 +8,16 @@ import axios from 'axios'
 
 const Membersinfo = () => {
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toISOString().split('T')[0]; // Extracts only the date part
+  };
+
+  const formatTime = (timeString) => {
+    const date = new Date(timeString);
+    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  };
+
   const [Memberinfo, setMembersinfo] = useState([]);
 
   useEffect(() => {
@@ -16,7 +26,7 @@ const Membersinfo = () => {
       try{
           const res = await axios.get("http://localhost:8800/attendance")
           setMembersinfo(res.data)
-          console.log(res)
+          console.log(res.data)
       }catch(err){
           console.log(err)
       }
@@ -25,7 +35,14 @@ const Membersinfo = () => {
 }, []);
 
 const rows = Memberinfo
-    ? Object.keys(Memberinfo).map((id) => ({ id, ...Memberinfo[id] }))
+    ? Object.keys(Memberinfo).map((id) => ({ id, 
+      ...Memberinfo[id] ,
+      dates: formatDate(Memberinfo[id].dates),
+      arrival_time: formatTime(Memberinfo[id].arrival_time),
+      exit_time: formatTime(Memberinfo[id].exit_time),
+      shiftstarttime: formatTime(Memberinfo[id].shiftstarttime),
+      shiftendtime: formatTime(Memberinfo[id].shiftendtime),
+    }))
     : []; 
 
   const theme = useTheme();
@@ -40,9 +57,11 @@ const rows = Memberinfo
     },
     {
       field: "attendance",
-      headerName: "Attendance",
-      flex: 1,
-      cellClassName: "name-column--cell",
+    headerName: "Attendance",
+    flex: 1,
+    cellClassName: "name-column--cell",
+    // Use valueFormatter to customize the display based on the value
+    valueFormatter: (params) => (params.value === 1 ? "Present" : "Absent"),
     },
     {
       field: "reason_for_absence",
@@ -84,9 +103,10 @@ const rows = Memberinfo
   return (
     <Box m="20px">
       <Header
-        title="CONTACTS"
-        subtitle="List of Contacts for Future Reference"
+        title="MEMBERS INFO"
+        subtitle="Company Members Data"
       />
+      {/* List of Contacts for Future Reference */}
       <Box
         m="40px 0 0 0"
         height="75vh"
