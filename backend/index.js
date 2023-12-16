@@ -374,8 +374,8 @@ const app = express();
 const db = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "12345",
-  database: "project_schema",
+  password: "ralph",
+  database: "project",
 });
 
 app.use(express.json());
@@ -558,5 +558,5 @@ app.get("/contacts", (req, res) => {
 });
 
 app.listen(8800, () => {
-  console.log("Connected to backend !");
+  console.log("Hello Backend");
 });

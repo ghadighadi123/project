@@ -16,7 +16,7 @@ import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import BadgeIcon from "@mui/icons-material/Badge";
-import EmojiPeopleIcon from '@mui/icons-material/EmojiPeople';
+import EmojiPeopleIcon from "@mui/icons-material/EmojiPeople";
 import PaymentsIcon from "@mui/icons-material/Payments";
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
