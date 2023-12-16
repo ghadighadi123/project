@@ -1,10 +1,9 @@
-import "./login.css";
-import "bootstrap/dist/css/bootstrap.min.css";
-import Validation from "./Validation";
-import { useState } from "react";
 import { Link } from "react-router-dom";
-const Login = () => {
+import Validation from "./signValidation";
+import { useState } from "react";
+const Signup = () => {
   const [values, setValues] = useState({
+    name: "",
     email: "",
     password: "",
   });
@@ -22,14 +21,27 @@ const Login = () => {
   return (
     <div className="d-flex justify-content-center align-items-center  bg-primary vh-100">
       <div className="p-3 bg-white w-25 rounded">
-        <h2>Sign-In</h2>
+        <h2>Sign-Up</h2>
         <form action="" onSubmit={handleSubmit}>
+          <div className="mb-3">
+            <label htmlFor="name">
+              <strong>Name</strong>
+            </label>
+            <input
+              type="email"
+              placeholder="Enter Name"
+              className="form-control rounded-0"
+              name="name"
+              onChange={handleInput}
+            />
+            {errors.name && <span className="text-danger">{errors.name}</span>}
+          </div>
           <div className="mb-3">
             <label htmlFor="name">
               <strong>Email</strong>
             </label>
             <input
-              type="text"
+              type="email"
               placeholder="Enter Email"
               className="form-control rounded-0"
               name="email"
@@ -55,19 +67,18 @@ const Login = () => {
             )}
           </div>
           <button type="submit" className="btn btn-success w-100 rounded-0">
-            Log in
+            Sign up
           </button>
           <p>Lorem ipsum dolor sit amet.</p>
           <Link
-            to="/signup"
+            to="/"
             className="btn btn-default border w-100 bg-light rounded-0 text-decoration-none"
           >
-            Create Account
+            Login
           </Link>
         </form>
       </div>
     </div>
   );
 };
-
-export default Login;
+export default Signup;
