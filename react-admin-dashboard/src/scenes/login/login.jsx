@@ -11,7 +11,9 @@ const Login = () => {
   const [errors, setErrors] = useState([]);
   const handleSubmit = (event) => {
     event.preventDefault();
-    setErrors(Validation(values));
+    const isValid = setErrors(Validation(values));
+    // console.log(Validation(values));
+    // console.log(values);
   };
   const handleInput = (event) => {
     setValues((prev) => ({
