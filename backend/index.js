@@ -527,6 +527,36 @@ app.get("/payroll", (req, res) => {
   });
 });
 
+app.post("/contacts", (req, res) => {
+  const q =
+    "INSERT INTO contactsdata(`firstName`, `lastName`, `city`, `zipcode`, `email`, `contact`, `address`, `age`, `description`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+  const values = [
+    req.body.firstName,
+    req.body.lastName,
+    req.body.city,
+    req.body.zipcode,
+    req.body.email,
+    req.body.contact,
+    req.body.address,
+    req.body.age,
+    req.body.description,
+  ];
+
+  db.query(q, values, (err, data) => {
+    if (err) return res.json(err);
+    return res.json("Data inserted successfully!");
+  });
+});
+app.get("/contacts", (req, res) => {
+  const q = "SELECT * FROM contactsdata";
+
+  db.query(q, (err, data) => {
+    if (err) return res.json(err);
+    return res.json(data);
+  });
+});
+
 app.listen(8800, () => {
   console.log("Connected to backend !");
 });

@@ -18,7 +18,7 @@ import Calendar from "./scenes/calendar/calendar";
 import Members from "./scenes/members";
 import Teampaylip from "./scenes/teampaylip/Teampaylip";
 import Login from "./scenes/login/login";
-
+import Contactsdata from "./scenes/contactsdata/"
 function App() {
   const [theme, colorMode] = useMode();
   const [isSidebar, setIsSidebar] = useState(true);
@@ -68,6 +68,14 @@ function App() {
                 element={
                   <RequireAuth>
                     <Membersinfo />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/contactsdata"
+                element={
+                  <RequireAuth>
+                    <Contactsdata />
                   </RequireAuth>
                 }
               />
