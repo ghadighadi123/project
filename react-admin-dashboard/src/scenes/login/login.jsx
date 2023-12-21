@@ -3,6 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Validation from "./Validation";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { TextField } from "@mui/material";
 const Login = () => {
   const [values, setValues] = useState({
     email: "",
@@ -31,7 +32,7 @@ const Login = () => {
               <strong>Email</strong>
             </label>
             <input
-              type="text"
+              type="email"
               placeholder="Enter Email"
               className="form-control rounded-0"
               name="email"
@@ -48,7 +49,7 @@ const Login = () => {
             <input
               type="password"
               placeholder="Enter Password"
-              className="form-control rounded-0"
+              className="form-control rounded-20"
               name="password"
               onChange={handleInput}
             />
@@ -61,11 +62,18 @@ const Login = () => {
           </button>
           <p>Lorem ipsum dolor sit amet.</p>
           <Link
-            to="/signup"
+            to="/dashboard"
             className="btn btn-default border w-100 bg-light rounded-0 text-decoration-none"
           >
             Create Account
           </Link>
+          <TextField
+            fullWidth
+            variant="filled"
+            type="text"
+            label="Brief Description"
+            sx={{ gridColumn: "span 4" }}
+          />
         </form>
       </div>
     </div>

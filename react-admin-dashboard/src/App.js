@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Routes, Route } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
 import Topbar from "./scenes/global/Topbar";
 import Sidebar from "./scenes/global/Sidebar";
 import Dashboard from "./scenes/dashboard";
@@ -12,148 +12,182 @@ import Line from "./scenes/line";
 import Pie from "./scenes/pie";
 import FAQ from "./scenes/faq";
 import Geography from "./scenes/geography";
-import { CssBaseline, ThemeProvider } from "@mui/material";
-import { ColorModeContext, useMode } from "./theme";
 import Calendar from "./scenes/calendar/calendar";
 import Members from "./scenes/members";
 import Teampaylip from "./scenes/teampaylip/Teampaylip";
-// import Login from "./scenes/login/login";
-// import Signup from "./scenes/login/Signup";
 import Contactsdata from "./scenes/contactsdata/";
+import Login from "./scenes/login/login";
+import Signup from "./scenes/login/Signup";
+import { CssBaseline, ThemeProvider } from "@mui/material";
+import { ColorModeContext, useMode } from "./theme";
+import Layout from "./Layout";
 function App() {
   const [theme, colorMode] = useMode();
-  const [isSidebar, setIsSidebar] = useState(true);
-
-  // const currentUser = true;
-
-  // const RequireAuth = ({ children }) => {
-  //   return currentUser ? children : <Navigate to="/login" />;
-  // };
-
+  const navigate = useNavigate();
+  useEffect(() => {
+    navigate("/");
+  }, []);
+  const currentUser = true;
+  const RequireAuth = ({ children }) => {
+    return currentUser ? children : <Navigate to="/" />;
+  };
+  // const [isSidebar, setIsSidebar] = useState(true);
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <div className="app">
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+        </Routes>
+        {/* <div className="app">
           <Sidebar isSidebar={isSidebar} />
           <main className="content">
-            <Topbar setIsSidebar={setIsSidebar} />
-            <Routes>
-              <Route
-                path="/"
-                element={
-                  // <RequireAuth>
+            <Topbar setIsSidebar={setIsSidebar} /> */}
+        <Routes>
+          <Route
+            path="/dashboard"
+            element={
+              <RequireAuth>
+                <Layout>
                   <Dashboard />
-                  // </RequireAuth>
-                }
-              />
-              <Route
-                path="/team"
-                element={
-                  // <RequireAuth>
+                </Layout>
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/team"
+            element={
+              <RequireAuth>
+                <Layout title="Manage Team">
                   <Team />
-                  // </RequireAuth>
-                }
-              />
-              <Route
-                path="/invoices"
-                element={
-                  // <RequireAuth>
+                </Layout>
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/invoices"
+            element={
+              <RequireAuth>
+                <Layout>
                   <Teampaylip />
-                  // </RequireAuth>
-                }
-              />
-              <Route
-                path="/membersinfo"
-                element={
-                  // <RequireAuth>
+                </Layout>
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/membersinfo"
+            element={
+              <RequireAuth>
+                <Layout>
                   <Membersinfo />
-                  // </RequireAuth>
-                }
-              />
-              <Route
-                path="/contactsdata"
-                element={
-                  // <RequireAuth>
+                </Layout>
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/contactsdata"
+            element={
+              <RequireAuth>
+                <Layout>
                   <Contactsdata />
-                  // </RequireAuth>
-                }
-              />
-              <Route
-                path="/invoices"
-                element={
-                  // <RequireAuth>
+                </Layout>
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/invoices"
+            element={
+              <RequireAuth>
+                <Layout>
                   <Invoices />
-                  // </RequireAuth>
-                }
-              />
-              <Route
-                path="/form"
-                element={
-                  // <RequireAuth>
+                </Layout>
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/form"
+            element={
+              <RequireAuth>
+                <Layout>
                   <Form />
-                  // </RequireAuth>
-                }
-              />
-              <Route
-                path="/bar"
-                element={
-                  // <RequireAuth>
+                </Layout>
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/bar"
+            element={
+              <RequireAuth>
+                <Layout>
                   <Bar />
-                  // </RequireAuth>
-                }
-              />
-              <Route
-                path="/pie"
-                element={
-                  // <RequireAuth>
+                </Layout>
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/pie"
+            element={
+              <RequireAuth>
+                <Layout>
                   <Pie />
-                  // </RequireAuth>
-                }
-              />
-              <Route
-                path="/line"
-                element={
-                  // <RequireAuth>
+                </Layout>
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/line"
+            element={
+              <RequireAuth>
+                <Layout>
                   <Line />
-                  // </RequireAuth>
-                }
-              />
-              <Route
-                path="/faq"
-                element={
-                  // <RequireAuth>
+                </Layout>
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/faq"
+            element={
+              <RequireAuth>
+                <Layout>
                   <FAQ />
-                  // </RequireAuth>
-                }
-              />
-              <Route
-                path="/Members"
-                element={
-                  // <RequireAuth>
+                </Layout>
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/Members"
+            element={
+              <RequireAuth>
+                <Layout>
                   <Members />
-                  // </RequireAuth>
-                }
-              />
-              <Route
-                path="/calendar"
-                element={
-                  // <RequireAuth>
+                </Layout>
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/calendar"
+            element={
+              <RequireAuth>
+                <Layout>
                   <Calendar />
-                  // </RequireAuth>
-                }
-              />
-              <Route
-                path="/geography"
-                element={
-                  // <RequireAuth>
+                </Layout>
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/geography"
+            element={
+              <RequireAuth>
+                <Layout>
                   <Geography />
-                  // </RequireAuth>
-                }
-              />
-            </Routes>
-          </main>
-        </div>
+                </Layout>
+              </RequireAuth>
+            }
+          />
+        </Routes>
+        {/* </main>
+        </div> */}
       </ThemeProvider>
     </ColorModeContext.Provider>
   );

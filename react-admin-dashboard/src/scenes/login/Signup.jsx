@@ -28,7 +28,7 @@ const Signup = () => {
               <strong>Name</strong>
             </label>
             <input
-              type="email"
+              type="text"
               placeholder="Enter Name"
               className="form-control rounded-0"
               name="name"
@@ -71,7 +71,7 @@ const Signup = () => {
           </button>
           <p>Lorem ipsum dolor sit amet.</p>
           <Link
-            to="/"
+            to="/login"
             className="btn btn-default border w-100 bg-light rounded-0 text-decoration-none"
           >
             Login

@@ -8,6 +8,7 @@ export const tokens = (mode) => ({
         // no changes
         grey: {
           // original
+          // used values
           100: "#e0e0e0",
           200: "#c2c2c2",
           300: "#a3a3a3",
@@ -17,7 +18,7 @@ export const tokens = (mode) => ({
           700: "#3d3d3d",
           800: "#292929",
           900: "#141414",
-
+          // test
           // changes
           // 100: "#4d0000", // Adjusted color
           // 200: "#990000", // Adjusted color
@@ -101,7 +102,7 @@ export const tokens = (mode) => ({
           // 700: "#0b0b0b", // Darker gray
           // 800: "#004080", // Lighter dark blue for dark mode
           // 900: "#004080", // Lighter dark blue for dark mode
-
+          // used values
           100: "#f0ebf5",
           200: "#d8d2e9",
           300: "#c0b9de",
@@ -143,6 +144,7 @@ export const tokens = (mode) => ({
           // 700: "#0b0b0b", // Darker gray
           // 800: "#000000", // Darker gray
           // 900: "#000000", // Darker gray
+          // used values
           100: "#a1b3cc",
           200: "#748db3",
           300: "#47678b",
@@ -152,6 +154,7 @@ export const tokens = (mode) => ({
           700: "#002137",
           800: "#001825",
           900: "#000d13",
+          // test
         },
         blueAccent: {
           // original
@@ -195,6 +198,7 @@ export const tokens = (mode) => ({
           // 800: "#593c00", // Dark brown
           // 900: "#472b00", // Dark brown
           //change 4
+          // used values
           100: "#f5f5f5", // Lighter gray
           200: "#e0e0e0", // Light gray
           300: "#cccccc", // Light gray
@@ -204,6 +208,7 @@ export const tokens = (mode) => ({
           700: "#666666", // Medium dark gray
           800: "#4d4d4d", // Dark gray
           900: "#333333", // Darker gray
+          // test,
         },
       }
     : {
@@ -276,21 +281,25 @@ export const themeSettings = (mode) => {
             // palette values for dark mode
             primary: {
               // original
+              // used value
               main: colors.primary[500],
               // changes
               // main: colors.primary[100],
             },
             secondary: {
               // original
+              // used values
               main: colors.greenAccent[500],
               // changes
               // main: colors.greenAccent[900],
             },
             neutral: {
               // original
+              // used value
               dark: colors.grey[700],
               // dark: colors.grey[900],
               // original
+              // used value
               main: colors.grey[500],
               // main: colors.grey[100],
               // original
@@ -300,6 +309,7 @@ export const themeSettings = (mode) => {
               // original
               // default: colors.primary[500],
               // changes
+              // used value
               default: colors.primary[600],
             },
           }

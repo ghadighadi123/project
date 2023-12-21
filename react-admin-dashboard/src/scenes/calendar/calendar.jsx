@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import FullCalendar, { formatDate } from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -45,7 +45,26 @@ const Calendar = () => {
       selected.event.remove();
     }
   };
+  useEffect(() => {
+    const styleElement = document.createElement("style");
+    styleElement.innerHTML = `
+    .fc-daygrid-event{
+      background: #9088c8 !important;
+    }
+    .fc-col-header-cell-cushion {
+      color: white !important;
+    }
+    .fc-daygrid-day-number {
+      color: white !important;
+    }
+    `;
+    document.head.appendChild(styleElement);
 
+    // Cleanup the style element when the component is unmounted
+    return () => {
+      document.head.removeChild(styleElement);
+    };
+  }, []);
   return (
     <Box m="20px">
       <Header title="Calendar" subtitle="Full Calendar Interactive Page" />
