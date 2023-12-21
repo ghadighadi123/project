@@ -28,6 +28,8 @@ function calculateTotalHoursWorked(attendanceData) {
     }
   });
 
+  
+
   // Convert the result to an array of objects
   const totalHoursList = Object.keys(totalHoursByEmployee).map((employeeId) => ({
     employee_id: parseInt(employeeId, 10),
@@ -357,8 +359,42 @@ function calculateEmployeePayroll(joinedData) {
   return payRollByEmployee;
 }
 
+// function calculateTotalHoursWorkedbyName(attendanceData) {
+//   let totalHoursByEmployeeName = [];
 
+//   attendanceData.forEach((attendance) => {
+//     const { fullName, arrival_time, exit_time } = attendance;
 
+//     if (arrival_time && exit_time) {
+//       const hoursWorked = calculateHourDifference(arrival_time, exit_time);
+
+//       if (!totalHoursByEmployee[fullName]) {
+//         totalHoursByEmployee[fullName] = 0;
+//       }
+
+//       totalHoursByEmployeeName[fullName] += hoursWorked;
+//     }
+//   });
+// }
+
+    // function provideDataForGraph(Data) {//FullName,department
+    //   let dataForGraph = [];
+
+    //   Data.forEach((attendance) => {
+    //     const { department } = attendance;
+
+        
+
+    //       if (!dataForGraph[department]) {
+    //         dataForGraph[department] =department;
+    //       }
+
+    //       dataForGraph[employee_id] += calculateTotalHoursWorkedbyName(Data);
+        
+    //   });
+    // }
+
+    
 
 
 
@@ -552,6 +588,37 @@ app.get("/contacts", (req, res) => {
   });
 });
 
+app.post('/signup', (req, res) => {
+  const sql = "INSERT INTO users (`name`, `email`, `password`) VALUES (?, ?, ?)";
+  const values = [req.body.name, req.body.email, req.body.password];
+
+  db.query(sql, values, (err, data) => {
+    if (err) {
+      console.error('Error inserting user:', err);
+      return res.status(500).json({ error: 'Error inserting user' });
+    }
+    return res.status(200).json({ message: 'User signed up successfully' });
+  });
+});
+
+
+app.post('/login', (req, res) => {
+  const sql = "SELECT * FROM users WHERE `email` = ? AND `password` = ?";
+  const values = [req.body.email, req.body.password];
+
+  db.query(sql, values, (err, data) => {
+    if (err) {
+      console.error('Error fetching user:', err);
+      return res.json("Error");
+    }
+
+    if (data.length > 0) {
+      return res.json("Success");
+    } else {
+      return res.json("Fail");
+    }
+  });
+});
 
 app.listen(8800, ()=>{
     console.log("Connected to backend !")
