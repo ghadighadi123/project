@@ -1,37 +1,32 @@
-import { useEffect, useState } from "react";
-import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
-import Topbar from "./scenes/global/Topbar";
-import Sidebar from "./scenes/global/Sidebar";
-import Dashboard from "./scenes/dashboard";
+import { useEffect } from "react";
+import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import Team from "./scenes/team";
-import Invoices from "./scenes/invoices";
 import Membersinfo from "./scenes/membersinfo";
-import Bar from "./scenes/bar";
 import Form from "./scenes/form";
-import Line from "./scenes/line";
-import Pie from "./scenes/pie";
 import FAQ from "./scenes/faq";
-import Geography from "./scenes/geography";
+import { CssBaseline, ThemeProvider } from "@mui/material";
+import { ColorModeContext, useMode } from "./theme";
 import Calendar from "./scenes/calendar/calendar";
 import Members from "./scenes/members";
 import Teampaylip from "./scenes/teampaylip/Teampaylip";
 import Contactsdata from "./scenes/contactsdata/";
 import Login from "./scenes/login/login";
-import Signup from "./scenes/login/Signup";
-import { CssBaseline, ThemeProvider } from "@mui/material";
-import { ColorModeContext, useMode } from "./theme";
-import Layout from "./Layout";
+import Signup from "./scenes/login/signup";
+import Layout from "./layout";
+
 function App() {
   const [theme, colorMode] = useMode();
+
   const navigate = useNavigate();
   useEffect(() => {
     navigate("/");
   }, []);
+
   const currentUser = true;
   const RequireAuth = ({ children }) => {
     return currentUser ? children : <Navigate to="/" />;
   };
-  // const [isSidebar, setIsSidebar] = useState(true);
+
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
@@ -40,21 +35,7 @@ function App() {
           <Route path="/" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
         </Routes>
-        {/* <div className="app">
-          <Sidebar isSidebar={isSidebar} />
-          <main className="content">
-            <Topbar setIsSidebar={setIsSidebar} /> */}
         <Routes>
-          <Route
-            path="/dashboard"
-            element={
-              <RequireAuth>
-                <Layout>
-                  <Dashboard />
-                </Layout>
-              </RequireAuth>
-            }
-          />
           <Route
             path="/team"
             element={
@@ -69,7 +50,7 @@ function App() {
             path="/invoices"
             element={
               <RequireAuth>
-                <Layout>
+                <Layout title="Manage Team">
                   <Teampaylip />
                 </Layout>
               </RequireAuth>
@@ -79,7 +60,7 @@ function App() {
             path="/membersinfo"
             element={
               <RequireAuth>
-                <Layout>
+                <Layout title="Members Information">
                   <Membersinfo />
                 </Layout>
               </RequireAuth>
@@ -89,58 +70,19 @@ function App() {
             path="/contactsdata"
             element={
               <RequireAuth>
-                <Layout>
+                <Layout title="Contacts">
                   <Contactsdata />
                 </Layout>
               </RequireAuth>
             }
           />
-          <Route
-            path="/invoices"
-            element={
-              <RequireAuth>
-                <Layout>
-                  <Invoices />
-                </Layout>
-              </RequireAuth>
-            }
-          />
+
           <Route
             path="/form"
             element={
               <RequireAuth>
-                <Layout>
+                <Layout title="Contacts Form">
                   <Form />
-                </Layout>
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/bar"
-            element={
-              <RequireAuth>
-                <Layout>
-                  <Bar />
-                </Layout>
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/pie"
-            element={
-              <RequireAuth>
-                <Layout>
-                  <Pie />
-                </Layout>
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/line"
-            element={
-              <RequireAuth>
-                <Layout>
-                  <Line />
                 </Layout>
               </RequireAuth>
             }
@@ -149,7 +91,8 @@ function App() {
             path="/faq"
             element={
               <RequireAuth>
-                <Layout>
+                '
+                <Layout title="Contacts">
                   <FAQ />
                 </Layout>
               </RequireAuth>
@@ -159,7 +102,7 @@ function App() {
             path="/Members"
             element={
               <RequireAuth>
-                <Layout>
+                <Layout title="Add Member">
                   <Members />
                 </Layout>
               </RequireAuth>
@@ -169,25 +112,13 @@ function App() {
             path="/calendar"
             element={
               <RequireAuth>
-                <Layout>
+                <Layout title="Calendar">
                   <Calendar />
                 </Layout>
               </RequireAuth>
             }
           />
-          <Route
-            path="/geography"
-            element={
-              <RequireAuth>
-                <Layout>
-                  <Geography />
-                </Layout>
-              </RequireAuth>
-            }
-          />
         </Routes>
-        {/* </main>
-        </div> */}
       </ThemeProvider>
     </ColorModeContext.Provider>
   );

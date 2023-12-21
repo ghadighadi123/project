@@ -45,6 +45,7 @@ const Calendar = () => {
       selected.event.remove();
     }
   };
+
   useEffect(() => {
     const styleElement = document.createElement("style");
     styleElement.innerHTML = `
