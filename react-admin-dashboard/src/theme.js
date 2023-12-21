@@ -7,7 +7,6 @@ export const tokens = (mode) => ({
     ? {
         // no changes
         grey: {
-          // original
           100: "#e0e0e0",
           200: "#c2c2c2",
           300: "#a3a3a3",
@@ -59,6 +58,7 @@ export const tokens = (mode) => ({
           700: "#1f1f1f", // Adjusted color
           800: "#141414", // Adjusted color
           900: "#0a0a0a", // Adjusted color
+  
         },
         greenAccent: {
           // original
@@ -102,14 +102,14 @@ export const tokens = (mode) => ({
           // 900: "#004080", // Lighter dark blue for dark mode
           
           100: "#f0ebf5",
-    200: "#d8d2e9",
-    300: "#c0b9de",
-    400: "#a8a1d3",
-    500: "#9088c8",
-    600: "#796fae",
-    700: "#615695",
-    800: "#494d7a",
-    900: "#31345f",
+          200: "#d8d2e9",
+          300: "#c0b9de",
+          400: "#a8a1d3",
+          500: "#9088c8",
+          600: "#796fae",
+          700: "#615695",
+          800: "#494d7a",
+          900: "#31345f",
 
 
         },

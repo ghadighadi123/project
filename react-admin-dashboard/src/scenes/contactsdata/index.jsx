@@ -1,4 +1,4 @@
-import { Box , Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
@@ -6,17 +6,17 @@ import { useTheme } from "@mui/material";
 import React, {useState,  useEffect } from 'react';
 import axios from 'axios'
 
-const Teampaylip = () => {
+const Contactsdata = () => {
 
-  const [paymentinfo, setPaymentinfo] = useState([]);
+  const [contactsData, setcontactsData] = useState([]);
 
   useEffect(() => {
 
     const fetchemployees = async () =>{
       try{
-          const res = await axios.get("http://localhost:8800/payroll")
+          const res = await axios.get("http://localhost:8800/contacts")
           const filteredMembers = res.data.filter(member => member !== null);
-          setPaymentinfo(filteredMembers)
+          setcontactsData(filteredMembers)
           console.log(res)
       }catch(err){
           console.log(err)
@@ -25,8 +25,8 @@ const Teampaylip = () => {
   fetchemployees()
 }, []);
 
-const rows = paymentinfo
-    ? Object.keys(paymentinfo).map((id) => ({ id, ...paymentinfo[id] }))
+const rows = contactsData
+    ? Object.keys(contactsData).map((id) => ({ id, ...contactsData[id] }))
     : []; 
 
   const theme = useTheme();
@@ -34,94 +34,59 @@ const rows = paymentinfo
 
   const columns = [
     {
-      field: "employee_id",
-      headerName: "Employee ID",
+      field: "firstName",
+      headerName: "First Name",
       flex: 1,
       cellClassName: "name-column--cell",
     },
     {
-      field: "total_hours_worked",
-      headerName: "Worked Hours",
+      field: "lastName",
+      headerName: "Last Name",
       flex: 1,
-      // cellClassName: "name-column--cell",
+      cellClassName: "name-column--cell",
     },
     {
-      field: "total_lateness_hours",
-      headerName: "lateness time ",
+      field: "age",
+      headerName: "Age",
       flex: 1.3,
     },
     {
-      field: "base_salary",
-      headerName: "Base Salary",
+      field: "city",
+      headerName: "City",
       flex: 1.3,
-      renderCell: (params) => (
-        <Typography>
-          ${params.row.base_salary}
-        </Typography>
-      ),
     },
     {
-      field: "bonus",
-      headerName: "Raise",
+      field: "zipcode",
+      headerName: "Zip code",
       flex: 0.7,
     },
     {
-      field: "medical_absence_deduction",
-      headerName: "Medicale Absence Handle",
+      field: "email",
+      headerName: "Email",
       flex: 0.8,
-      renderCell: (params) => (
-        <Typography>
-          ${params.row.medical_absence_deduction}
-        </Typography>
-      ),
     },
     {
-      field: "total_deduction",
-      headerName: "Deduction",
+      field: "contact",
+      headerName: "Contact Number",
       flex: 1,
-      renderCell: (params) => (
-        <Typography >
-          ${params.row.total_deduction}
-        </Typography>
-      ),
     },
     {
-      field: "deduction_absence",
-      headerName: "Absence Deduction",
+      field: "address",
+      headerName: "Address",
       flex: 1,
-      renderCell: (params) => (
-        <Typography>
-          ${params.row.deduction_absence}
-        </Typography>
-      ),
     },
     {
-      field: "deduction_lateness",
-      headerName: "Lateness Deduction",
+      field: "description",
+      headerName: "Brief Description",
       flex: 1.5,
-      renderCell: (params) => (
-        <Typography>
-          ${params.row.deduction_lateness}
-        </Typography>
-      ),
-    },
-    {
-      field: "total_salary",
-      headerName: "Total Salary",
-      flex: 1.5,
-      renderCell: (params) => (
-        <Typography>
-          ${params.row.total_salary}
-        </Typography>
-      ),
     },
   ];
 
   return (
     <Box m="20px">
       <Header
-        title="TEAM PAYLIP"
-        subtitle="paylip list"
+        title="CONTACTS DATA"
+        subtitle="Contacts Data For Future References"
       />
       <Box
         m="40px 0 0 0"
@@ -165,4 +130,4 @@ const rows = paymentinfo
   );
 };
 
-export default Teampaylip;
+export default Contactsdata;
