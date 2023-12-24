@@ -352,47 +352,7 @@ function calculateDeductions(attendanceData) {
     totalLatenessDeductionsList,
   };
 }
-function calculateExtraHoursWorked(attendanceData) {
-  let totalExtraHoursByEmployee = [];
 
-  attendanceData.forEach((attendance) => {
-    const {
-      employee_id,
-      shiftstarttime,
-      shiftendtime,
-      arrival_time,
-      exit_time,
-    } = attendance;
-
-    if (shiftstarttime && shiftendtime && arrival_time && exit_time) {
-      const shiftDuration = calculateHourDifference(
-        shiftstarttime,
-        shiftendtime
-      );
-      const workedHours = calculateHourDifference(arrival_time, exit_time);
-      let extraHoursworked = 0;
-
-      if (shiftDuration - workedHours <= 0) {
-        extraHoursworked = workedHours - shiftDuration;
-      }
-
-      if (!totalExtraHoursByEmployee[employee_id]) {
-        totalExtraHoursByEmployee[employee_id] = 0;
-      }
-
-      totalExtraHoursByEmployee[employee_id] += extraHoursworked;
-    }
-  });
-
-  const totalextrahoursworkedList = Object.keys(totalExtraHoursByEmployee).map(
-    (employeeId) => ({
-      employee_id: parseInt(employeeId, 10),
-      total_extra_hours: totalExtraHoursByEmployee[employeeId],
-    })
-  );
-
-  return totalextrahoursworkedList;
-}
 function calculateEmployeePayroll(joinedData) {
   let payRollByEmployee = [];
   joinedData.forEach((employee) => {
