@@ -22,7 +22,7 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
       active={selected === title}
       style={{
         color: colors.grey[100],
-        paddingTop: "25px"
+        paddingTop: "25px",
       }}
       onClick={() => setSelected(title)}
       icon={icon}
@@ -32,7 +32,7 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
     </MenuItem>
   );
 };
-const Sidebar = ({title}) => {
+const Sidebar = ({ title }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -43,7 +43,7 @@ const Sidebar = ({title}) => {
     top: "15px",
   };
   return (
-  <div style={styling}> 
+    <div style={styling}>
       <Box
         sx={{
           "& .pro-sidebar-inner": {

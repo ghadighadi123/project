@@ -309,13 +309,54 @@ function calculateDeductions(attendanceData) {
     totalLatenessDeductionsList,
   };
 }
+function calculateExtraHoursWorked(attendanceData) {
+  let totalExtraHoursByEmployee = [];
 
+  attendanceData.forEach((attendance) => {
+    const {
+      employee_id,
+      shiftstarttime,
+      shiftendtime,
+      arrival_time,
+      exit_time,
+    } = attendance;
+
+    if (shiftstarttime && shiftendtime && arrival_time && exit_time) {
+      const shiftDuration = calculateHourDifference(
+        shiftstarttime,
+        shiftendtime
+      );
+      const workedHours = calculateHourDifference(arrival_time, exit_time);
+      let extraHoursworked = 0;
+
+      if (shiftDuration - workedHours <= 0) {
+        extraHoursworked = workedHours - shiftDuration;
+      }
+
+      if (!totalExtraHoursByEmployee[employee_id]) {
+        totalExtraHoursByEmployee[employee_id] = 0;
+      }
+
+      totalExtraHoursByEmployee[employee_id] += extraHoursworked;
+    }
+  });
+
+  const totalextrahoursworkedList = Object.keys(totalExtraHoursByEmployee).map(
+    (employeeId) => ({
+      employee_id: parseInt(employeeId, 10),
+      total_extra_hours: totalExtraHoursByEmployee[employeeId],
+    })
+  );
+
+  return totalextrahoursworkedList;
+}
 function calculateEmployeePayroll(joinedData) {
   let payRollByEmployee = [];
   joinedData.forEach((employee) => {
     const { employee_id, startdate } = employee;
     const totalHoursList = calculateTotalHoursWorked(joinedData);
     const totalLatenessList = calculateTotalLatenessHours(joinedData);
+    const totalBonusList = calculateExtraHoursWorked(joinedData);
     const baseSalaryList = calculateBaseSalary(joinedData);
     const bonus = calculateBonus(startdate);
     const medicalAbsenceDeductionList =
@@ -330,6 +371,9 @@ function calculateEmployeePayroll(joinedData) {
       (item) => item.employee_id === employee_id
     );
     const totalLateness = totalLatenessList.find(
+      (item) => item.employee_id === employee_id
+    );
+    const totalBonus = totalBonusList.find(
       (item) => item.employee_id === employee_id
     );
     const baseSalary = baseSalaryList.find(
@@ -351,11 +395,13 @@ function calculateEmployeePayroll(joinedData) {
     const totalSalary =
       baseSalary.baseSalary * bonus -
       totalDeduction.total_deduction +
-      medicalAbsenceDeduction.total_medical_payment_handle;
+      medicalAbsenceDeduction.total_medical_payment_handle +
+      totalBonus.total_extra_hours;
     payRollByEmployee[employee_id] = {
       employee_id: employee_id,
       total_hours_worked: totalHours.total_hours_worked || 0,
       total_lateness_hours: totalLateness.total_lateness_hours || 0,
+      total_extra_hours: totalBonus.total_extra_hours,
       base_salary: baseSalary.baseSalary || 0,
       bonus: bonus,
       medical_absence_deduction:
@@ -440,7 +486,7 @@ app.post("/employees", (req, res) => {
     req.body.department,
     req.body.accesslevel,
   ];
-
+  console.log(values);
   db.query(q, values, (err, data) => {
     if (err) return res.json(err);
     return res.json("Data inserted successfully!");
