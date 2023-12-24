@@ -56,6 +56,12 @@ const rows = Memberinfo
       cellClassName: "name-column--cell",
     },
     {
+      field: "fullName",
+      headerName: "Full Name",
+      flex: 1,
+      cellClassName: "name-column--cell",
+    },
+    {
       field: "attendance",
     headerName: "Attendance",
     flex: 1,

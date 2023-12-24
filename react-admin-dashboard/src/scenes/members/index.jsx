@@ -86,7 +86,7 @@ const Members = () => {
                 fullWidth
                 variant="filled"
                 type="text"
-                label="Age"
+                label="Date Of Birth (yyyy/mm/dd)"
                 onBlur={handleBlur}
                 onChange={handleChange}
                 value={values.age}
@@ -165,33 +165,16 @@ const Members = () => {
               }}
               >
               <MenuItem value="" disabled>Select Department</MenuItem>
-              <MenuItem value="HR Department">HR Department</MenuItem>
-              <MenuItem value="Software Development Department">Software Development Department</MenuItem>
-              <MenuItem value="Marketing Department">Marketing Department</MenuItem>
-              <MenuItem value="Sales Department">Sales Department</MenuItem>
-              <MenuItem value="Customer Service/Support Department">Customer Service/Support Department</MenuItem>
-              <MenuItem value="Operations/Production Department">Operations/Production Department</MenuItem>
-              <MenuItem value="Research and Development (R&D) Department">Research and Development (R&D) Department</MenuItem>
-              <MenuItem value="Legal Department">Legal Department</MenuItem>
-              <MenuItem value="Administration Department">Administration Department</MenuItem>
-              <MenuItem value="Supply Chain/Logistics Department">Supply Chain/Logistics Department</MenuItem>
-              <MenuItem value="Quality Assurance/Control Department">Quality Assurance/Control Department</MenuItem>
-              <MenuItem value="Project Management Department">Project Management Department</MenuItem>
-              <MenuItem value="Public Relations (PR) Department">Public Relations (PR) Department</MenuItem>
-              <MenuItem value="Information Technology (IT) Department">Information Technology (IT) Department</MenuItem>
-              <MenuItem value="Training and Development Department">Training and Development Department</MenuItem>
-              <MenuItem value="Facilities Management Department">Facilities Management Department</MenuItem>
-              <MenuItem value="Health and Safety Department">Health and Safety Department</MenuItem>
-              <MenuItem value="Corporate Communications Department">Corporate Communications Department</MenuItem>
-              <MenuItem value="Environmental, Social, and Governance (ESG) Department">Environmental, Social, and Governance (ESG) Department</MenuItem>
-              <MenuItem value="IT Security/Cybersecurity Department">IT Security/Cybersecurity Department</MenuItem>
-              <MenuItem value="Finance Department">Finance Department</MenuItem>
+              <MenuItem value="HR Department">Human Resources</MenuItem>
+              <MenuItem value="Software Development Department">Software Development</MenuItem>
+              <MenuItem value="Marketing Department">Marketing</MenuItem>
+              <MenuItem value="Sales Department">Sales</MenuItem>
             </TextField>
 
             <TextField
               fullWidth
               variant="filled"
-              label="Access Level"
+              label="Position"
               select
               onBlur={handleBlur}
               onChange={handleChange}
@@ -226,14 +209,16 @@ const Members = () => {
 
 const phoneRegExp =
   /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
-const ageRegExp = /^(1[8-9]|[2-9][0-9]|100)$/;
 const dateRegExp = /^(202[1-9]|20[3-9][0-9]|2100)-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[01])$/;
+const dateRegExp1 = /^(196[0-9]|197[0-9]|198[0-9]|199[0-9]|200[0-9]|201[0-9]|202[0-9]|2030)-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[01])$/;
+
 
 
 const checkoutSchema = yup.object().shape({
   fullName: yup.string().required("required"),
+
   startdate: yup.string().matches(dateRegExp, "wrong date format !").required("required"),
-  age: yup.string().matches(ageRegExp, "invalid age").required("required"),
+  age: yup.string().matches(dateRegExp1, "invalid date format!").required("required"),
   email: yup.string().email("invalid email").required("required"),
   phone: yup.string().matches(phoneRegExp, "Phone number is not valid").required("required"),
   gender: yup.string().required("required"),

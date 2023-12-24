@@ -46,48 +46,48 @@ const Team = () => {
     { 
       field: "employee_id", 
       headerName: "employee_id",
-      flex:0.8, 
+      flex:1, 
     },
     {
       field: "fullName",
       headerName: "Fullname",
-      flex: 0.75,
+      flex: 1,
       cellClassName: "name-column--cell",
     },
     {
       field: "gender",
       headerName: "Gender",
-      flex: 0.5,
+      flex: 0.6,
     },
     {
       field: "age",
-      headerName: "Age",
-      flex: 0.4,
+      headerName: "Date Of Birth",
+      flex: 0.5,
     },
     {
       field: "phone",
       headerName: "Phone",
-      flex: 0.5,
+      flex: 1,
     },
     {
       field: "email",
       headerName: "Email",
-      flex: 1,
+      flex: 2.3,
     },
     {
       field: "department",
       headerName: "Department",
-      flex: 0.7,
+      flex: 1.2,
     },
     {
       field: "startdate",
       headerName: "Start Date",
-      flex: 0.6,
+      flex: 1,
     },
     {
       field: "accessLevel",
-      headerName: "Access Level",
-      flex: 1,
+      headerName: "Position",
+      flex: 1.2,
       renderCell: ({ row: { accesslevel  } }) => {
         return (
           <Box

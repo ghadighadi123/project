@@ -66,6 +66,37 @@ function calculateTotalLatenessHours(attendanceData) {
   return totalLatenessList;
 }
 
+function calculateExtraHoursWorked(attendanceData) {
+  let totalExtraHoursByEmployee = [];
+
+  attendanceData.forEach((attendance) => {
+    const { employee_id, shiftstarttime, shiftendtime, arrival_time, exit_time } = attendance;
+
+    if (shiftstarttime && shiftendtime && arrival_time && exit_time) {
+      const shiftDuration = calculateHourDifference(shiftstarttime, shiftendtime);
+      const workedHours = calculateHourDifference(arrival_time, exit_time);
+      let extraHoursworked = 0;
+      
+      if((shiftDuration - workedHours) <= 0){
+       extraHoursworked = workedHours - shiftDuration;
+      }  
+
+      if (!totalExtraHoursByEmployee[employee_id]) {
+        totalExtraHoursByEmployee[employee_id] = 0;
+      }
+
+      totalExtraHoursByEmployee[employee_id] += extraHoursworked;
+    }
+  });
+
+  const totalextrahoursworkedList = Object.keys(totalExtraHoursByEmployee).map((employeeId) => ({
+    employee_id: parseInt(employeeId, 10),
+    total_extra_hours: totalExtraHoursByEmployee[employeeId],
+  }));
+
+  return totalextrahoursworkedList;
+}
+
 
  function calculateBaseSalary(employeeData) {
   let totalBaseSalaryByEmployee = [];
@@ -163,7 +194,9 @@ function calculateTotalLatenessHours(attendanceData) {
         // console.log(employee_id_1, totalHours);
       });
       const baseSalary = baseSalaryRate * value;
-      totalBaseSalaryByEmployee[employee_id] = baseSalary;
+      const formattedBaseSalary = parseFloat(baseSalary.toFixed(2));
+      totalBaseSalaryByEmployee[employee_id] = formattedBaseSalary;
+
     }
   });
 
@@ -304,13 +337,13 @@ function calculateDeductions(attendanceData) {
 function calculateEmployeePayroll(joinedData) {
   let payRollByEmployee = [];
   joinedData.forEach((employee) => {
-    const { employee_id, startdate } = employee;
+    const { employee_id, startdate, fullName } = employee;
     const totalHoursList = calculateTotalHoursWorked(joinedData);
     const totalLatenessList = calculateTotalLatenessHours(joinedData);
+    const totalBonusList = calculateExtraHoursWorked(joinedData);
     const baseSalaryList = calculateBaseSalary(joinedData);
     const bonus = calculateBonus(startdate);
-    const medicalAbsenceDeductionList =
-      calculateMedicalAbsenceHandle(joinedData);
+    const medicalAbsenceDeductionList = calculateMedicalAbsenceHandle(joinedData);
     const {
       totalDeductionsList,
       totalAbsentDeductionsList,
@@ -321,6 +354,9 @@ function calculateEmployeePayroll(joinedData) {
       (item) => item.employee_id === employee_id
     );
     const totalLateness = totalLatenessList.find(
+      (item) => item.employee_id === employee_id
+    );
+    const total_extra_hours = totalBonusList.find(
       (item) => item.employee_id === employee_id
     );
     const baseSalary = baseSalaryList.find(
@@ -340,24 +376,30 @@ function calculateEmployeePayroll(joinedData) {
     );
 
     const totalSalary =
-  (baseSalary.baseSalary)*bonus - totalDeduction.total_deduction + medicalAbsenceDeduction.total_medical_payment_handle;
+      baseSalary.baseSalary * bonus -
+      totalDeduction.total_deduction +
+      medicalAbsenceDeduction.total_medical_payment_handle +
+      (total_extra_hours.total_extra_hours * 2);
+
     payRollByEmployee[employee_id] = {
       employee_id: employee_id,
       total_hours_worked: totalHours.total_hours_worked || 0,
       total_lateness_hours: totalLateness.total_lateness_hours || 0,
+      total_extra_hours: total_extra_hours.total_extra_hours,
+      extra_hours_bonus: total_extra_hours.total_extra_hours * 2,
       base_salary: baseSalary.baseSalary || 0,
       bonus: bonus,
-      medical_absence_deduction:
-        medicalAbsenceDeduction.total_medical_payment_handle || 0,
+      medical_absence_deduction: medicalAbsenceDeduction.total_medical_payment_handle || 0,
       total_deduction: totalDeduction.total_deduction || 0,
       deduction_absence: deductionAbsence.deduction_absence || 0,
       deduction_lateness: deductionLateness.deduction_latenance || 0,
-      total_salary: totalSalary<0 ? 0:totalSalary,
-    
+      total_salary: totalSalary < 0 ? 0 : totalSalary,
+      fullName: fullName, // Add fullName to the result
     };
   });
   return payRollByEmployee;
 }
+
 
 // function calculateTotalHoursWorkedbyName(attendanceData) {
 //   let totalHoursByEmployeeName = [];
@@ -444,13 +486,16 @@ app.post("/employees", (req, res) => {
     });
 });
 
-app.get("/attendance",(req, res) =>{
-  const q = "SELECT * FROM attendance"
-  db.query(q, (err, data)=>{
-      if (err) return res.json(err)
-      return res.json(data)
-  })
-})
+app.get("/attendance", (req, res) => {
+  const q =
+  "SELECT a.*, e.fullName FROM attendance a JOIN employees e ON a.employee_id = e.employee_id";
+
+  db.query(q, (err, data) => {
+    if (err) return res.json(err);
+    return res.json(data);
+  });
+});
+
 
 app.post("/attendance", (req, res) => {
   const q =
@@ -545,18 +590,18 @@ app.get("/calculateDeductions", (req, res) => {
 });
 
 app.get("/payroll", (req, res) => {
-  const q = "SELECT e.employee_id, e.accesslevel, e.department, e.startdate, a.dates, a.attendance, a.arrival_time, a.exit_time, a.shiftstarttime, a.shiftendtime, a.reason_for_absence FROM employees e JOIN attendance a ON e.employee_id = a.employee_id;";
+  const q = "SELECT e.employee_id, e.accesslevel, e.department, e.startdate, e.fullName, a.dates, a.attendance, a.arrival_time, a.exit_time, a.shiftstarttime, a.shiftendtime, a.reason_for_absence FROM employees e JOIN attendance a ON e.employee_id = a.employee_id;";
 
   db.query(q, (err, data) => {
-    
-      if (err) return res.json(err);
-      // console.log(data);
-      // Call the function to calculate total hours worked and return the result
-      const result = calculateEmployeePayroll(data);
+    if (err) return res.json(err);
 
-      return res.json(result);
+    // Call the function to calculate total hours worked and return the result
+    const result = calculateEmployeePayroll(data);
+
+    return res.json(result);
   });
 });
+
 
 app.post("/contacts", (req, res) => {
   const q =

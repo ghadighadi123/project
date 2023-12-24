@@ -48,12 +48,12 @@ const rows = contactsData
     {
       field: "age",
       headerName: "Age",
-      flex: 1.3,
+      flex: 0.6,
     },
     {
       field: "city",
       headerName: "City",
-      flex: 1.3,
+      flex: 0.8,
     },
     {
       field: "zipcode",
