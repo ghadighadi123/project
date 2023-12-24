@@ -85,7 +85,7 @@ const Members = () => {
                 fullWidth
                 variant="filled"
                 type="text"
-                label="Age"
+                label="Date Of Birth (yyyy/mm/dd)"
                 onBlur={handleBlur}
                 onChange={handleChange}
                 value={values.age}
@@ -141,27 +141,31 @@ const Members = () => {
                 }}
               >
                 <MenuItem value="" disabled>
-                  Select gender
+                  Select Department
                 </MenuItem>
-                <MenuItem value="Male">Male</MenuItem>
-                <MenuItem value="Female">Female</MenuItem>
+                <MenuItem value="HR Department">Human Resources</MenuItem>
+                <MenuItem value="Software Development Department">
+                  Software Development
+                </MenuItem>
+                <MenuItem value="Marketing Department">Marketing</MenuItem>
+                <MenuItem value="Sales Department">Sales</MenuItem>
               </TextField>
 
               <TextField
                 fullWidth
                 variant="filled"
-                label="Department"
+                label="Position"
                 select
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.department}
-                name="department"
-                error={!!touched.department && !!errors.department}
-                helperText={touched.department && errors.department}
+                value={values.accesslevel}
+                name="accesslevel"
+                error={!!touched.accesslevel && !!errors.accesslevel}
+                helperText={touched.accesslevel && errors.accesslevel}
                 sx={{ gridColumn: "span 2" }}
                 SelectProps={{
                   MenuProps: {
-                    style: { maxHeight: "300px", fontSize: "small" }, // Adjust as needed
+                    style: { maxHeight: "200px", fontSize: "small" }, // Adjust as needed
                   },
                 }}
               >
@@ -267,17 +271,22 @@ const Members = () => {
 
 const phoneRegExp =
   /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
-const ageRegExp = /^(1[8-9]|[2-9][0-9]|100)$/;
 const dateRegExp =
   /^(202[1-9]|20[3-9][0-9]|2100)-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[01])$/;
+const dateRegExp1 =
+  /^(196[0-9]|197[0-9]|198[0-9]|199[0-9]|200[0-9]|201[0-9]|202[0-9]|2030)-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[01])$/;
 
 const checkoutSchema = yup.object().shape({
   fullName: yup.string().required("required"),
+
   startdate: yup
     .string()
     .matches(dateRegExp, "wrong date format !")
     .required("required"),
-  age: yup.string().matches(ageRegExp, "invalid age").required("required"),
+  age: yup
+    .string()
+    .matches(dateRegExp1, "invalid date format!")
+    .required("required"),
   email: yup.string().email("invalid email").required("required"),
   phone: yup
     .string()

@@ -5,90 +5,87 @@ import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettin
 import LockOpenOutlinedIcon from "@mui/icons-material/LockOpenOutlined";
 import SecurityOutlinedIcon from "@mui/icons-material/SecurityOutlined";
 import Header from "../../components/Header";
-import React, { useState, useEffect } from 'react';
-import axios from 'axios'
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 const Team = () => {
-
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    return date.toISOString().split('T')[0]; // Extracts only the date part
+    return date.toISOString().split("T")[0]; // Extracts only the date part
   };
 
   const [Member, setMembers] = useState([]);
 
   useEffect(() => {
-
-      const fetchemployees = async () =>{
-        try{
-            const res = await axios.get("http://localhost:8800/employees")
-            setMembers(res.data)
-            console.log(res)
-        }catch(err){
-            console.log(err)
-        }
+    const fetchemployees = async () => {
+      try {
+        const res = await axios.get("http://localhost:8800/employees");
+        setMembers(res.data);
+        console.log(res);
+      } catch (err) {
+        console.log(err);
       }
-    fetchemployees()
+    };
+    fetchemployees();
   }, []);
 
-
-
- const rows = Member
-    ? Object.keys(Member).map((id) => ({ id, 
-      ...Member[id],
-      startdate: formatDate(Member[id].startdate),
-     }))
-    : []; 
+  const rows = Member
+    ? Object.keys(Member).map((id) => ({
+        id,
+        ...Member[id],
+        startdate: formatDate(Member[id].startdate),
+      }))
+    : [];
 
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const columns = [
-    { 
-      field: "employee_id", 
+    {
+      field: "employee_id",
       headerName: "employee_id",
-      flex:0.8, 
+      flex: 1,
     },
     {
       field: "fullName",
       headerName: "Fullname",
-      flex: 0.75,
+      flex: 1,
       cellClassName: "name-column--cell",
     },
     {
       field: "gender",
       headerName: "Gender",
-      flex: 0.5,
+      flex: 0.6,
     },
     {
       field: "age",
-      headerName: "Age",
-      flex: 0.4,
+      headerName: "Date Of Birth",
+      flex: 0.5,
     },
     {
       field: "phone",
       headerName: "Phone",
-      flex: 0.5,
+      flex: 1,
     },
     {
       field: "email",
       headerName: "Email",
-      flex: 1,
+      flex: 2.3,
     },
     {
       field: "department",
       headerName: "Department",
-      flex: 0.7,
+      flex: 1.2,
     },
     {
       field: "startdate",
       headerName: "Start Date",
-      flex: 0.6,
+      flex: 1,
     },
     {
       field: "accessLevel",
-      headerName: "Access Level",
-      flex: 1,
-      renderCell: ({ row: { accesslevel  } }) => {
+      headerName: "Position",
+      flex: 1.2,
+      renderCell: ({ row: { accesslevel } }) => {
         return (
           <Box
             width="60%"
@@ -109,7 +106,7 @@ const Team = () => {
             {accesslevel === "manager" && <SecurityOutlinedIcon />}
             {accesslevel === "employee" && <LockOpenOutlinedIcon />}
             <Typography color={colors.grey[100]} sx={{ ml: "5px" }}>
-            {accesslevel}
+              {accesslevel}
             </Typography>
           </Box>
         );

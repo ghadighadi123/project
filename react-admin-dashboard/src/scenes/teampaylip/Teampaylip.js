@@ -36,6 +36,12 @@ const rows = paymentinfo
     {
       field: "employee_id",
       headerName: "Employee ID",
+      flex: 0.8,
+      cellClassName: "name-column--cell",
+    },
+    {
+      field: "fullName",
+      headerName: "Full Name",
       flex: 1,
       cellClassName: "name-column--cell",
     },
@@ -43,17 +49,22 @@ const rows = paymentinfo
       field: "total_hours_worked",
       headerName: "Worked Hours",
       flex: 1,
-      // cellClassName: "name-column--cell",
     },
     {
       field: "total_lateness_hours",
       headerName: "lateness time ",
-      flex: 1.3,
+      flex: 0.8,
+    },
+    {
+      field: "total_extra_hours",
+      headerName: "Extra Hours",
+      flex: 0.8,
+  
     },
     {
       field: "base_salary",
       headerName: "Base Salary",
-      flex: 1.3,
+      flex: 0.8,
       renderCell: (params) => (
         <Typography>
           ${params.row.base_salary}
@@ -63,12 +74,12 @@ const rows = paymentinfo
     {
       field: "bonus",
       headerName: "Raise",
-      flex: 0.7,
+      flex: 0.5,
     },
     {
       field: "medical_absence_deduction",
       headerName: "Medicale Absence Handle",
-      flex: 0.8,
+      flex: 1.2,
       renderCell: (params) => (
         <Typography>
           ${params.row.medical_absence_deduction}
@@ -78,10 +89,21 @@ const rows = paymentinfo
     {
       field: "total_deduction",
       headerName: "Deduction",
-      flex: 1,
+      flex: 0.8,
       renderCell: (params) => (
         <Typography >
           ${params.row.total_deduction}
+        </Typography>
+      ),
+    },
+    
+    {
+      field: "extra_hours_bonus",
+      headerName: "Extra Hours Bonus",
+      flex: 1,
+      renderCell: (params) => (
+        <Typography >
+          ${params.row.extra_hours_bonus}
         </Typography>
       ),
     },
@@ -98,7 +120,7 @@ const rows = paymentinfo
     {
       field: "deduction_lateness",
       headerName: "Lateness Deduction",
-      flex: 1.5,
+      flex: 1,
       renderCell: (params) => (
         <Typography>
           ${params.row.deduction_lateness}
@@ -108,7 +130,7 @@ const rows = paymentinfo
     {
       field: "total_salary",
       headerName: "Total Salary",
-      flex: 1.5,
+      flex: 1,
       renderCell: (params) => (
         <Typography>
           ${params.row.total_salary}

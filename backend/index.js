@@ -75,6 +75,48 @@ function calculateTotalLatenessHours(attendanceData) {
   return totalLatenessList;
 }
 
+function calculateExtraHoursWorked(attendanceData) {
+  let totalExtraHoursByEmployee = [];
+
+  attendanceData.forEach((attendance) => {
+    const {
+      employee_id,
+      shiftstarttime,
+      shiftendtime,
+      arrival_time,
+      exit_time,
+    } = attendance;
+
+    if (shiftstarttime && shiftendtime && arrival_time && exit_time) {
+      const shiftDuration = calculateHourDifference(
+        shiftstarttime,
+        shiftendtime
+      );
+      const workedHours = calculateHourDifference(arrival_time, exit_time);
+      let extraHoursworked = 0;
+
+      if (shiftDuration - workedHours <= 0) {
+        extraHoursworked = workedHours - shiftDuration;
+      }
+
+      if (!totalExtraHoursByEmployee[employee_id]) {
+        totalExtraHoursByEmployee[employee_id] = 0;
+      }
+
+      totalExtraHoursByEmployee[employee_id] += extraHoursworked;
+    }
+  });
+
+  const totalextrahoursworkedList = Object.keys(totalExtraHoursByEmployee).map(
+    (employeeId) => ({
+      employee_id: parseInt(employeeId, 10),
+      total_extra_hours: totalExtraHoursByEmployee[employeeId],
+    })
+  );
+
+  return totalextrahoursworkedList;
+}
+
 function calculateBaseSalary(employeeData) {
   let totalBaseSalaryByEmployee = [];
   // 1:merge 2 tables
@@ -172,7 +214,8 @@ function calculateBaseSalary(employeeData) {
         // console.log(employee_id_1, totalHours);
       });
       const baseSalary = baseSalaryRate * value;
-      totalBaseSalaryByEmployee[employee_id] = baseSalary;
+      const formattedBaseSalary = parseFloat(baseSalary.toFixed(2));
+      totalBaseSalaryByEmployee[employee_id] = formattedBaseSalary;
     }
   });
 
@@ -353,7 +396,7 @@ function calculateExtraHoursWorked(attendanceData) {
 function calculateEmployeePayroll(joinedData) {
   let payRollByEmployee = [];
   joinedData.forEach((employee) => {
-    const { employee_id, startdate } = employee;
+    const { employee_id, startdate, fullName } = employee;
     const totalHoursList = calculateTotalHoursWorked(joinedData);
     const totalLatenessList = calculateTotalLatenessHours(joinedData);
     const totalBonusList = calculateExtraHoursWorked(joinedData);
@@ -373,7 +416,7 @@ function calculateEmployeePayroll(joinedData) {
     const totalLateness = totalLatenessList.find(
       (item) => item.employee_id === employee_id
     );
-    const totalBonus = totalBonusList.find(
+    const total_extra_hours = totalBonusList.find(
       (item) => item.employee_id === employee_id
     );
     const baseSalary = baseSalaryList.find(
@@ -396,12 +439,14 @@ function calculateEmployeePayroll(joinedData) {
       baseSalary.baseSalary * bonus -
       totalDeduction.total_deduction +
       medicalAbsenceDeduction.total_medical_payment_handle +
-      totalBonus.total_extra_hours;
+      total_extra_hours.total_extra_hours * 2;
+
     payRollByEmployee[employee_id] = {
       employee_id: employee_id,
       total_hours_worked: totalHours.total_hours_worked || 0,
       total_lateness_hours: totalLateness.total_lateness_hours || 0,
-      total_extra_hours: totalBonus.total_extra_hours,
+      total_extra_hours: total_extra_hours.total_extra_hours,
+      extra_hours_bonus: total_extra_hours.total_extra_hours * 2,
       base_salary: baseSalary.baseSalary || 0,
       bonus: bonus,
       medical_absence_deduction:
@@ -410,6 +455,7 @@ function calculateEmployeePayroll(joinedData) {
       deduction_absence: deductionAbsence.deduction_absence || 0,
       deduction_lateness: deductionLateness.deduction_latenance || 0,
       total_salary: totalSalary < 0 ? 0 : totalSalary,
+      fullName: fullName, // Add fullName to the result
     };
   });
   return payRollByEmployee;
@@ -456,45 +502,12 @@ const db = mysql.createConnection({
   password: "ralph",
   database: "project",
 });
-
 app.use(express.json());
 app.use(cors());
-
-app.get("/", (req, res) => {
-  res.json("hello i am backend");
-});
-
-app.get("/employees", (req, res) => {
-  const q = "SELECT * FROM employees";
-  db.query(q, (err, data) => {
-    if (err) return res.json(err);
-    return res.json(data);
-  });
-});
-
-app.post("/employees", (req, res) => {
-  const q =
-    "INSERT INTO employees(fullName, startdate, age, phone, email, gender, department, accesslevel) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-
-  const values = [
-    req.body.fullName,
-    req.body.startdate,
-    req.body.age,
-    req.body.phone,
-    req.body.email,
-    req.body.gender,
-    req.body.department,
-    req.body.accesslevel,
-  ];
-  console.log(values);
-  db.query(q, values, (err, data) => {
-    if (err) return res.json(err);
-    return res.json("Data inserted successfully!");
-  });
-});
-
 app.get("/attendance", (req, res) => {
-  const q = "SELECT * FROM attendance";
+  const q =
+    "SELECT a.*, e.fullName FROM attendance a JOIN employees e ON a.employee_id = e.employee_id";
+
   db.query(q, (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
@@ -594,11 +607,11 @@ app.get("/calculateDeductions", (req, res) => {
 
 app.get("/payroll", (req, res) => {
   const q =
-    "SELECT e.employee_id, e.accesslevel, e.department, e.startdate, a.dates, a.attendance, a.arrival_time, a.exit_time, a.shiftstarttime, a.shiftendtime, a.reason_for_absence FROM employees e JOIN attendance a ON e.employee_id = a.employee_id;";
+    "SELECT e.employee_id, e.accesslevel, e.department, e.startdate, e.fullName, a.dates, a.attendance, a.arrival_time, a.exit_time, a.shiftstarttime, a.shiftendtime, a.reason_for_absence FROM employees e JOIN attendance a ON e.employee_id = a.employee_id;";
 
   db.query(q, (err, data) => {
     if (err) return res.json(err);
-    // console.log(data);
+
     // Call the function to calculate total hours worked and return the result
     const result = calculateEmployeePayroll(data);
 
