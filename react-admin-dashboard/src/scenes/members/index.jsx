@@ -141,6 +141,31 @@ const Members = () => {
                 }}
               >
                 <MenuItem value="" disabled>
+                  Select gender
+                </MenuItem>
+                <MenuItem value="Male">Male</MenuItem>
+                <MenuItem value="Female">Female</MenuItem>
+              </TextField>
+
+              <TextField
+                fullWidth
+                variant="filled"
+                label="Department"
+                select
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.department}
+                name="department"
+                error={!!touched.department && !!errors.department}
+                helperText={touched.department && errors.department}
+                sx={{ gridColumn: "span 2" }}
+                SelectProps={{
+                  MenuProps: {
+                    style: { maxHeight: "300px", fontSize: "small" }, // Adjust as needed
+                  },
+                }}
+              >
+                <MenuItem value="" disabled>
                   Select Department
                 </MenuItem>
                 <MenuItem value="HR Department">Human Resources</MenuItem>
@@ -155,86 +180,6 @@ const Members = () => {
                 fullWidth
                 variant="filled"
                 label="Position"
-                select
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.accesslevel}
-                name="accesslevel"
-                error={!!touched.accesslevel && !!errors.accesslevel}
-                helperText={touched.accesslevel && errors.accesslevel}
-                sx={{ gridColumn: "span 2" }}
-                SelectProps={{
-                  MenuProps: {
-                    style: { maxHeight: "200px", fontSize: "small" }, // Adjust as needed
-                  },
-                }}
-              >
-                <MenuItem value="" disabled>
-                  Select Department
-                </MenuItem>
-                <MenuItem value="HR Department">HR Department</MenuItem>
-                <MenuItem value="Software Development Department">
-                  Software Development Department
-                </MenuItem>
-                <MenuItem value="Marketing Department">
-                  Marketing Department
-                </MenuItem>
-                <MenuItem value="Sales Department">Sales Department</MenuItem>
-                <MenuItem value="Customer Service/Support Department">
-                  Customer Service/Support Department
-                </MenuItem>
-                <MenuItem value="Operations/Production Department">
-                  Operations/Production Department
-                </MenuItem>
-                <MenuItem value="Research and Development (R&D) Department">
-                  Research and Development (R&D) Department
-                </MenuItem>
-                <MenuItem value="Legal Department">Legal Department</MenuItem>
-                <MenuItem value="Administration Department">
-                  Administration Department
-                </MenuItem>
-                <MenuItem value="Supply Chain/Logistics Department">
-                  Supply Chain/Logistics Department
-                </MenuItem>
-                <MenuItem value="Quality Assurance/Control Department">
-                  Quality Assurance/Control Department
-                </MenuItem>
-                <MenuItem value="Project Management Department">
-                  Project Management Department
-                </MenuItem>
-                <MenuItem value="Public Relations (PR) Department">
-                  Public Relations (PR) Department
-                </MenuItem>
-                <MenuItem value="Information Technology (IT) Department">
-                  Information Technology (IT) Department
-                </MenuItem>
-                <MenuItem value="Training and Development Department">
-                  Training and Development Department
-                </MenuItem>
-                <MenuItem value="Facilities Management Department">
-                  Facilities Management Department
-                </MenuItem>
-                <MenuItem value="Health and Safety Department">
-                  Health and Safety Department
-                </MenuItem>
-                <MenuItem value="Corporate Communications Department">
-                  Corporate Communications Department
-                </MenuItem>
-                <MenuItem value="Environmental, Social, and Governance (ESG) Department">
-                  Environmental, Social, and Governance (ESG) Department
-                </MenuItem>
-                <MenuItem value="IT Security/Cybersecurity Department">
-                  IT Security/Cybersecurity Department
-                </MenuItem>
-                <MenuItem value="Finance Department">
-                  Finance Department
-                </MenuItem>
-              </TextField>
-
-              <TextField
-                fullWidth
-                variant="filled"
-                label="Access Level"
                 select
                 onBlur={handleBlur}
                 onChange={handleChange}

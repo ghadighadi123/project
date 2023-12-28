@@ -124,7 +124,7 @@ function calculateBaseSalary(employeeData) {
   employeeData.forEach((employe) => {
     const { department, accesslevel, exit_time, employee_id, arrival_time } =
       employe;
-    console.log(employe);
+    // console.log(employe);
     let baseSalaryRate;
 
     switch (department) {
@@ -140,7 +140,7 @@ function calculateBaseSalary(employeeData) {
             baseSalaryRate = 1.8;
             break;
           default:
-            console.log("Error");
+            // console.log("Error");
             break;
         }
         break;
@@ -157,7 +157,7 @@ function calculateBaseSalary(employeeData) {
             baseSalaryRate = 2.2;
             break;
           default:
-            console.log("Error");
+            // console.log("Error");
             break;
         }
         break;
@@ -174,7 +174,7 @@ function calculateBaseSalary(employeeData) {
             baseSalaryRate = 2.9;
             break;
           default:
-            console.log("Error");
+            // console.log("Error");
             break;
         }
         break;
@@ -191,13 +191,13 @@ function calculateBaseSalary(employeeData) {
             baseSalaryRate = 2.5;
             break;
           default:
-            console.log("Error");
+            // console.log("Error");
             break;
         }
         break;
 
       default:
-        console.log("Error");
+        // console.log("Error");
         break;
     }
 
@@ -263,10 +263,10 @@ function calculateMedicalAbsenceHandle(attendanceData) {
     }
     if (!hasAttendance && reason_for_absence === "Medical") {
       // Count days with attendance 0 and reason_for_absence is "Medical"
-      console.log("hello");
+      // console.log("hello");
       medicalAbsenceCountByEmployee[employee_id]++;
     }
-    console.log(medicalAbsenceCountByEmployee[employee_id]);
+    // console.log(medicalAbsenceCountByEmployee[employee_id]);
     medicalAbsenceDeductionByEmployee[employee_id] =
       medicalAbsenceCountByEmployee[employee_id] * medicalAbsenceMultiplier;
   });
@@ -616,7 +616,7 @@ app.post("/signup", (req, res) => {
 
   db.query(sql, values, (err, data) => {
     if (err) {
-      console.error("Error inserting user:", err);
+      // console.error("Error inserting user:", err);
       return res.status(500).json({ error: "Error inserting user" });
     }
     return res.status(200).json({ message: "User signed up successfully" });
@@ -629,7 +629,7 @@ app.post("/login", (req, res) => {
 
   db.query(sql, values, (err, data) => {
     if (err) {
-      console.error("Error fetching user:", err);
+      // console.error("Error fetching user:", err);
       return res.json("Error");
     }
 
@@ -663,6 +663,20 @@ app.post("/payroll", (req, res) => {
   db.query(q, values, (err, data) => {
     if (err) return res.json(err);
     return res.json("Data inserted successfully!");
+  });
+});
+app.get("/departments", (req, res) => {
+  const q = `SELECT * FROM departments`;
+  db.query(q, (err, data) => {
+    if (err) return res.json(err);
+    return res.json(data);
+  });
+});
+app.get("/positions", (req, res) => {
+  const q = `SELECT * FROM positions`;
+  db.query(q, (err, data) => {
+    if (err) return res.json(err);
+    return res.json(data);
   });
 });
 app.listen(8800, () => {
