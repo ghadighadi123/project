@@ -66,7 +66,7 @@ const Signup = () => {
           </div> 
               
             <button type="submit" className="btn w-100 rounded-0"style={{ backgroundColor: '#9088c8', color: '#fff' }}>sign up</button>   
-            <p>Lorem ipsum dolor sit amet.</p>  
+            <p>Login to the system.</p>  
               
             <Link to="/" className="btn btn-default border w-100 bg-light rounded-0 text-decoration-none" > Login </Link>
  

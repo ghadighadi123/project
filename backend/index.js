@@ -12,7 +12,7 @@ function calculateHourDifference(startTimestamp, endTimestamp) {
 }
 
 function calculateTotalHoursWorked(attendanceData) {
-  let totalHoursByEmployee = [];
+  let totalHoursByEmployee = [];// to manage multipe Id
 
   attendanceData.forEach((attendance) => {
     const { employee_id, arrival_time, exit_time } = attendance;
@@ -665,6 +665,35 @@ app.post('/login', (req, res) => {
   });
 });
 
+app.post("/payroll", (req, res) => {
+  const q =
+    "INSERT INTO payroll(`employee_id`, `fullName`, `total_hours_worked`, `total_lateness_hours`, `total_extra_hours`, `base_salary`, `bonus`, `medical_absence_deduction`, `total_deduction`, `extra_hours_bonus`, `deduction_absence`, `deduction_lateness`, `total_salary`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+  const values = [
+    req.body.employee_id,
+    req.body.fullName,
+    req.body.total_hours_worked,
+    req.body.total_lateness_hours,
+    req.body.total_extra_hours,
+    req.body.base_salary,
+    req.body.bonus,
+    req.body.medical_absence_deduction,
+    req.body.total_deduction,
+    req.body.extra_hours_bonus,
+    req.body.deduction_absence,
+    req.body.deduction_lateness,
+    req.body.total_salary,
+  ];
+
+  db.query(q, values, (err, data) => {
+    if (err) return res.json(err);
+    return res.json("Data inserted successfully!");
+  });
+});
+
+
+
 app.listen(8800, ()=>{
     console.log("Connected to backend !")
 })
+ 
