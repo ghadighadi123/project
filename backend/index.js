@@ -103,84 +103,11 @@ function calculateExtraHoursWorked(attendanceData) {
   // 1:merge 2 tables
   // 2:employee_id, arrival_time, exit_time, department, accessLevel
   employeeData.forEach((employe) => {
-    const { department, accesslevel, exit_time, employee_id, arrival_time } = employe;
-    console.log(employe);
-    let baseSalaryRate;
+    const { exit_time, employee_id, arrival_time, rate } = employe;
+   
 
-    switch (department) {
-      case "Software Development Department":
-        switch (accesslevel) {
-          case "employee":
-            baseSalaryRate = 1.4;
-            break;
-          case "admin":
-            baseSalaryRate = 1.6;
-            break;
-          case "manager":
-            baseSalaryRate = 1.8;
-            break;
-          default:
-            console.log("Error");
-            break;
-        }
-        break;
 
-      case "Marketing Department":
-        switch (accesslevel) {
-          case "employee":
-            baseSalaryRate = 1.8;
-            break;
-          case "admin":
-            baseSalaryRate = 2;
-            break;
-          case "manager":
-            baseSalaryRate = 2.2;
-            break;
-          default:
-            console.log("Error");
-            break;
-        }
-        break;
-
-      case "Sales Department":
-        switch (accesslevel) {
-          case "employee":
-            baseSalaryRate = 2.5;
-            break;
-          case "admin":
-            baseSalaryRate = 2.7;
-            break;
-          case "manager":
-            baseSalaryRate = 2.9;
-            break;
-          default:
-            console.log("Error");
-            break;
-        }
-        break;
-
-      case "HR Department":
-        switch (accesslevel) {
-          case "employee":
-            baseSalaryRate = 2;
-            break;
-          case "admin":
-            baseSalaryRate = 2.3;
-            break;
-          case "manager":
-            baseSalaryRate = 2.5;
-            break;
-          default:
-            console.log("Error");
-            break;
-        }
-        break;
-
-      default:
-        console.log("Error");
-        break;
-    }
-  
+   
     if (arrival_time && exit_time) {
       if (!totalBaseSalaryByEmployee[employee_id]) {
         totalBaseSalaryByEmployee[employee_id] = 0;
@@ -193,7 +120,7 @@ function calculateExtraHoursWorked(attendanceData) {
         if (employee_id_1 === employee_id) value = totalHours;
         // console.log(employee_id_1, totalHours);
       });
-      const baseSalary = baseSalaryRate * value;
+      const baseSalary = rate * value;
       const formattedBaseSalary = parseFloat(baseSalary.toFixed(2));
       totalBaseSalaryByEmployee[employee_id] = formattedBaseSalary;
 
@@ -337,7 +264,7 @@ function calculateDeductions(attendanceData) {
 function calculateEmployeePayroll(joinedData) {
   let payRollByEmployee = [];
   joinedData.forEach((employee) => {
-    const { employee_id, startdate, fullName } = employee;
+    const { employee_id, startdate, fullName, rate } = employee;
     const totalHoursList = calculateTotalHoursWorked(joinedData);
     const totalLatenessList = calculateTotalLatenessHours(joinedData);
     const totalBonusList = calculateExtraHoursWorked(joinedData);
@@ -395,6 +322,7 @@ function calculateEmployeePayroll(joinedData) {
       deduction_lateness: deductionLateness.deduction_latenance || 0,
       total_salary: totalSalary < 0 ? 0 : totalSalary,
       fullName: fullName, // Add fullName to the result
+      rate: rate,
     };
   });
   return payRollByEmployee;
@@ -457,17 +385,38 @@ app.get("/", (req, res) =>{
     res.json("hello i am backend")
 })
 
-app.get("/employees",(req, res) =>{
-    const q = "SELECT * FROM employees"
-    db.query(q, (err, data)=>{
-        if (err) return res.json(err)
-        return res.json(data)
-    })
-})
+
+app.get("/employees", (req, res) => {
+  const q = `
+  SELECT
+  e.employee_id,
+  e.phone,
+  e.age,
+  e.email,
+  e.fullName,
+  e.gender,
+  e.startdate,
+  p.position as accesslevel,
+  d.department as department
+FROM
+  employees e
+JOIN
+  positions p ON e.position_id = p.position_id
+JOIN
+  departments d ON e.department_id = d.department_id;
+  `;
+
+  db.query(q, (err, data) => {
+    if (err) return res.json(err);
+    return res.json(data);
+  });
+});
+
+
 
 app.post("/employees", (req, res) => {
     const q =
-      "INSERT INTO employees(`fullName`, `startdate`, `age`, `phone`, `email`, `gender`, `department`, `accesslevel`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+      "INSERT INTO employees(`fullName`, `startdate`, `age`, `phone`, `email`, `gender`, `department_id`, `position_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
   
     const values = [
       req.body.fullName,
@@ -476,8 +425,8 @@ app.post("/employees", (req, res) => {
       req.body.phone,
       req.body.email,
       req.body.gender,
-      req.body.department,
-      req.body.accesslevel,
+      req.body.department_id,
+      req.body.position_id,
     ];
   
     db.query(q, values, (err, data) => {
@@ -548,7 +497,20 @@ app.get("/totalLatenessHours", (req, res) => {
 });
 
 app.get("/baseSalary", (req, res) => {
-  const q = "SELECT e.department, e.accesslevel, a.exit_time, a.employee_id, a.arrival_time FROM employees e JOIN attendance a ON e.employee_id = a.employee_id";
+  const q =` SELECT
+  e.employee_id,
+  e.department_id,
+  e.position_id,
+  r.rate,
+  a.arrival_time,
+  a.exit_time
+FROM
+  employees e
+JOIN
+  attendance a ON e.employee_id = a.employee_id
+LEFT JOIN
+  rates r ON e.position_id = r.position_id AND e.department_id = r.department_id;
+`;
 
   db.query(q, (err, data) => {
     
@@ -589,8 +551,30 @@ app.get("/calculateDeductions", (req, res) => {
   });
 });
 
-app.get("/payroll", (req, res) => {
-  const q = "SELECT e.employee_id, e.accesslevel, e.department, e.startdate, e.fullName, a.dates, a.attendance, a.arrival_time, a.exit_time, a.shiftstarttime, a.shiftendtime, a.reason_for_absence FROM employees e JOIN attendance a ON e.employee_id = a.employee_id;";
+app.get("/payroll", (req, res) => {const q = `
+SELECT
+    e.employee_id,
+    e.position_id,
+    e.department_id,
+    r.rate,
+    e.startdate,
+    e.fullName,
+    a.dates,
+    a.attendance,
+    a.arrival_time,
+    a.exit_time,
+    a.shiftstarttime,
+    a.shiftendtime,
+    a.reason_for_absence
+FROM
+    employees e
+JOIN
+    attendance a ON e.employee_id = a.employee_id
+LEFT JOIN
+    rates r ON e.position_id = r.position_id AND e.department_id = r.department_id;
+`;
+
+  
 
   db.query(q, (err, data) => {
     if (err) return res.json(err);
@@ -688,6 +672,21 @@ app.post("/payroll", (req, res) => {
   db.query(q, values, (err, data) => {
     if (err) return res.json(err);
     return res.json("Data inserted successfully!");
+  });
+});
+
+app.get("/departments", (req, res) => {
+  const q = `SELECT * FROM departments`;
+  db.query(q, (err, data) => {
+    if (err) return res.json(err);
+    return res.json(data);
+  });
+});
+app.get("/positions", (req, res) => {
+  const q = `SELECT * FROM positions`;
+  db.query(q, (err, data) => {
+    if (err) return res.json(err);
+    return res.json(data);
   });
 });
 

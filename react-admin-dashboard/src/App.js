@@ -54,7 +54,7 @@ function App() {
                 path="/invoices"
                 element={
                   <RequireAuth>
-                    <Layout title ="Manage Team">
+                    <Layout title ="Team PayLip">
                       <Teampaylip />
                     </Layout>
                   </RequireAuth>
@@ -64,7 +64,7 @@ function App() {
                 path="/membersinfo"
                 element={
                   <RequireAuth>
-                    <Layout title ="Members Information">
+                    <Layout title ="Attendance Information">
                       <Membersinfo />
                     </Layout>
                   </RequireAuth>
@@ -95,7 +95,7 @@ function App() {
                 path="/faq"
                 element={
                   <RequireAuth>'
-                    <Layout title ="Contacts">
+                    <Layout title ="Members Data">
                       <FAQ />
                     </Layout>
                   </RequireAuth>

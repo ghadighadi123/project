@@ -5,6 +5,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
 import {MenuItem } from '@mui/material';
 import axios from "axios";
+import { useState, useEffect } from "react";
 
 const Members = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
@@ -27,6 +28,32 @@ const Members = () => {
       actions.setSubmitting(false);
           actions.resetForm();
   };
+
+  const [positionList, setPositionList] = useState([]);
+  const [departmentList, setDepartmentList] = useState([]);
+  useEffect(() => {
+    const fetchDepartmentList = async () => {
+      try {
+        const res = await axios.get("http://localhost:8800/departments");
+        setDepartmentList(res.data);
+        console.log(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchDepartmentList();
+    const fetchpositionList = async () => {
+      try {
+        const res = await axios.get("http://localhost:8800/positions");
+        setPositionList(res.data);
+        console.log(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchpositionList();
+
+  }, []);
   
  
   return (
@@ -141,9 +168,12 @@ const Members = () => {
                 }
               }}
                >
+               
               <MenuItem value="" disabled>Select gender</MenuItem>
               <MenuItem value="Male">Male</MenuItem>
               <MenuItem value="Female">Female</MenuItem>
+
+              
             </TextField>
             
               <TextField
@@ -153,10 +183,10 @@ const Members = () => {
               select
               onBlur={handleBlur}
               onChange={handleChange}
-              value={values.department}
-              name="department"
-              error={!!touched.department && !!errors.department}
-              helperText={touched.department && errors.department}
+              value={values.department_id}
+              name="department_id"
+              error={!!touched.department_id && !!errors.department_id}
+              helperText={touched.department_id && errors.department_id}
               sx={{ gridColumn: "span 2" }}
               SelectProps={{
                 MenuProps: {
@@ -164,11 +194,13 @@ const Members = () => {
                 }
               }}
               >
-              <MenuItem value="" disabled>Select Department</MenuItem>
-              <MenuItem value="HR Department">Human Resources</MenuItem>
-              <MenuItem value="Software Development Department">Software Development</MenuItem>
-              <MenuItem value="Marketing Department">Marketing</MenuItem>
-              <MenuItem value="Sales Department">Sales</MenuItem>
+              {departmentList.map((department) => {
+                  return (
+                    <MenuItem value={department.department_id}>
+                      {department.department}
+                    </MenuItem>
+                  );
+                })}
             </TextField>
 
             <TextField
@@ -178,10 +210,10 @@ const Members = () => {
               select
               onBlur={handleBlur}
               onChange={handleChange}
-              value={values.accesslevel}
-              name="accesslevel"
-              error={!!touched.accesslevel && !!errors.accesslevel}
-              helperText={touched.accesslevel && errors.accesslevel}
+              value={values.position_id}
+              name="position_id"
+              error={!!touched.position_id && !!errors.position_id}
+              helperText={touched.position_id && errors.position_id}
               sx={{ gridColumn: "span 2" }}
               SelectProps={{
                 MenuProps: {
@@ -189,10 +221,13 @@ const Members = () => {
                 }
               }}
               >
-              <MenuItem value="" disabled>Select Access Level</MenuItem>
-              <MenuItem value="admin">admin</MenuItem>
-              <MenuItem value="manager">manager</MenuItem>
-              <MenuItem value="employee">employee</MenuItem>
+              {positionList.map((position) => {
+                  return (
+                    <MenuItem value={position.position_id}>
+                      {position.position}
+                    </MenuItem>
+                  );
+                })}
             </TextField> 
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
@@ -222,8 +257,8 @@ const checkoutSchema = yup.object().shape({
   email: yup.string().email("invalid email").required("required"),
   phone: yup.string().matches(phoneRegExp, "Phone number is not valid").required("required"),
   gender: yup.string().required("required"),
-  department:yup.string().required("required"),
-  accesslevel: yup.string().required("required"),
+  department_id:yup.string().required("required"),
+  position_id: yup.string().required("required"),
 });
 
 const initialValues = {
@@ -233,8 +268,8 @@ const initialValues = {
   phone: "",
   email: "",
   gender: "",
-  department: "",
-  accesslevel:"",
+  department_id: "",
+  position_id:"",
 };
 
 export default Members;

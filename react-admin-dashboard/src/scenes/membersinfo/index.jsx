@@ -109,7 +109,7 @@ const rows = Memberinfo
   return (
     <Box m="20px">
       <Header
-        title="MEMBERS INFO"
+        title="ATTANDENCES"
         subtitle="Company Members Data"
       />
       {/* List of Contacts for Future Reference */}

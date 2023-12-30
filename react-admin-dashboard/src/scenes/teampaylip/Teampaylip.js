@@ -51,6 +51,16 @@ const rows = paymentinfo
       flex: 1,
     },
     {
+      field: "rate",
+      headerName: "Hour Rate",
+      flex: 1,
+      renderCell: (params) => (
+        <Typography>
+          ${params.row.rate}
+        </Typography>
+      ),
+    },
+    {
       field: "total_lateness_hours",
       headerName: "lateness time ",
       flex: 0.8,
@@ -59,7 +69,7 @@ const rows = paymentinfo
       field: "total_extra_hours",
       headerName: "Extra Hours",
       flex: 0.8,
-  
+      
     },
     {
       field: "base_salary",
@@ -86,16 +96,7 @@ const rows = paymentinfo
         </Typography>
       ),
     },
-    {
-      field: "total_deduction",
-      headerName: "Deduction",
-      flex: 0.8,
-      renderCell: (params) => (
-        <Typography >
-          ${params.row.total_deduction}
-        </Typography>
-      ),
-    },
+    
     
     {
       field: "extra_hours_bonus",
@@ -124,6 +125,16 @@ const rows = paymentinfo
       renderCell: (params) => (
         <Typography>
           ${params.row.deduction_lateness}
+        </Typography>
+      ),
+    },
+    {
+      field: "total_deduction",
+      headerName: "Deduction",
+      flex: 0.8,
+      renderCell: (params) => (
+        <Typography >
+          ${params.row.total_deduction}
         </Typography>
       ),
     },
