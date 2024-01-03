@@ -16,13 +16,14 @@ function calculateTotalHoursWorked(attendanceData) {
 
   attendanceData.forEach((attendance) => {
     const { employee_id, arrival_time, exit_time } = attendance;
+    if (!totalHoursByEmployee[employee_id]) {
+      totalHoursByEmployee[employee_id] = 0;
+    }
 
     if (arrival_time && exit_time) {
       const hoursWorked = calculateHourDifference(arrival_time, exit_time);
 
-      if (!totalHoursByEmployee[employee_id]) {
-        totalHoursByEmployee[employee_id] = 0;
-      }
+      
 
       totalHoursByEmployee[employee_id] += hoursWorked;
     }
@@ -44,16 +45,15 @@ function calculateTotalLatenessHours(attendanceData) {
 
   attendanceData.forEach((attendance) => {
     const { employee_id, shiftstarttime, shiftendtime, arrival_time, exit_time } = attendance;
-
+    if (!totalLatenessByEmployee[employee_id]) {
+      totalLatenessByEmployee[employee_id] = 0;
+    }
     if (shiftstarttime && shiftendtime && arrival_time && exit_time) {
       const shiftDuration = calculateHourDifference(shiftstarttime, shiftendtime);
       const workedHours = calculateHourDifference(arrival_time, exit_time);
       const latenessHours = Math.max(0, shiftDuration - workedHours);
 
-      if (!totalLatenessByEmployee[employee_id]) {
-        totalLatenessByEmployee[employee_id] = 0;
-      }
-
+      
       totalLatenessByEmployee[employee_id] += latenessHours;
     }
   });
@@ -71,6 +71,10 @@ function calculateExtraHoursWorked(attendanceData) {
 
   attendanceData.forEach((attendance) => {
     const { employee_id, shiftstarttime, shiftendtime, arrival_time, exit_time } = attendance;
+    if (!totalExtraHoursByEmployee[employee_id]) {
+      totalExtraHoursByEmployee[employee_id] = 0;
+    }
+
 
     if (shiftstarttime && shiftendtime && arrival_time && exit_time) {
       const shiftDuration = calculateHourDifference(shiftstarttime, shiftendtime);
@@ -80,11 +84,6 @@ function calculateExtraHoursWorked(attendanceData) {
       if((shiftDuration - workedHours) <= 0){
        extraHoursworked = workedHours - shiftDuration;
       }  
-
-      if (!totalExtraHoursByEmployee[employee_id]) {
-        totalExtraHoursByEmployee[employee_id] = 0;
-      }
-
       totalExtraHoursByEmployee[employee_id] += extraHoursworked;
     }
   });
@@ -107,11 +106,12 @@ function calculateExtraHoursWorked(attendanceData) {
    
 
 
-   
+    if (!totalBaseSalaryByEmployee[employee_id]) {
+      totalBaseSalaryByEmployee[employee_id] = 0;
+    }
     if (arrival_time && exit_time) {
-      if (!totalBaseSalaryByEmployee[employee_id]) {
-        totalBaseSalaryByEmployee[employee_id] = 0;
-      }
+      
+      
       const totalHoursWorked = calculateTotalHoursWorked(employeeData);
       let value;
       totalHoursWorked.forEach((employee) => {
@@ -138,7 +138,7 @@ function calculateExtraHoursWorked(attendanceData) {
   return baseSalaryList;
 };
 
-function calculateBonus(employeeStartDate) {//mnerja3la
+function calculateBonus(employeeStartDate) {//mnerja3la raise raise
   const currentDate = new Date();
   const currentYear = currentDate.getFullYear();
   const startDate = new Date(employeeStartDate);
@@ -303,10 +303,10 @@ function calculateEmployeePayroll(joinedData) {
     );
 
     const totalSalary =
-      baseSalary.baseSalary * bonus -
-      totalDeduction.total_deduction +
-      medicalAbsenceDeduction.total_medical_payment_handle +
-      (total_extra_hours.total_extra_hours * 2);
+      baseSalary.baseSalary * bonus -//raise guys
+      totalDeduction.total_deduction +//khasem(latenence+ghyeb//no reason)
+      medicalAbsenceDeduction.total_medical_payment_handle +//gheb wm2soufa raw7o bye2badon lchab
+      (total_extra_hours.total_extra_hours * 2);//extra cash 3al tatawo3 mablagh mn al mal
 
     payRollByEmployee[employee_id] = {
       employee_id: employee_id,
@@ -461,7 +461,8 @@ app.post("/attendance", (req, res) => {
     req.body.reason_for_absence,
     req.body.notes,
   ];
-
+  console.log("hi kifak ana bodyy",req.body);
+  console.log(values);
   db.query(q, values, (err, data) => {
     if (err) return res.json(err);
     return res.json("Data inserted successfully!");
@@ -653,6 +654,7 @@ app.post("/payroll", (req, res) => {
   const q =
     "INSERT INTO payroll(`employee_id`, `fullName`, `total_hours_worked`, `total_lateness_hours`, `total_extra_hours`, `base_salary`, `bonus`, `medical_absence_deduction`, `total_deduction`, `extra_hours_bonus`, `deduction_absence`, `deduction_lateness`, `total_salary`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
+   
   const values = [
     req.body.employee_id,
     req.body.fullName,
@@ -668,7 +670,7 @@ app.post("/payroll", (req, res) => {
     req.body.deduction_lateness,
     req.body.total_salary,
   ];
-
+ console.log("post payroll",values);
   db.query(q, values, (err, data) => {
     if (err) return res.json(err);
     return res.json("Data inserted successfully!");

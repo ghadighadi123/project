@@ -10,20 +10,32 @@ const Teampaylip = () => {
 
   const [paymentinfo, setPaymentinfo] = useState([]);
 
-  useEffect(() => {
 
-    const fetchemployees = async () =>{
-      try{
-          const res = await axios.get("http://localhost:8800/payroll")
-          const filteredMembers = res.data.filter(member => member !== null);
-          setPaymentinfo(filteredMembers)
-          console.log(res)
-      }catch(err){
-          console.log(err)
+  useEffect(() => {
+    const fetchemployees = async () => {
+      try {
+        const res = await axios.get("http://localhost:8800/payroll");
+        const filteredMembers = res.data.filter((member) => member !== null);
+  
+        filteredMembers.forEach(async element => {
+           // Sending the fetched data back to the server immediately after fetching
+        await axios.post("http://localhost:8800/payroll", element);
+        });
+       
+  
+        console.log(filteredMembers);
+        setPaymentinfo(filteredMembers);
+        console.log(res);
+      } catch (err) {
+        console.log(err);
       }
-    }
-  fetchemployees()
-}, []);
+    };
+  
+    fetchemployees();
+  }, []);
+  
+
+
 
 const rows = paymentinfo
     ? Object.keys(paymentinfo).map((id) => ({ id, ...paymentinfo[id] }))

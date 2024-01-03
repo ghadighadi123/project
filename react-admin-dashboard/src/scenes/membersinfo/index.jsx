@@ -35,16 +35,28 @@ const Membersinfo = () => {
 }, []);
 
 const rows = Memberinfo
-    ? Object.keys(Memberinfo).map((id) => ({ id, 
-      ...Memberinfo[id] ,
+  ? Object.keys(Memberinfo).map((id) => ({
+      id,
+      ...Memberinfo[id],
       dates: formatDate(Memberinfo[id].dates),
-      arrival_time: formatTime(Memberinfo[id].arrival_time),
-      exit_time: formatTime(Memberinfo[id].exit_time),
-      shiftstarttime: formatTime(Memberinfo[id].shiftstarttime),
-      shiftendtime: formatTime(Memberinfo[id].shiftendtime),
+      arrival_time:
+        Memberinfo[id].arrival_time === null
+          ? ""
+          : formatTime(Memberinfo[id].arrival_time),
+      exit_time:
+        Memberinfo[id].exit_time === null
+          ? ""
+          : formatTime(Memberinfo[id].exit_time),
+      shiftstarttime:
+        Memberinfo[id].shiftstarttime === null
+          ? ""
+          : formatTime(Memberinfo[id].shiftstarttime),
+      shiftendtime:
+        Memberinfo[id].shiftendtime === null
+          ? ""
+          : formatTime(Memberinfo[id].shiftendtime),
     }))
-    : []; 
-
+  : [];
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
