@@ -11,7 +11,7 @@ import Members from "./scenes/members";
 import Teampaylip from "./scenes/teampaylip/Teampaylip";
 import Contactsdata from "./scenes/contactsdata/";
 import Login from "./scenes/login/login";
-import Signup from "./scenes/login/Signup";
+import Signup from "./scenes/login/signup";
 import Layout from "./Layout";
 
 function App() {
