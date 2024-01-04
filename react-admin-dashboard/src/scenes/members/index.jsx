@@ -5,12 +5,35 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
 import { MenuItem } from "@mui/material";
 import axios from "axios";
+import { useEffect, useState } from "react";
 
 const Members = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
-
+  const [departmentList, setDepartmentList] = useState([]);
+  const [positionList, setPositionList] = useState([]);
+  useEffect(() => {
+    const fetchDepartmentList = async () => {
+      try {
+        const res = await axios.get("http://localhost:8800/departments");
+        setDepartmentList(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchDepartmentList();
+    const fetchPositionList = async () => {
+      try {
+        const res = await axios.get("http://localhost:8800/positions");
+        setPositionList(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchPositionList();
+  }, []);
   const handleFormSubmit1 = (values, actions) => {
     console.log("kifak lyom");
+    console.log(values);
     axios
       .post("http://localhost:8800/employees", values)
       .then((response) => {
@@ -168,12 +191,19 @@ const Members = () => {
                 <MenuItem value="" disabled>
                   Select Department
                 </MenuItem>
-                <MenuItem value="HR Department">Human Resources</MenuItem>
+                {departmentList.map((department) => {
+                  return (
+                    <MenuItem value={department.department_id}>
+                      {department.department}
+                    </MenuItem>
+                  );
+                })}
+                {/* <MenuItem value="HR Department">Human Resources</MenuItem>
                 <MenuItem value="Software Development Department">
                   Software Development
                 </MenuItem>
                 <MenuItem value="Marketing Department">Marketing</MenuItem>
-                <MenuItem value="Sales Department">Sales</MenuItem>
+                <MenuItem value="Sales Department">Sales</MenuItem> */}
               </TextField>
 
               <TextField
@@ -197,9 +227,16 @@ const Members = () => {
                 <MenuItem value="" disabled>
                   Select Access Level
                 </MenuItem>
-                <MenuItem value="admin">admin</MenuItem>
+                {positionList.map((position) => {
+                  return (
+                    <MenuItem value={position.position_id}>
+                      {position.position}
+                    </MenuItem>
+                  );
+                })}
+                {/* <MenuItem value="admin">admin</MenuItem>
                 <MenuItem value="manager">manager</MenuItem>
-                <MenuItem value="employee">employee</MenuItem>
+                <MenuItem value="employee">employee</MenuItem> */}
               </TextField>
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">

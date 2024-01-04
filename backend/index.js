@@ -230,7 +230,6 @@ function calculateBaseSalary(employeeData) {
 }
 
 function calculateBonus(employeeStartDate) {
-  //mnerja3la
   const currentDate = new Date();
   const currentYear = currentDate.getFullYear();
   const startDate = new Date(employeeStartDate);
