@@ -60,7 +60,7 @@ function App() {
             path="/membersinfo"
             element={
               <RequireAuth>
-                <Layout title="Members Information">
+                <Layout title="Attendance Information">
                   <Membersinfo />
                 </Layout>
               </RequireAuth>

@@ -123,7 +123,7 @@ const Sidebar = ({ title }) => {
                 setSelected={setSelected}
               />
               <Item
-                title="Members Information"
+                title="Attendance Information"
                 to="/membersinfo"
                 icon={<ContactsOutlinedIcon />}
                 selected={selected}

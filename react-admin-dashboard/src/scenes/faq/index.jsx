@@ -28,14 +28,14 @@ const FAQ = () => {
       dates,
       employee_id,
       notes,
-      reason_for_absence: attendance === "true" ? "" : reason_for_absence,
+      reason_for_absence: attendance === "true" ? null : reason_for_absence,
       arrival_time:
-        attendance === "false" ? "" : `${todayDate} ${arrival_time}`,
-      exit_time: attendance === "false" ? "" : `${todayDate} ${exit_time}`,
+        attendance === "false" ? null : `${todayDate} ${arrival_time}`,
+      exit_time: attendance === "false" ? null : `${todayDate} ${exit_time}`,
       shiftendtime:
-        attendance === "false" ? "" : `${todayDate} ${shiftendtime}`,
+        attendance === "false" ? null : `${todayDate} ${shiftendtime}`,
       shiftstarttime:
-        attendance === "false" ? "" : `${todayDate} ${shiftstarttime}`,
+        attendance === "false" ? null : `${todayDate} ${shiftstarttime}`,
       attendance: attendance === "true",
     };
     console.log(parsedValues);

@@ -10,20 +10,32 @@ const Teampaylip = () => {
 
   const [paymentinfo, setPaymentinfo] = useState([]);
 
-  useEffect(() => {
 
-    const fetchemployees = async () =>{
-      try{
-          const res = await axios.get("http://localhost:8800/payroll")
-          const filteredMembers = res.data.filter(member => member !== null);
-          setPaymentinfo(filteredMembers)
-          console.log(res)
-      }catch(err){
-          console.log(err)
+  useEffect(() => {
+    const fetchemployees = async () => {
+      try {
+        const res = await axios.get("http://localhost:8800/payroll");
+        const filteredMembers = res.data.filter((member) => member !== null);
+  
+        filteredMembers.forEach(async element => {
+           // Sending the fetched data back to the server immediately after fetching
+        await axios.post("http://localhost:8800/payroll", element);
+        });
+       
+  
+        console.log(filteredMembers);
+        setPaymentinfo(filteredMembers);
+        console.log(res);
+      } catch (err) {
+        console.log(err);
       }
-    }
-  fetchemployees()
-}, []);
+    };
+  
+    fetchemployees();
+  }, []);
+  
+
+
 
 const rows = paymentinfo
     ? Object.keys(paymentinfo).map((id) => ({ id, ...paymentinfo[id] }))
@@ -51,6 +63,16 @@ const rows = paymentinfo
       flex: 1,
     },
     {
+      field: "rate",
+      headerName: "Hour Rate",
+      flex: 1,
+      renderCell: (params) => (
+        <Typography>
+          ${params.row.rate}
+        </Typography>
+      ),
+    },
+    {
       field: "total_lateness_hours",
       headerName: "lateness time ",
       flex: 0.8,
@@ -59,7 +81,7 @@ const rows = paymentinfo
       field: "total_extra_hours",
       headerName: "Extra Hours",
       flex: 0.8,
-  
+      
     },
     {
       field: "base_salary",
@@ -86,16 +108,7 @@ const rows = paymentinfo
         </Typography>
       ),
     },
-    {
-      field: "total_deduction",
-      headerName: "Deduction",
-      flex: 0.8,
-      renderCell: (params) => (
-        <Typography >
-          ${params.row.total_deduction}
-        </Typography>
-      ),
-    },
+    
     
     {
       field: "extra_hours_bonus",
@@ -124,6 +137,16 @@ const rows = paymentinfo
       renderCell: (params) => (
         <Typography>
           ${params.row.deduction_lateness}
+        </Typography>
+      ),
+    },
+    {
+      field: "total_deduction",
+      headerName: "Deduction",
+      flex: 0.8,
+      renderCell: (params) => (
+        <Typography >
+          ${params.row.total_deduction}
         </Typography>
       ),
     },

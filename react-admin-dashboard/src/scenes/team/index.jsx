@@ -34,6 +34,7 @@ const Team = () => {
         id,
         ...Member[id],
         startdate: formatDate(Member[id].startdate),
+        age: formatDate(Member[id].age),
       }))
     : [];
 
@@ -54,12 +55,12 @@ const Team = () => {
     {
       field: "gender",
       headerName: "Gender",
-      flex: 0.6,
+      flex: 1,
     },
     {
       field: "age",
       headerName: "Date Of Birth",
-      flex: 0.5,
+      flex: 1,
     },
     {
       field: "phone",
@@ -69,12 +70,12 @@ const Team = () => {
     {
       field: "email",
       headerName: "Email",
-      flex: 2.3,
+      flex: 1,
     },
     {
       field: "department",
       headerName: "Department",
-      flex: 1.2,
+      flex: 1.5,
     },
     {
       field: "startdate",
@@ -82,7 +83,7 @@ const Team = () => {
       flex: 1,
     },
     {
-      field: "accessLevel",
+      field: "position_id",
       headerName: "Position",
       flex: 1.2,
       renderCell: ({ row: { accesslevel } }) => {
