@@ -435,8 +435,6 @@ app.post("/employees", (req, res) => {
     return res.json("Data inserted successfully!");
   });
 });
-app.use(express.json());
-app.use(cors());
 app.get("/attendance", (req, res) => {
   const q =
     "SELECT a.*, e.fullName FROM attendance a JOIN employees e ON a.employee_id = e.employee_id";

@@ -91,7 +91,6 @@ function App() {
             path="/faq"
             element={
               <RequireAuth>
-                '
                 <Layout title="Members Data">
                   <FAQ />
                 </Layout>

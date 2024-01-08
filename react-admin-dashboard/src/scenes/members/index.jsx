@@ -50,30 +50,6 @@ const Members = () => {
     actions.setSubmitting(false);
     actions.resetForm();
   };
-
-  useEffect(() => {
-    const fetchDepartmentList = async () => {
-      try {
-        const res = await axios.get("http://localhost:8800/departments");
-        setDepartmentList(res.data);
-        console.log(res.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchDepartmentList();
-    const fetchpositionList = async () => {
-      try {
-        const res = await axios.get("http://localhost:8800/positions");
-        setPositionList(res.data);
-        console.log(res.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchpositionList();
-  }, []);
-
   return (
     <Box m="20px">
       <Header title="ADD MEMBER" subtitle="Add a New Team Member Profile" />

@@ -9,7 +9,9 @@ const today = new Date();
 const year = today.getFullYear();
 const month = today.getMonth() + 1;
 const day = today.getDate();
-const todayDate = `${year}-${month}-${day}`;
+const todayDate = `${year}-${month < 10 ? `0${month}` : month}-${
+  day < 10 ? `0${day}` : day
+}`;
 const FAQ = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const handleFormSubmit1 = (values, actions) => {
